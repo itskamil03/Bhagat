@@ -155,14 +155,14 @@ export default function ProjectsPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="w-full relative overflow-hidden bg-[#120B0B] text-white min-h-[420px] flex items-center"
+        className="w-full relative overflow-hidden bg-[#1F1719] text-white min-h-[420px] flex items-center"
       >
         {/* Absolute Background Image covering right 60% */}
         <div className="absolute right-0 top-0 w-full md:w-[60%] h-full z-0 overflow-hidden select-none">
           <motion.img
             src="/image 41 (1).png"
             alt="Refinery and substation line-art sketch"
-            initial={{ opacity: 0, scale: 1.05 }}
+            initial={{ opacity: 0, scale: 1.05, filter: "blur(12px)" }}
             animate={{ 
               opacity: 1, 
               scale: 1, 
@@ -172,7 +172,8 @@ export default function ProjectsPage() {
             whileHover={{ scale: 1.02 }}
             transition={{
               opacity: { duration: 1 },
-              scale: { duration: 0.3 }
+              scale: { duration: 0.3 },
+              filter: { duration: 1 }
             }}
             className="w-full h-full object-contain object-right"
           />
@@ -182,7 +183,9 @@ export default function ProjectsPage() {
         <div 
           className="absolute inset-0 pointer-events-none z-10"
           style={{
-            background: "linear-gradient(90deg, rgba(18,11,11,1) 0%, rgba(18,11,11,1) 45%, rgba(18,11,11,0.45) 55%, transparent 65%)"
+            background: "linear-gradient(270deg, rgba(48, 19, 23, 0) 0%, rgba(52, 19, 23, 0.52) 30.74%, rgba(35, 20, 22, 0.66) 41.58%, #1B1416 63.54%, #1F1719 100%)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)"
           }}
         />
 

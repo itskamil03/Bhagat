@@ -118,7 +118,7 @@ export default function OngoingProjects() {
         }
         return nextIndex;
       });
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [isPaused, filteredProjects.length]);
@@ -140,6 +140,34 @@ export default function OngoingProjects() {
         behavior: "smooth",
         block: "nearest"
       });
+    }
+  };
+
+  const handleScroll = () => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const containerCenter = containerRect.top + containerRect.height / 2;
+
+    let closestIndex = activeIndex;
+    let minDistance = Infinity;
+
+    filteredProjects.forEach((_, index) => {
+      const card = cardRefs.current[index];
+      if (!card) return;
+      const cardRect = card.getBoundingClientRect();
+      const cardCenter = cardRect.top + cardRect.height / 2;
+      const distance = Math.abs(cardCenter - containerCenter);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    if (closestIndex !== activeIndex) {
+      setActiveIndex(closestIndex);
     }
   };
 
@@ -275,9 +303,9 @@ export default function OngoingProjects() {
                 ))}
               </div>
 
-              {/* PROJECT CARDS STACK COLUMN */}
               <div 
                 ref={containerRef}
+                onScroll={handleScroll}
                 className="flex-1 space-y-6 max-h-[600px] overflow-y-auto pr-3 scroll-smooth scrollbar-thin"
               >
                 {filteredProjects.length === 0 ? (
@@ -359,13 +387,13 @@ export default function OngoingProjects() {
                           </div>
                         </div>
 
-                        <button 
-                          onClick={() => setSelectedProjectDetails(project)}
+                        <Link 
+                          href={`/project/detail?id=${project.id}`}
                           className="text-[#E61B23] font-bold text-xs hover:text-red-700 inline-flex items-center gap-1.5 active:translate-x-1 transition"
                         >
                           <span>View Details</span>
                           <span>&rarr;</span>
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   ))
@@ -386,15 +414,15 @@ export default function OngoingProjects() {
               
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <p className="text-3xl font-extrabold text-white">20+</p>
+                  <p className="text-3xl font-extrabold text-white">06</p>
                   <p className="text-xs text-gray-400 mt-1 font-semibold">Live Projects</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-white">08</p>
+                  <p className="text-3xl font-extrabold text-white">05</p>
                   <p className="text-xs text-gray-400 mt-1 font-semibold">States Active</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-white">06</p>
+                  <p className="text-3xl font-extrabold text-white">04</p>
                   <p className="text-xs text-gray-400 mt-1 font-semibold">Divisions</p>
                 </div>
                 <div>
@@ -415,7 +443,7 @@ export default function OngoingProjects() {
               </h3>
               <div className="bg-gray-100 rounded-xl aspect-[4/3] flex items-center justify-center overflow-hidden border border-gray-200 relative group cursor-pointer">
                 <img 
-                  src="https://picsum.photos/seed/indiamap/400/300"
+                  src="/india_execution_map.jpg"
                   alt="Execution Map"
                   className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
