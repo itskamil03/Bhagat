@@ -116,7 +116,7 @@ export default function Client() {
       </div>
 
       {/* SLIDER BUTTON (UI ONLY) */}
-      <div className="flex justify-center mt-10">
+      {/* <div className="flex justify-center mt-10">
         <div className="bg-black text-white px-6 py-3 rounded-full flex gap-6 items-center shadow-lg">
           <button 
             onClick={() => setActive((prev) => (prev === null || prev === 0 ? data.length - 1 : prev - 1))}
@@ -131,7 +131,7 @@ export default function Client() {
             ›
           </button>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }
