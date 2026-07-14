@@ -35,7 +35,7 @@ export default function Section() {
 
       {/* MAIN HEADING */}
       <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight max-w-4xl">
-        We build on honesty and
+        We build on honesty
         <br />
         transparent dealings
       </h1>
