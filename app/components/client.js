@@ -58,13 +58,12 @@ export default function Client() {
             <div
               key={i}
               onMouseEnter={() => setActive(i)}
-              className={`relative border border-red-500 overflow-hidden cursor-pointer transition-all duration-500
-              ${isActive ? "h-[260px]" : "h-[360px]"}`} // 👈 SHRINK
+              className="relative border border-red-500 overflow-hidden cursor-pointer transition-all duration-500 h-[390px] rounded-xl shadow-sm"
             >
               {/* OVERLAY */}
               <div
                 className={`absolute top-0 left-0 w-full bg-red-600 transition-all duration-500 z-10
-                ${isActive ? "h-[260px]" : "h-0"}`}
+                ${isActive ? "h-full" : "h-0"}`}
               />
 
               {/* CONTENT */}
@@ -119,8 +118,18 @@ export default function Client() {
       {/* SLIDER BUTTON (UI ONLY) */}
       <div className="flex justify-center mt-10">
         <div className="bg-black text-white px-6 py-3 rounded-full flex gap-6 items-center shadow-lg">
-          <span className="cursor-pointer">‹</span>
-          <span className="cursor-pointer">›</span>
+          <button 
+            onClick={() => setActive((prev) => (prev === null || prev === 0 ? data.length - 1 : prev - 1))}
+            className="cursor-pointer hover:text-red-500 transition text-xl font-bold px-2"
+          >
+            ‹
+          </button>
+          <button 
+            onClick={() => setActive((prev) => (prev === null || prev === data.length - 1 ? 0 : prev + 1))}
+            className="cursor-pointer hover:text-red-500 transition text-xl font-bold px-2"
+          >
+            ›
+          </button>
         </div>
       </div>
     </section>

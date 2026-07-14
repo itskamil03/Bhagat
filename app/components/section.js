@@ -1,26 +1,26 @@
+import Link from "next/link";
 import Card from "./card";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 export default function Section() {
   const data = [
     {
-      img: "/b1.png",
-
+      img: "/e1.png",
       title: "ISO 9001:2015 certified process protect everyone",
       desc: "Precision & innovation: Technical excellence in every installation",
     },
     {
-      img: "/b4.png",
+      img: "/e2.png",
       title: "Technical mastry drives every installation",
       desc: "Trust and Integrity: Honest dealings from start to finish",
     },
     {
-      img: "/e2.png",
+      img: "/e3.png",
       title: "Honest dealings from start to finish",
       desc: "Trust and Integrity: We stand behind every project with complete transparency and accountability",
     },
     {
-      img: "/e3.png",
+      img: "/e4.png",
       title: "Technical excellence in every installation",
       desc: "Precision and Innovation: Our engineers solve complex problems with proven methods and modern techniques",
     },
@@ -35,7 +35,7 @@ export default function Section() {
 
       {/* MAIN HEADING */}
       <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight max-w-4xl">
-        We build on honesty
+        We build on honesty and
         <br />
         transparent dealings
       </h1>
@@ -57,7 +57,10 @@ export default function Section() {
         ))}
       </div>
 
-      <button className="group flex items-center justify-between bg-red-600 text-white px-8 py-6 rounded-2xl w-[320px] hover:bg-red-700 transition duration-300">
+      <Link 
+        href="/about" 
+        className="group flex items-center justify-between bg-red-600 text-white px-8 py-6 rounded-2xl w-[260px] md:w-[320px] mx-auto md:mx-0 md:ml-6 hover:bg-red-700 transition duration-300"
+      >
         {/* TEXT */}
         <span className="text-2xl font-semibold">Learn more</span>
 
@@ -65,7 +68,7 @@ export default function Section() {
         <span className="text-2xl transform group-hover:translate-x-2 transition duration-300">
           <FaArrowRightLong />
         </span>
-      </button>
+      </Link>
     </section>
   );
 }

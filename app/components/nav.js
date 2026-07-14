@@ -121,7 +121,7 @@ function Nav() {
   return (
     <>
       <header className="sticky top-0 z-[9999] w-full h-[78px] bg-gradient-to-r from-[#EFF3F6] via-white to-[#FAFAFC] shadow-md border-b border-gray-200 transition-all duration-300">
-        <div className="max-w-7xl mx-auto flex items-center justify-between h-full px-4 sm:px-6">
+        <div className="max-w-[1480px] mx-auto flex items-center justify-between h-full px-4 sm:px-6">
           {/* LEFT LOGO */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Image
@@ -390,7 +390,7 @@ function Nav() {
             {/* MOBILE HAMBURGER BUTTON */}
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="flex md:hidden items-center justify-center p-2 text-gray-700 hover:text-red-600 hover:bg-gray-100 rounded-xl transition focus:outline-none"
+              className="flex md:hidden items-center justify-center p-2 text-gray-700 hover:text-red-600 hover:bg-gray-100 rounded-xl transition focus:outline-none -mr-2"
               aria-label="Toggle Menu"
             >
               {isMobileOpen ? <FaTimes size={20} /> : <FaBars size={20} />}

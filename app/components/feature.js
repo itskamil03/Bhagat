@@ -24,9 +24,9 @@ const data = [
 
 export default function Feature() {
   return (
-    <div className="grid md:grid-cols-3 w-full h-[500px]">
+    <div className="grid md:grid-cols-3 w-full h-auto md:h-[500px]">
       {data.map((item, i) => (
-        <div key={i} className="relative group">
+        <div key={i} className="relative group h-[300px] md:h-full">
           {/* Background Image */}
           <Image src={item.img} alt="bg" fill className="object-cover" />
 

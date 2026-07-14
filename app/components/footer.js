@@ -54,23 +54,37 @@ export default function Footer() {
         {/* SERVICES */}
         <div>
           <h3 className="font-semibold text-gray-900 mb-4">Our Services</h3>
-          <ul className="space-y-2">
-            <li>Erection and Maintenance</li>
-            <li>Domestic Wiring</li>
-            <li>Transformer Related</li>
-            <li>Cable Laying</li>
+          <ul className="space-y-2 text-sm">
+            <li className="hover:text-red-500 transition">
+              <Link href="/service/power-substation">Erection and Maintenance</Link>
+            </li>
+            <li className="hover:text-red-500 transition">
+              <Link href="/service/domestic-wiring">Domestic Wiring</Link>
+            </li>
+            <li className="hover:text-red-500 transition">
+              <Link href="/service/transformer-services">Transformer Related</Link>
+            </li>
+            <li className="hover:text-red-500 transition">
+              <Link href="/service/cable-laying">Cable Laying</Link>
+            </li>
           </ul>
         </div>
 
         {/* CONTACT */}
         <div>
           <h3 className="font-semibold text-gray-900 mb-4">Connect</h3>
-          <ul className="space-y-2">
-            <li>
-              <Link href="#">Original Website</Link>
+          <ul className="space-y-2 text-sm">
+            <li className="hover:text-red-500 transition">
+              <a href="http://bhagatengg.in" target="_blank" rel="noopener noreferrer">
+                Original Website
+              </a>
             </li>
-            <li>info@bhagatengg.in</li>
-            <li>+91 6299923388</li>
+            <li className="hover:text-red-500 transition">
+              <a href="mailto:info@bhagatengg.in">info@bhagatengg.in</a>
+            </li>
+            <li className="hover:text-red-500 transition">
+              <a href="tel:+916299923388">+91 6299923388</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -82,9 +96,21 @@ export default function Footer() {
           concept.
         </p>
 
-        <div className="mt-4 md:mt-0 flex items-center gap-3 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg">
-          <button>{"<"}</button>
-          <button>{">"}</button>
+        <div className="mt-4 md:mt-0 flex items-center gap-4 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg">
+          <button 
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="hover:text-red-500 transition font-bold px-2 text-base"
+            title="Scroll to Top"
+          >
+            {"<"}
+          </button>
+          <button 
+            onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}
+            className="hover:text-red-500 transition font-bold px-2 text-base"
+            title="Scroll to Bottom"
+          >
+            {">"}
+          </button>
         </div>
       </div>
     </footer>
