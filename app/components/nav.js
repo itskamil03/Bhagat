@@ -188,7 +188,7 @@ function Nav() {
                   </div>
                   <div className="pt-2 space-y-1">
                     <Link
-                      href="/"
+                      href="/about"
                       onClick={() => setOpenDropdown(null)}
                       className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
                     >
@@ -466,7 +466,7 @@ function Nav() {
                 {activeMobileDropdown === "about" && (
                   <div className="pl-6 space-y-1 bg-gray-50 rounded-xl p-2 mt-1">
                     <Link
-                      href="/"
+                      href="/about"
                       onClick={() => setIsMobileOpen(false)}
                       className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
                     >

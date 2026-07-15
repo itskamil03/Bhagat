@@ -72,7 +72,7 @@ export default function EmployeeAwards() {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-800">
       {/* Hero Section */}
-      <section className="bg-[#0b0e1a] text-white relative overflow-hidden">
+      <section className="bg-[#0b0e1a] text-white relative overflow-hidden flex flex-col md:block">
         <style dangerouslySetInnerHTML={{__html: `
           .awards-hero-gradient {
             background: linear-gradient(180deg, rgba(11, 14, 26, 0.94) 0%, rgba(11, 14, 26, 0.8) 50%, rgba(11, 14, 26, 0.94) 100%);
@@ -94,8 +94,46 @@ export default function EmployeeAwards() {
           style={{ clipPath: "polygon(0% 0%, calc(100% - 15px) 0%, 100% 100%, 0% 100%)" }} 
         />
 
+        {/* Text Container Wrapper */}
+        <div className="max-w-[1440px] mx-auto w-full md:h-[480px] relative overflow-hidden flex items-center px-6 md:px-16 z-20">
+          {/* Left Text */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="relative w-full md:w-[50%] flex flex-col justify-center select-none py-12 md:py-0"
+          >
+            <nav className="text-xs md:text-sm text-gray-400 mb-4 flex items-center gap-2">
+              <Link href="/" className="hover:text-red-500 transition">Home</Link>
+              <span>&gt;</span>
+              <Link href="/about" className="hover:text-red-500 transition">About Us</Link>
+              <span>&gt;</span>
+              <span className="text-white">Employee Awards</span>
+            </nav>
+
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-6 h-[2px] bg-[#E61B23]"></div>
+              <p className="text-[#E61B23] uppercase tracking-widest text-[11px] md:text-[13px] font-semibold">
+                OUR ACHIEVEMENTS
+              </p>
+            </div>
+            
+            <h1 className="text-3xl xs:text-4xl md:text-5xl lg:text-[54px] font-extrabold leading-none tracking-tight">
+              AWARDS & 
+              <span className="block text-[#E61B23] mt-1.5">RECOGNITION</span>
+            </h1>
+
+            {/* Red Horizontal Divider Line */}
+            <div className="w-16 h-[2px] bg-[#E61B23] my-6"></div>
+
+            <p className="text-gray-300 max-w-xl text-[13px] sm:text-sm md:text-[14px] leading-relaxed">
+              Our commitment to quality, innovation, and excellence has been recognized by industry leaders and organizations. These awards inspire us to continue delivering the best.
+            </p>
+          </motion.div>
+        </div>
+
         {/* Absolute Image Column on the Right (w-[50%], object-contain keeps trophy size perfect) */}
-        <div className="absolute right-0 top-0 w-full md:w-[50%] h-full z-0 overflow-hidden select-none">
+        <div className="relative w-full md:absolute md:right-0 md:top-0 md:w-[50%] h-[260px] md:h-full z-10 overflow-hidden select-none">
           <style dangerouslySetInnerHTML={{__html: `
             .awards-mask-container {
               mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.15) 15%, black 45%);
@@ -119,44 +157,7 @@ export default function EmployeeAwards() {
         </div>
 
         {/* Linear Gradient Overlay for seamless blending (dark to transparent) */}
-        <div className="awards-hero-gradient absolute inset-0 z-10 pointer-events-none" />
-
-        <div className="max-w-[1440px] mx-auto min-h-[460px] md:h-[480px] relative overflow-hidden flex items-center px-6 md:px-16 z-20">
-          {/* Left Text */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative w-full md:w-[50%] flex flex-col justify-center select-none py-12 md:py-0"
-          >
-            <nav className="text-xs md:text-sm text-gray-400 mb-4 flex items-center gap-2">
-              <Link href="/" className="hover:text-red-500 transition">Home</Link>
-              <span>&gt;</span>
-              <Link href="/about" className="hover:text-red-500 transition">About Us</Link>
-              <span>&gt;</span>
-              <span className="text-white">Employee Awards</span>
-            </nav>
-
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-[2px] bg-[#E61B23]"></div>
-              <p className="text-[#E61B23] uppercase tracking-widest text-[11px] md:text-[13px] font-semibold">
-                OUR ACHIEVEMENTS
-              </p>
-            </div>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-[54px] font-extrabold leading-none tracking-tight">
-              AWARDS & 
-              <span className="block text-[#E61B23] mt-1.5">RECOGNITION</span>
-            </h1>
-
-            {/* Red Horizontal Divider Line */}
-            <div className="w-16 h-[2px] bg-[#E61B23] my-6"></div>
-
-            <p className="text-gray-300 max-w-xl text-xs md:text-[14px] leading-relaxed">
-              Our commitment to quality, innovation, and excellence has been recognized by industry leaders and organizations. These awards inspire us to continue delivering the best.
-            </p>
-          </motion.div>
-        </div>
+        <div className="awards-hero-gradient absolute inset-0 z-10 pointer-events-none hidden md:block" />
       </section>
 
       {/* Grid List Section */}

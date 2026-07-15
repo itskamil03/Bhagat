@@ -157,34 +157,50 @@ export default function ProjectsPage() {
         transition={{ duration: 0.8 }}
         className="w-full relative overflow-hidden bg-[#1F1719] text-white min-h-[420px] flex items-center"
       >
-        {/* Absolute Background Image covering full width but right-aligned */}
-        <div className="absolute inset-0 z-0 overflow-hidden select-none">
-          <motion.img
-            src="/image 41.png"
-            alt="Refinery and substation line-art sketch"
-            initial={{ opacity: 0, scale: 1.05, filter: "blur(12px)" }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1, 
-              filter: "blur(0px)",
-              transitionEnd: { filter: "none" }
-            }}
-            whileHover={{ scale: 1.02 }}
-            transition={{
-              opacity: { duration: 1 },
-              scale: { duration: 0.3 },
-              filter: { duration: 1 }
-            }}
-            className="w-full h-full object-contain object-right"
-          />
-        </div>
+        <style dangerouslySetInnerHTML={{__html: `
+          .gallery-gradient {
+            background: linear-gradient(180deg, #1F1719 0%, #1B1416 50%, rgba(35,20,22,0.66) 75%, rgba(48,19,23,0) 100%);
+          }
+          @media (min-width: 768px) {
+            .gallery-gradient {
+              background: linear-gradient(
+                270deg,
+                rgba(48, 19, 23, 0) 0%,
+                rgba(52, 19, 23, 0.52) 30.74%,
+                rgba(35, 20, 22, 0.66) 41.58%,
+                #1B1416 63.54%,
+                #1F1719 100%
+              );
+            }
+          }
+          .project-glow {
+            background: radial-gradient(
+              ellipse at 85% 50%,
+              rgba(255,255,255,0.22) 0%,
+              rgba(255,255,255,0.18) 20%,
+              rgba(235,230,230,0.14) 40%,
+              rgba(210,200,200,0.08) 65%,
+              rgba(180,170,170,0.03) 85%,
+              transparent 100%
+            );
+          }
+        `}} />
 
-        {/* Linear Gradient Overlay for seamless blending (dark to transparent) */}
-        <div 
-          className="absolute inset-0 pointer-events-none z-10"
-          style={{
-            background: "linear-gradient(270deg, rgba(48, 19, 23, 0) 0%, rgba(52, 19, 23, 0.52) 30.74%, rgba(35, 20, 22, 0.66) 41.58%, #1B1416 63.54%, #1F1719 100%)"
-          }}
+        {/* Gradient Background Layer */}
+        <div className="gallery-gradient absolute inset-0 z-0 pointer-events-none" />
+
+        {/* Subtle Illuminated Background Glow behind illustration (stretched to 120% for natural spread) */}
+        <div className="project-glow absolute w-[120%] h-[120%] -top-[10%] -right-[10%] z-5 pointer-events-none" />
+
+        {/* Refinery Illustration (Direct child of section, size increased by 38 and shifted left for full view) */}
+        <motion.img
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 0.9, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          src="/image 41.png"
+          alt="Refinery plant illustration"
+          className="absolute right-[-60px] w-[80%] md:w-[68%] h-auto max-h-[88%] z-10 select-none pointer-events-none object-contain object-right-bottom"
+          style={{ bottom: "0px", opacity: 0.9, filter: "url(#remove-gray)" }}
         />
 
         <div className="max-w-[1440px] mx-auto w-full relative z-20 grid md:grid-cols-[40%_60%] items-center px-6 md:px-16">
@@ -440,6 +456,19 @@ export default function ProjectsPage() {
 
       {/* Dark Contact CTA Section */}
       <Contact />
+
+      {/* SVG Color Keying Filter to transparentize gray backgrounds in the browser */}
+      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
+        <defs>
+          <filter id="remove-gray" colorInterpolationFilters="sRGB">
+            <feColorMatrix type="matrix" values="
+              1 0 0 0 0
+              0 1 0 0 0
+              0 0 1 0 0
+              1.6 -0.8 -0.8 0 -0.05" />
+          </filter>
+        </defs>
+      </svg>
     </main>
   );
 }

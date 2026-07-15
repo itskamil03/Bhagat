@@ -21,8 +21,8 @@ export default function Card({ img, title, desc }) {
 
       {/* OVERLAY PANEL */}
       <div 
-        className={`card-overlay absolute bottom-0 left-0 w-full p-4 md:p-5 bg-[#1e1b15]/80 backdrop-blur-sm border-t border-white/5 rounded-b-[24px] flex flex-col justify-end min-h-[160px] md:min-h-[170px] ${
-          isActive ? "active" : ""
+        className={`card-overlay absolute bottom-0 left-0 w-full p-4 md:p-5 bg-[#1A1813] border-t border-white/5 rounded-b-[24px] flex flex-col justify-end h-[195px] md:h-[215px] transform transition-transform duration-300 ease-in-out ${
+          isActive ? "translate-y-0" : "translate-y-full group-hover:translate-y-0"
         }`}
       >
         {/* SHIELD CHECK ICON */}

@@ -56,19 +56,68 @@ export default function LegacyPage() {
   return (
     <main className="min-h-screen bg-gray-100">
       {/* Hero Section */}
-      <section className="bg-[#17162b] text-white relative overflow-hidden">
+      <section className="bg-[#1F1719] text-white relative overflow-hidden flex flex-col md:block">
         <style dangerouslySetInnerHTML={{__html: `
           .gallery-gradient {
-            background: linear-gradient(180deg, rgba(23, 22, 43, 0.94) 0%, rgba(23, 22, 43, 0.78) 50%, rgba(23, 22, 43, 0.94) 100%);
+            background: linear-gradient(180deg, #1F1719 0%, #1B1416 50%, rgba(35,20,22,0.66) 75%, rgba(48,19,23,0) 100%);
           }
           @media (min-width: 768px) {
             .gallery-gradient {
-              background: linear-gradient(90deg, #17162b 0%, #17162b 28%, rgba(91,16,31,0.85) 48%, rgba(91,16,31,0.35) 65%, transparent 100%);
+              background: linear-gradient(
+                270deg,
+                rgba(48, 19, 23, 0) 0%,
+                rgba(52, 19, 23, 0.52) 30.74%,
+                rgba(35, 20, 22, 0.66) 41.58%,
+                #1B1416 63.54%,
+                #1F1719 100%
+              );
+            }
+          }
+          .gallery-glow {
+            background: radial-gradient(
+              circle at 100% 50%,
+              rgba(139, 33, 33, 0.22) 0%,
+              rgba(139, 33, 33, 0.08) 50%,
+              transparent 80%
+            );
+          }
+          @media (min-width: 768px) {
+            .gallery-glow {
+              background: radial-gradient(
+                circle at 60% 50%,
+                rgba(139, 33, 33, 0.18) 0%,
+                rgba(139, 33, 33, 0.08) 40%,
+                transparent 70%
+              );
             }
           }
         `}} />
 
-        <div className="max-w-[1440px] mx-auto min-h-[440px] md:h-[473px] relative overflow-hidden flex flex-col justify-center px-6 md:px-0">
+        {/* Gradient Background Layer (z-0 behind the image illustration) */}
+        <div className="gallery-gradient absolute inset-0 z-0 pointer-events-none" />
+
+        {/* Subtle Reddish Center Glow Layer (z-5 behind the image illustration) */}
+        <div className="gallery-glow absolute inset-0 z-5 pointer-events-none" />
+
+        {/* Background Image Container (Direct child of section, z-10) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute right-0 top-0 w-full md:w-[48%] h-full z-10 select-none pointer-events-none overflow-visible"
+          style={{
+            maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)'
+          }}
+        >
+          <img
+            src="/a5c.png"
+            alt="Engineering facility at night"
+            className="w-full h-full object-cover object-right-bottom"
+          />
+        </motion.div>
+
+        <div className="max-w-[1440px] mx-auto min-h-[440px] md:h-[473px] relative flex flex-col justify-center px-6 md:px-0 z-20">
           {/* Text Content Container */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -76,41 +125,25 @@ export default function LegacyPage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="relative z-20 w-full md:w-[700px] md:pl-[87px] py-12 md:py-0 flex flex-col justify-center h-full"
           >
-            <p className="text-red-500 uppercase tracking-wider text-sm font-semibold">
+            <p className="text-[#E61B23] uppercase tracking-wider text-sm font-semibold">
               OUR LEGACY
             </p>
             <h1 className="text-3xl md:text-5xl lg:text-[54px] font-bold mt-3 leading-tight">
-              Explore Nearly
-              <span className="block">
-                <span className="text-red-500">50 Years</span> of
-              </span>
-              <span className="block">Engineering Excellence</span>
+              Explore Nearly <br />
+              <span className="text-[#E61B23]">50 Years</span> of <br />
+              Engineering Excellence
             </h1>
 
-            <p className="text-gray-300 max-w-xl text-xs md:text-base leading-relaxed mt-5">
+            {/* Red Underline Spacer */}
+            <div className="w-16 h-[3px] bg-[#E61B23] mt-4 mb-6 rounded-full" />
+
+            <p className="text-gray-300 max-w-[520px] text-xs md:text-base leading-relaxed mt-0">
               From our first electrical installation in 1976 to today&apos;s
               large-scale infrastructure developments, discover how Bhagat
               Engineering Works has powered industries, government
               organizations, and railway networks across India through
               innovation, precision, and engineering excellence.
             </p>
-          </motion.div>
-
-          {/* Background Image Container */}
-          <motion.div
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="absolute inset-0 md:left-auto md:right-0 w-full md:w-[890px] h-full overflow-hidden z-0"
-          >
-            <img
-              src="/a5.png"
-              alt="Engineering facility at night"
-              className="w-full h-full object-cover object-center"
-            />
-
-            {/* Responsive Crimson & Dark Navy Gradient Blend Overlay */}
-            <div className="gallery-gradient absolute inset-0" />
           </motion.div>
         </div>
       </section>

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const categories = ["Electrical", "Automation", "Turnkey"];
 
@@ -107,34 +107,46 @@ export default function Service() {
 
   return (
     <section className="w-full bg-[#fcf9f6] py-16 px-6 relative z-10">
-      {/* HEADER SECTION (Title centered + Category filters on right) */}
-      <div className="relative flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8 max-w-[1308px] mx-auto w-full min-h-[50px]">
-        {/* Centered Heading */}
-        <h2 className="text-3xl md:text-5xl font-bold text-gray-900 select-none tracking-tight text-center md:absolute md:left-1/2 md:-translate-x-1/2 md:top-1/2 md:-translate-y-1/2 z-10">
-          Integrated Services
-        </h2>
+      {/* HEADER SECTION (Desktop: Grid-aligned to Column 2; Mobile: Centered flex) */}
+      <div className="max-w-[1308px] mx-auto w-full mb-8">
+        {/* Desktop Grid Layout */}
+        <div className="hidden md:grid md:grid-cols-[300px_1.8fr_1.2fr] gap-8 items-center w-full min-h-[50px]">
+          {/* Column 1: Spacer */}
+          <div />
 
-        {/* Dummy spacer to keep right tab pushed */}
-        <div className="hidden md:block w-10 h-10"></div>
+          {/* Column 2: Centered Heading exactly over the main image column */}
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 select-none tracking-tight text-center">
+            Integrated Services
+          </h2>
 
-        {/* Tab Filter Container on the right */}
-        <div className="hidden md:flex bg-white border border-gray-200 rounded-xl p-1 gap-1 shadow-sm self-center md:self-auto relative z-20">
-          {categories.map((cat) => {
-            const isActive = cat === activeCategory;
-            return (
-              <button
-                key={cat}
-                onClick={() => handleCategorySelect(cat)}
-                className={`px-5 py-2 rounded-lg font-semibold text-sm transition duration-300 ${
-                  isActive
-                    ? "bg-[#c00000] text-white shadow-sm"
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                {cat}
-              </button>
-            );
-          })}
+          {/* Column 3: Right-aligned tab filter buttons */}
+          <div className="flex justify-end">
+            <div className="bg-white border border-gray-200 rounded-xl p-1 gap-1 shadow-sm flex">
+              {categories.map((cat) => {
+                const isActive = cat === activeCategory;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategorySelect(cat)}
+                    className={`px-5 py-2 rounded-lg font-semibold text-sm transition duration-300 ${
+                      isActive
+                        ? "bg-[#c00000] text-white shadow-sm"
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Flex Layout */}
+        <div className="flex flex-col items-center gap-4 md:hidden w-full">
+          <h2 className="text-3xl font-bold text-gray-900 select-none tracking-tight text-center">
+            Integrated Services
+          </h2>
         </div>
       </div>
 
@@ -150,17 +162,34 @@ export default function Service() {
             {servicesData.map((service, i) => {
               const isActive = i === activeServiceIndex;
               return (
-                <button
+                <motion.div
                   key={i}
-                  onClick={() => setActiveServiceIndex(i)}
-                  className={`w-full text-left px-5 rounded-xl font-semibold transition-all duration-300 shadow-sm border text-xs lg:text-sm leading-snug flex items-center h-full ${
-                    isActive
-                      ? "bg-[#111622] text-white border-[#111622] scale-[1.02]"
-                      : "bg-white text-gray-800 border-gray-100 hover:bg-gray-50 hover:border-gray-300"
-                  }`}
+                  initial={{ opacity: 0, x: -25 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="h-full w-full relative"
                 >
-                  {service.title}
-                </button>
+                  <button
+                    onClick={() => setActiveServiceIndex(i)}
+                    className={`relative w-full text-left pl-7 pr-5 rounded-xl font-semibold transition-all duration-300 shadow-sm border text-xs lg:text-sm leading-snug flex items-center h-full cursor-pointer overflow-hidden ${
+                      isActive
+                        ? "bg-[#111622] text-white border-[#111622]"
+                        : "bg-white text-gray-800 border-gray-100 hover:bg-gray-50 hover:border-gray-300"
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeServiceIndicator"
+                        className="absolute left-0 top-0 bottom-0 w-[5px] bg-[#c00000]"
+                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                      />
+                    )}
+                    {service.title}
+                  </button>
+                </motion.div>
               );
             })}
           </div>
@@ -228,27 +257,35 @@ export default function Service() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: SERVICE DETAILS */}
-        <div className="flex flex-col h-auto md:h-[500px] justify-between py-1">
-          <div>
-            <p className="text-red-600 font-bold text-xs uppercase tracking-widest mb-3">
-              {activeService?.category.toUpperCase()}
-            </p>
-            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight mb-4 tracking-tight">
-              {activeService?.title}
-            </h3>
-            <p className="text-gray-600 text-sm leading-relaxed mb-6">
-              {activeService?.desc}
-            </p>
-          </div>
-          <div className="flex gap-3 mt-auto pt-6 border-t border-gray-100">
-            <Link 
-              href="/contact"
-              className="bg-[#c00000] text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition duration-300 text-sm shadow-sm"
-            >
-              Discuss a Project
-            </Link>
-          </div>
+        {/* RIGHT COLUMN: SERVICE DETAILS (Framer Motion transitions on change) */}
+        <div className="flex flex-col h-auto md:h-[500px] justify-between py-1 overflow-hidden">
+          <motion.div
+            key={activeServiceIndex}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="flex flex-col justify-between h-full w-full"
+          >
+            <div>
+              <span className="text-red-600 font-bold text-xs uppercase tracking-widest mb-3 block">
+                {activeService?.category.toUpperCase()}
+              </span>
+              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight mb-4 tracking-tight">
+                {activeService?.title}
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed mb-6">
+                {activeService?.desc}
+              </p>
+            </div>
+            <div className="flex gap-3 mt-auto pt-6 border-t border-gray-100">
+              <Link 
+                href="/contact"
+                className="bg-[#c00000] text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition duration-300 text-sm shadow-sm active:scale-[0.98]"
+              >
+                Discuss a Project
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </div>
 
