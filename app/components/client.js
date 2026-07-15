@@ -23,6 +23,7 @@ const data = [
     name: "Priya Sharma",
     role: "Plant Manager, Industrial Manufacturing",
     avatar: "/k3.jpg",
+    invertOnActive: true,
   },
 ];
 
@@ -58,11 +59,12 @@ export default function Client() {
             <div
               key={i}
               onMouseEnter={() => setActive(i)}
-              className="relative border border-red-500 overflow-hidden cursor-pointer transition-all duration-500 h-[390px] rounded-xl shadow-sm"
+              onMouseLeave={() => setActive(null)}
+              className="relative border border-red-500 overflow-hidden cursor-pointer transition-all duration-500 h-[390px] rounded-xl shadow-sm testimonial-card-desktop"
             >
               {/* OVERLAY */}
               <div
-                className={`absolute top-0 left-0 w-full bg-red-600 transition-all duration-500 z-10
+                className={`absolute bottom-0 left-0 w-full bg-red-600 transition-all duration-500 z-10
                 ${isActive ? "h-full" : "h-0"}`}
               />
 
@@ -77,7 +79,13 @@ export default function Client() {
                     src={item.logo}
                     alt="logo"
                     fill
-                    className="object-contain"
+                    className="object-contain transition-all duration-500"
+                    style={{
+                      filter:
+                        isActive && item.invertOnActive
+                          ? "brightness(0) invert(1)"
+                          : "none",
+                    }}
                   />
                 </div>
 

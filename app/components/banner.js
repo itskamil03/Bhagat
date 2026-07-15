@@ -6,8 +6,16 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const slideVariants = {
   initial: { y: 25, opacity: 0 },
-  animate: { y: 0, opacity: 1, transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } },
-  exit: { y: -25, opacity: 0, transition: { duration: 0.25, ease: [0.7, 0, 0.84, 0] } }
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+  },
+  exit: {
+    y: -25,
+    opacity: 0,
+    transition: { duration: 0.25, ease: [0.7, 0, 0.84, 0] },
+  },
 };
 
 const chooseUsData = [
@@ -20,7 +28,7 @@ const chooseUsData = [
         <br />
         that guarantee consistency
       </>
-    )
+    ),
   },
   {
     num: "02",
@@ -31,7 +39,7 @@ const chooseUsData = [
         <br />
         uninterrupted service
       </>
-    )
+    ),
   },
   {
     num: "03",
@@ -42,7 +50,7 @@ const chooseUsData = [
         <br />
         complex electrical systems
       </>
-    )
+    ),
   },
   {
     num: "04",
@@ -53,8 +61,8 @@ const chooseUsData = [
         <br />
         on responsive service
       </>
-    )
-  }
+    ),
+  },
 ];
 
 export default function Banner() {
@@ -87,7 +95,9 @@ export default function Banner() {
             techno-commercial solutions for all electrical projects.”
           </h1>
 
-          <p className="mt-4 text-xs md:text-sm text-gray-300">Bhagat Engineering Works</p>
+          <p className="mt-4 text-xs md:text-sm text-gray-300">
+            Bhagat Engineering Works
+          </p>
         </div>
       </div>
 
@@ -136,7 +146,7 @@ export default function Banner() {
             <div className="bg-red-700 text-white w-[80px] md:w-[100px] h-[86px] md:h-[98px] flex flex-col items-center justify-center select-none flex-shrink-0 overflow-hidden pt-3.5 pb-2">
               {/* White divider line above the number */}
               <div className="w-8 h-[2px] bg-white/90 mb-2 flex-shrink-0"></div>
-              
+
               <div className="w-full flex-1 overflow-hidden relative">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -145,10 +155,11 @@ export default function Banner() {
                     initial="initial"
                     animate="animate"
                     exit="exit"
-                    className="text-[48px] md:text-[62px] font-serif font-bold leading-none w-full h-full flex items-center justify-center"
+                    className="text-[48px] md:text-[62px] font-bold leading-none w-full h-full flex items-center justify-center"
                     style={{
+                      fontFamily: '"Times New Roman", Times, serif',
                       color: "transparent",
-                      WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.95)"
+                      WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.95)",
                     }}
                   >
                     {activeSlide.num}
@@ -179,7 +190,7 @@ export default function Banner() {
 
         {/* 🔺 NEXT BUTTON */}
         <div className="absolute -bottom-1.5 -right-1.5 z-20">
-          <button 
+          <button
             onClick={handleNext}
             className="relative w-[130px] md:w-[165px] h-[44px] md:h-[55px] transition-transform duration-300 hover:scale-105 active:scale-95 flex items-center justify-center"
             aria-label="Next Slide"

@@ -1,9 +1,9 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 const categories = ["Electrical", "Automation", "Turnkey"];
 
@@ -12,98 +12,172 @@ const servicesData = [
     title: "Erection and Maintenance of Power Substation",
     category: "Electrical",
     desc: "Operating and maintaining high voltage systems requires experienced teams with specialist skills. Bhagat Engineering Works supports private HV networks, transformers, and substations up to 33kV, with capability for selected 132kV design-build projects. Our end-to-end solutions include civil foundation designs, steel structure gantry erection, busbar work, circuit breaker installation, and robust protective relay coordination to ensure uninterrupted grid connectivity.",
-    images: ["/a4.png", "/a2.png", "/a3.png", "/a5.png"],
-    href: "/service/power-substation"
+    images: ["/a4.png", "/a2.png", "/a3.png", "/a5.png", "/a7.jpg", "/a8.jpg"],
+    href: "/service/power-substation",
   },
   {
     title: "Transformer Related Services",
     category: "Electrical",
     desc: "We offer comprehensive testing, oil filtration, dehydration, winding diagnostics, and bushing replacement services for all types of industrial power transformers. Our specialized team handles regular oil dielectric strength assessments, dissolved gas analysis (DGA), active filtration, core-to-ground insulation repairs, and emergency gasket renewals. We specialize in proactive preventive maintenance to extend transformer lifespan and prevent costly unplanned outages.",
-    images: ["/dw1.jpg", "/pk.png", "/a9.png"],
-    href: "/service/transformer-services"
+    images: ["/dw1.jpg", "/pk.png", "/a9.png", "/pk2.png", "/sa2.jpg"],
+    href: "/service/transformer-services",
   },
   {
     title: "Cable Laying",
     category: "Electrical",
     desc: "Our services cover underground trenching, overhead GI cable trays, and Raychem heat-shrinkable jointing and terminations to protect against moisture ingress. We execute precise route mapping, design earth resistivity layouts, install heavy-duty armored cables, and conduct insulation resistance testing. From HT/LT cable terminations to overhead power lines, we ensure high durability and strict compliance with local safety regulations.",
-    images: ["/d1.png", "/d2.png", "/k1.jpg"],
-    href: "/service/cable-laying"
+    images: ["/d1.png", "/d2.png", "/k1.jpg", "/a1.png", "/a2.png"],
+    href: "/service/cable-laying",
   },
   {
     title: "Domestic Wiring",
     category: "Turnkey",
     desc: "We deliver industrial, commercial, and domestic wiring solutions compliant with state safety standards, from initial panel board layouts to finishing accessories. Our scope of work includes distribution board setup, conduits laying, wire pulling, switchgear assembly, earthing pit construction, and comprehensive load balance testing. We design systems to optimize energy consumption and provide complete safety against electrical overloads and short circuits.",
-    images: ["/c1.png", "/k2.jpg", "/k3.jpg"],
-    href: "/service/domestic-wiring"
+    images: ["/c1.png", "/k2.jpg", "/k3.jpg", "/k1.jpg", "/k3.png"],
+    href: "/service/domestic-wiring",
   },
   {
     title: "Facade Lighting",
     category: "Automation",
     desc: "We design and install creative architectural facade lighting, dynamic RGB automation control, high-mast fixtures, and energy-saving industrial LED systems. Our engineers build custom lighting solutions that highlight building features, optimize dynamic control systems, and save energy with intelligent scheduling. We create visually striking facade designs that elevate building aesthetics while meeting strict energy efficiency codes.",
-    images: ["/dy3.png", "/b4.png", "/sh1.png"],
-    href: "/service/facade-lighting"
+    images: ["/dy3.png", "/b4.png", "/sh1.png", "/b1.png", "/a6.png"],
+    href: "/service/facade-lighting",
   },
   {
     title: "Servo Stabilizers",
     category: "Automation",
     desc: "We handle the installation, load testing, and regular maintenance of heavy-duty servo stabilizers and air/oil-cooled rectifiers to protect high-end industrial machinery. Our technicians specialize in control card calibration, carbon brush replacements, gear motor repairs, and oil level top-ups. We ensure clean, stable voltage outputs that safeguard delicate CNC machines, packaging lines, and heavy-duty manufacturing equipment.",
-    images: ["/a6.png", "/b1.png", "/za1.jpg"],
-    href: "/service/servo-stabilizers"
-  }
+    images: ["/a6.png", "/b1.png", "/za1.jpg", "/b4.png", "/a5.png"],
+    href: "/service/servo-stabilizers",
+  },
 ];
 
 export default function Service() {
   const [activeServiceIndex, setActiveServiceIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  
+
   // Track layout width measurements for horizontal thumbnail auto-scrolling
   const [trackWidth, setTrackWidth] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
-  
+
   const containerRef = useRef(null);
   const trackRef = useRef(null);
+  const directionRef = useRef(1); // 1 = forward (left->right), -1 = backward (right->left)
+  const lastTranslateRef = useRef(0); // Track previous viewport scrolling offset
 
   // Active service based on index
   const activeService = servicesData[activeServiceIndex] || servicesData[0];
-  
+
   // Derive active category from the selected service
   const activeCategory = activeService.category;
 
-  // Measure thumbnail scroll boundaries when active service changes
+  // Measure thumbnail scroll boundaries when active service changes and on resize
   useEffect(() => {
-    if (containerRef.current && trackRef.current) {
-      setContainerWidth(containerRef.current.offsetWidth);
-      setTrackWidth(trackRef.current.scrollWidth);
-    }
+    const handleResize = () => {
+      if (containerRef.current && trackRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+        setTrackWidth(trackRef.current.scrollWidth);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [activeService]);
 
-  // Reset image index when switching active service
+  // Reset image index and direction when switching active service
   useEffect(() => {
     setActiveImageIndex(0);
+    directionRef.current = 1;
+    lastTranslateRef.current = 0;
   }, [activeServiceIndex]);
 
-  // Image loop timer
+  // Auto-scrolling image loop timer with ping-pong effect
   useEffect(() => {
     const imagesCount = activeService?.images?.length || 0;
     if (imagesCount <= 1) return;
 
-    const interval = setInterval(() => {
-      setActiveImageIndex((prev) => (prev + 1) % imagesCount);
-    }, 3000);
+    const timer = setTimeout(() => {
+      setActiveImageIndex((prev) => {
+        const nextIndex = prev + directionRef.current;
+        if (nextIndex >= imagesCount - 1) {
+          directionRef.current = -1;
+        } else if (nextIndex <= 0) {
+          directionRef.current = 1;
+        }
+        return Math.max(0, Math.min(imagesCount - 1, nextIndex));
+      });
+    }, 1500);
 
-    return () => clearInterval(interval);
-  }, [activeServiceIndex]);
+    return () => clearTimeout(timer);
+  }, [activeServiceIndex, activeImageIndex, activeService?.images?.length]);
 
-  // Handle clicking a category tab at top right
-  const handleCategorySelect = (cat) => {
-    const targetIndex = servicesData.findIndex(s => s.category === cat);
-    if (targetIndex !== -1) {
-      setActiveServiceIndex(targetIndex);
+  // Handle clicking a thumbnail
+  const handleThumbnailClick = (index) => {
+    setActiveImageIndex(index);
+    const imagesCount = activeService?.images?.length || 0;
+    if (index >= imagesCount - 1) {
+      directionRef.current = -1;
+    } else if (index <= 0) {
+      directionRef.current = 1;
     }
   };
 
-  // Calculate maximum slide offset
-  const maxSlideOffset = Math.max(0, trackWidth - containerWidth);
+  // Handle clicking a category tab at top right
+  const handleCategorySelect = (cat) => {
+    const targetIndex = servicesData.findIndex((s) => s.category === cat);
+    if (targetIndex !== -1) {
+      setActiveServiceIndex(targetIndex);
+      setActiveImageIndex(0);
+      directionRef.current = 1;
+      lastTranslateRef.current = 0;
+    }
+  };
+
+  // Calculate translation offset for the thumbnail track
+  const getTranslateX = () => {
+    const padding = 16; // px-2 on left and right = 8px * 2 = 16px total padding
+    const innerWidth = Math.max(0, containerWidth - padding);
+
+    if (trackWidth <= innerWidth) {
+      lastTranslateRef.current = 0;
+      return 0;
+    }
+    const imagesCount = activeService?.images?.length || 0;
+    if (imagesCount <= 1) {
+      lastTranslateRef.current = 0;
+      return 0;
+    }
+
+    // Calculate translation using left alignment of the active thumbnail
+    const itemWidth = 144; // w-36 = 144px
+    const gap = 10; // gap-2.5 = 10px
+    const slotWidth = itemWidth + gap;
+
+    // Left and right bounds of the active thumbnail relative to the track
+    const itemLeft = activeImageIndex * slotWidth;
+    const itemRight = itemLeft + itemWidth;
+
+    let currentT = lastTranslateRef.current;
+
+    // If active thumbnail is hidden on the left, align its left edge with the viewport left edge
+    if (currentT > itemLeft) {
+      currentT = itemLeft;
+    }
+    // If active thumbnail is hidden on the right, align its right edge with the viewport right edge
+    else if (currentT < itemRight - innerWidth) {
+      currentT = itemRight - innerWidth;
+    }
+
+    // Clamp between 0 and maxOffset
+    const maxOffset = trackWidth - innerWidth;
+    const clampedT = Math.max(0, Math.min(maxOffset, currentT));
+
+    // Save for the next render
+    lastTranslateRef.current = clampedT;
+
+    return -clampedT;
+  };
 
   return (
     <section className="w-full bg-[#fcf9f6] py-16 px-6 relative z-10">
@@ -152,7 +226,6 @@ export default function Service() {
 
       {/* CORE DISPLAY (GRID SIDEBAR + CARD VIEWPORT) */}
       <div className="hidden md:grid max-w-[1308px] mx-auto md:grid-cols-[300px_1.8fr_1.2fr] gap-8 items-stretch relative">
-        
         {/* LEFT COLUMN: SIDEBAR SERVICE LIST (DESKTOP) */}
         <div className="relative h-[500px]">
           <span className="absolute -top-7 left-0 text-[#c00000] font-bold text-xs uppercase tracking-widest select-none">
@@ -167,13 +240,22 @@ export default function Service() {
                   initial={{ opacity: 0, x: -25 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.08, ease: "easeOut" }}
+                  transition={{
+                    duration: 0.5,
+                    delay: i * 0.08,
+                    ease: "easeOut",
+                  }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="h-full w-full relative"
                 >
                   <button
-                    onClick={() => setActiveServiceIndex(i)}
+                    onClick={() => {
+                      setActiveServiceIndex(i);
+                      setActiveImageIndex(0);
+                      directionRef.current = 1;
+                      lastTranslateRef.current = 0;
+                    }}
                     className={`relative w-full text-left pl-7 pr-5 rounded-xl font-semibold transition-all duration-300 shadow-sm border text-xs lg:text-sm leading-snug flex items-center h-full cursor-pointer overflow-hidden ${
                       isActive
                         ? "bg-[#111622] text-white border-[#111622]"
@@ -184,7 +266,11 @@ export default function Service() {
                       <motion.div
                         layoutId="activeServiceIndicator"
                         className="absolute left-0 top-0 bottom-0 w-[5px] bg-[#c00000]"
-                        transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 350,
+                          damping: 25,
+                        }}
                       />
                     )}
                     {service.title}
@@ -203,7 +289,7 @@ export default function Service() {
             return (
               <div
                 key={i}
-                className={`absolute inset-0 transition-opacity duration-1000 ${
+                className={`absolute inset-0 transition-opacity duration-500 ${
                   isVisible ? "opacity-100 z-10" : "opacity-0 z-0"
                 }`}
               >
@@ -218,39 +304,41 @@ export default function Service() {
             );
           })}
 
-          {/* Floating Thumbnails centered at bottom with uniform padding */}
-          <div 
+          {/* Floating Thumbnails centered at bottom */}
+          <div
             ref={containerRef}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[90%] max-w-[420px] overflow-hidden bg-black/30 backdrop-blur-md px-3 py-2.5 rounded-xl border border-white/10 flex justify-center"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-fit max-w-[90%] md:max-w-[470px] overflow-hidden flex justify-start py-2 px-2"
           >
-            {/* Inject CSS keyframes for horizontal sliding */}
-            <style dangerouslySetInnerHTML={{__html: `
-              @keyframes marquee-slide {
-                0% { transform: translateX(0); }
-                50% { transform: translateX(calc(-100% + 396px)); }
-                100% { transform: translateX(0); }
-              }
-              .thumbnail-marquee-track {
-                animation: marquee-slide 6s ease-in-out infinite;
-              }
-            `}} />
-            
             <div
               ref={trackRef}
-              className={`flex gap-2.5 ${
-                activeService?.images.length >= 3 ? "thumbnail-marquee-track" : ""
-              }`}
+              style={{
+                transform: `translateX(${getTranslateX()}px)`,
+                transition: "transform 0.6s ease-in-out",
+              }}
+              className="flex gap-2.5"
             >
               {activeService?.images.map((img, i) => (
                 <div
                   key={i}
-                  className={`relative w-36 h-24 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
-                    i === activeImageIndex
-                      ? "border-red-600 scale-105 opacity-100"
-                      : "border-white/80 opacity-70"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleThumbnailClick(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleThumbnailClick(i);
+                    }
+                  }}
+                  className={`relative w-36 h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
+                    i === activeImageIndex ? "scale-105" : ""
                   }`}
                 >
                   <Image src={img} fill className="object-cover" alt="" />
+                  <div
+                    className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${
+                      i === activeImageIndex ? "border-red-600" : "border-white"
+                    }`}
+                  />
                 </div>
               ))}
             </div>
@@ -278,7 +366,7 @@ export default function Service() {
               </p>
             </div>
             <div className="flex gap-3 mt-auto pt-6 border-t border-gray-100">
-              <Link 
+              <Link
                 href="/contact"
                 className="bg-[#c00000] text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-800 transition duration-300 text-sm shadow-sm active:scale-[0.98]"
               >
@@ -294,27 +382,38 @@ export default function Service() {
         {servicesData.map((service, i) => {
           const isOpen = i === activeServiceIndex;
           return (
-            <div 
-              key={i} 
+            <div
+              key={i}
               className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300"
             >
               {/* ACCORDION HEADER */}
               <button
-                onClick={() => setActiveServiceIndex(isOpen ? -1 : i)}
+                onClick={() => {
+                  setActiveServiceIndex(isOpen ? -1 : i);
+                  setActiveImageIndex(0);
+                  directionRef.current = 1;
+                  lastTranslateRef.current = 0;
+                }}
                 className={`w-full flex items-center justify-between p-5 text-left font-semibold text-[15px] transition-all duration-300 ${
-                  isOpen ? "bg-black text-white" : "bg-white text-gray-800 hover:bg-gray-50"
+                  isOpen
+                    ? "bg-black text-white"
+                    : "bg-white text-gray-800 hover:bg-gray-50"
                 }`}
               >
                 <span>{service.title}</span>
-                <span className={`text-[12px] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
+                <span
+                  className={`text-[12px] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                >
                   ▼
                 </span>
               </button>
 
               {/* ACCORDION BODY */}
-              <div 
+              <div
                 className={`transition-all duration-500 ease-in-out overflow-hidden ${
-                  isOpen ? "max-h-[850px] opacity-100 border-t border-gray-100" : "max-h-0 opacity-0 pointer-events-none"
+                  isOpen
+                    ? "max-h-[850px] opacity-100 border-t border-gray-100"
+                    : "max-h-0 opacity-0 pointer-events-none"
                 }`}
               >
                 {isOpen && (
@@ -326,7 +425,7 @@ export default function Service() {
                         return (
                           <div
                             key={imgIdx}
-                            className={`absolute inset-0 transition-opacity duration-1000 ${
+                            className={`absolute inset-0 transition-opacity duration-500 ${
                               isVisible ? "opacity-100 z-10" : "opacity-0 z-0"
                             }`}
                           >
@@ -339,15 +438,17 @@ export default function Service() {
                           </div>
                         );
                       })}
-                      
+
                       {/* Dots overlay for image index indicators */}
                       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 bg-black/40 px-2.5 py-1 rounded-full">
                         {service.images.map((_, imgIdx) => (
                           <button
                             key={imgIdx}
-                            onClick={() => setActiveImageIndex(imgIdx)}
+                            onClick={() => handleThumbnailClick(imgIdx)}
                             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                              imgIdx === activeImageIndex ? "bg-white scale-125" : "bg-white/40"
+                              imgIdx === activeImageIndex
+                                ? "bg-white scale-125"
+                                : "bg-white/40"
                             }`}
                           />
                         ))}
@@ -366,7 +467,7 @@ export default function Service() {
 
                     {/* Action Buttons */}
                     <div className="flex mt-1">
-                      <Link 
+                      <Link
                         href="/contact"
                         className="w-full text-center bg-[#c00000] text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition duration-300 text-xs shadow-sm"
                       >

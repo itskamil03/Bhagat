@@ -5,7 +5,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 export default function Section() {
   const data = [
     {
-      img: "/e1.png",
+      img: "/im2.png",
       title: "ISO 9001:2015 certified process protect everyone",
       desc: "Precision & innovation: Technical excellence in every installation",
     },
