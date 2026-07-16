@@ -1,14 +1,15 @@
 import React from "react";
-import DomesticWiriting from "../components/domesticwiriting";
+import Service from "../components/service";
 import Contact from "../components/contact";
 
 function page() {
   return (
     <>
-      <DomesticWiriting />
+      <Service />
       <Contact />
     </>
   );
 }
 
 export default page;
+

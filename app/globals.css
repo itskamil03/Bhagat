@@ -101,7 +101,8 @@ nextjs-dev-indicator {
   transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.group:hover .card-image {
+.group:hover .card-image,
+.card-image.active {
   transform: scale(1);
 }
 

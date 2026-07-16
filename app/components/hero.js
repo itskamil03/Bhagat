@@ -227,7 +227,7 @@ export default function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative md:absolute mt-10 md:mt-0 md:bottom-6 md:left-1/2 md:-translate-x-1/2 w-[300px] md:w-[calc(100%-32px)] max-w-[1410px] h-auto md:h-[98px] rounded-[16px] md:rounded-[6px] bg-[rgba(140,0,0,0.88)] backdrop-blur-[8px] border border-[rgba(255,255,255,0.15)] z-20 shadow-xl overflow-hidden flex items-center justify-center mx-auto"
+        className="relative md:absolute mt-10 md:mt-0 md:bottom-6 md:left-1/2 md:-translate-x-1/2 w-[calc(100%-32px)] max-w-[1410px] h-auto md:h-[98px] rounded-[16px] md:rounded-[6px] bg-[rgba(140,0,0,0.88)] backdrop-blur-[8px] border border-[rgba(255,255,255,0.15)] z-20 shadow-xl overflow-hidden flex items-center justify-center mx-auto"
       >
         <div className="w-full h-full grid grid-cols-2 md:grid-cols-4 items-center p-2 md:p-0 md:px-6">
           {/* Column 1 */}

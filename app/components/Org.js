@@ -19,7 +19,7 @@ const logos = [
 const Org = () => {
   return (
     <section className="py-18 bg-gray-100 overflow-hidden">
-      <h2 className="text-5xl font-bold text-center mb-12">
+      <h2 className="text-3xl md:text-5xl font-bold text-center mb-12 px-6">
         Trusted by India's largest organizations
       </h2>
 

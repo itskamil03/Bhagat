@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Image from "next/image";
 
@@ -28,6 +27,57 @@ const data = [
 
 export default function Project() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  // Minimum swipe distance in pixels to trigger a slide change
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsDragging(true);
+  };
+
+  const onTouchMove = (e) => {
+    if (!touchStart) return;
+    const currentX = e.targetTouches[0].clientX;
+    const deltaX = currentX - touchStart;
+    
+    // Apply rubber banding when dragging past boundaries
+    let finalOffset = deltaX;
+    if (activeIndex === 0 && deltaX > 0) {
+      finalOffset = deltaX * 0.3;
+    } else if (activeIndex === data.length - 1 && deltaX < 0) {
+      finalOffset = deltaX * 0.3;
+    }
+    
+    setDragOffset(finalOffset);
+  };
+
+  const onTouchEnd = () => {
+    setIsDragging(false);
+    if (!touchStart || dragOffset === 0) {
+      setTouchStart(null);
+      setDragOffset(0);
+      return;
+    }
+
+    const distance = dragOffset;
+    const isLeftSwipe = distance < -minSwipeDistance;
+    const isRightSwipe = distance > minSwipeDistance;
+
+    let nextIndex = activeIndex;
+    if (isLeftSwipe && activeIndex < data.length - 1) {
+      nextIndex = activeIndex + 1;
+    } else if (isRightSwipe && activeIndex > 0) {
+      nextIndex = activeIndex - 1;
+    }
+
+    setActiveIndex(nextIndex);
+    setTouchStart(null);
+    setDragOffset(0);
+  };
 
   return (
     <section className="w-full bg-[#f4f6f8] py-14 px-6 md:px-12 mt-4 overflow-hidden">
@@ -36,11 +86,11 @@ export default function Project() {
         dangerouslySetInnerHTML={{
           __html: `
         .project-slider-track {
-          transform: translateX(calc(-1 * var(--active-index) * (100% + 24px)));
+          transform: var(--slider-transform);
         }
         @media (min-width: 768px) {
           .project-slider-track {
-            transform: translateX(calc(-1 * min(var(--active-index), 1) * (33.333% + 8px)));
+            transform: translateX(calc(-1 * min(var(--active-index), 1) * (33.333% + 8px))) !important;
           }
         }
       `,
@@ -64,13 +114,23 @@ export default function Project() {
         </button>
       </div>
 
-      {/* SLIDER VIEWPORT */}
-      <div className="max-w-[1308px] mx-auto w-full overflow-hidden">
+      {/* SLIDER VIEWPORT with touch swipe gesture support for mobile */}
+      <div 
+        className="max-w-[1308px] mx-auto w-full overflow-hidden"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         {/* Track */}
         <div
-          className="project-slider-track flex transition-transform duration-500 ease-out gap-6"
+          className={`project-slider-track flex gap-6 ${
+            isDragging ? "transition-none" : "transition-transform duration-500 ease-out"
+          }`}
           style={{
             "--active-index": activeIndex,
+            "--slider-transform": isDragging
+              ? `translateX(calc(-1 * ${activeIndex} * (100% + 24px) + ${dragOffset}px))`
+              : `translateX(calc(-1 * ${activeIndex} * (100% + 24px)))`,
           }}
         >
           {data.map((item, i) => (

@@ -1,6 +1,6 @@
 export default function Misson() {
   return (
-    <section className="w-full bg-white py-10 md:py-12 px-6 relative overflow-hidden">
+    <section className="w-full bg-white py-16 px-6 lg:px-20 relative overflow-hidden">
       {/* Background blueprint images for mobile/tablet (opacity 15%, no text overlap issues) */}
       <img
         src="/image%2041.png"
@@ -13,12 +13,12 @@ export default function Misson() {
         className="absolute left-[-120px] bottom-12 w-[320px] sm:w-[420px] opacity-15 md:hidden scale-x-[-1] pointer-events-none select-none mix-blend-multiply"
       />
 
-      <div className="max-w-[1240px] mx-auto flex flex-col gap-6 md:gap-8 relative z-10">
+      <div className="max-w-[1308px] mx-auto flex flex-col gap-6 md:gap-8 relative z-10 w-full">
         {/* ROW 1 - MISSION */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-6 flex flex-col justify-center">
-            <p className="text-red-500 font-bold mb-3 text-sm tracking-widest uppercase">
-              02 — MISSION & VISION
+            <p className="text-red-600 font-bold text-xs sm:text-sm uppercase tracking-widest mb-3">
+              MISSION & VISION
             </p>
 
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">

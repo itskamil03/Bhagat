@@ -17,7 +17,7 @@ export default function Contact() {
       />
 
       {/* DARK GRADIENT OVERLAY */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0b1d2a]/90 via-[#0b1d2a]/70 to-transparent"></div>
+      <div className="absolute inset-0 bg-black/60 md:bg-gradient-to-r md:from-[#0b1d2a]/90 md:via-[#0b1d2a]/70 md:to-transparent"></div>
 
       {/* CONTENT */}
       <div className="relative z-10 max-w-7xl pt-22 pb-16 px-6 md:pl-24 md:px-0 w-full">

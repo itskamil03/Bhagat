@@ -1,8 +1,13 @@
+"use client";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Card from "./card";
 import { FaArrowRightLong } from "react-icons/fa6";
 
 export default function Section() {
+  const [activeCardIndex, setActiveCardIndex] = useState(null);
+  const sectionRef = useRef(null);
+
   const data = [
     {
       img: "/im2.png",
@@ -25,6 +30,17 @@ export default function Section() {
       desc: "Precision and Innovation: Our engineers solve complex problems with proven methods and modern techniques",
     },
   ];
+
+  // Click outside to reset active card on mobile
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (sectionRef.current && !sectionRef.current.contains(e.target)) {
+        setActiveCardIndex(null);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   return (
     <section className="w-full bg-[#f5f5f5] px-8 md:px-16 py-6 relative overflow-hidden">
@@ -51,9 +67,14 @@ export default function Section() {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-4 gap-6 px-6 py-10">
+      <div ref={sectionRef} className="grid md:grid-cols-4 gap-6 px-6 py-10">
         {data.map((item, i) => (
-          <Card key={i} {...item} />
+          <Card 
+            key={i} 
+            {...item} 
+            isActive={activeCardIndex === i}
+            onToggle={() => setActiveCardIndex(activeCardIndex === i ? null : i)}
+          />
         ))}
       </div>
 

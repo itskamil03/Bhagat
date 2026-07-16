@@ -15,6 +15,40 @@ import {
   FiToggleRight,
   FiZap,
 } from "react-icons/fi";
+import { FaLightbulb } from "react-icons/fa";
+
+const expertiseCards = [
+  {
+    title: "New Home Wiring",
+    desc: "End-to-end electrical planning and execution for new residential constructions ensuring lifelong safety.",
+    icon: <FiHome className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+  },
+  {
+    title: "Complete Rewiring",
+    desc: "Upgrading outdated electrical systems with modern fire-resistant cables and high-performance conduits.",
+    icon: <FiZap className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+  },
+  {
+    title: "Distribution Board",
+    desc: "Precision installation of main distribution boards with advanced circuit breakers and surge protection.",
+    icon: <FiGrid className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+  },
+  {
+    title: "Switch & Socket",
+    desc: "Professional mounting of aesthetic modular switches and power sockets with perfect alignment.",
+    icon: <FiToggleRight className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+  },
+  {
+    title: "Lighting Solutions",
+    desc: "Integrated lighting design including ambient, task, and accent systems for premium home interiors.",
+    icon: <FaLightbulb className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+  },
+  {
+    title: "Safety Inspection",
+    desc: "Rigorous testing including insulation resistance, earthing check, and load balance certification.",
+    icon: <FiShield className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+  },
+];
 
 export default function DomesticWiriting() {
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -136,107 +170,105 @@ export default function DomesticWiriting() {
       {/* ========================================================
           2. SPECIALIZED DOMESTIC ELECTRICAL SERVICES (EXPERTISE)
       ======================================================== */}
-      <section className="w-full py-12 lg:py-16 px-6 lg:px-20 bg-gray-50/50">
-        <div className="max-w-7xl mx-auto">
+      <section className="w-full py-16 lg:py-20 px-6 lg:px-20 bg-[#FCFBF9] relative overflow-hidden">
+        {/* Subtle red radial gradients */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-40 z-0" 
+          style={{
+            background: `
+              radial-gradient(circle at 10% 20%, rgba(230, 27, 35, 0.035) 0%, transparent 45%),
+              radial-gradient(circle at 90% 80%, rgba(230, 27, 35, 0.035) 0%, transparent 45%)
+            `
+          }}
+        />
+
+        {/* Abstract concentric curved lines in corners */}
+        {/* Bottom-left curve */}
+        <svg className="absolute left-0 bottom-0 w-80 h-80 opacity-[0.08] pointer-events-none text-[#E61B23]" viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1">
+          <circle cx="0" cy="200" r="180" />
+          <circle cx="0" cy="200" r="150" />
+          <circle cx="0" cy="200" r="120" />
+          <circle cx="0" cy="200" r="90" />
+        </svg>
+        {/* Top-right curve */}
+        <svg className="absolute right-0 top-0 w-80 h-80 opacity-[0.08] pointer-events-none text-[#E61B23]" viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1">
+          <circle cx="200" cy="0" r="180" />
+          <circle cx="200" cy="0" r="150" />
+          <circle cx="200" cy="0" r="120" />
+          <circle cx="200" cy="0" r="90" />
+        </svg>
+
+        {/* Dotted red pattern in the top-right area */}
+        <div className="absolute right-8 top-8 w-36 h-36 opacity-[0.12] pointer-events-none hidden md:block">
+          <svg className="w-full h-full text-[#E61B23]" fill="currentColor">
+            <pattern id="grid-dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1.5" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid-dots)" />
+          </svg>
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
           {/* HEADER */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-14">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
             <div>
-              <p className="text-red-600 font-semibold text-sm uppercase tracking-widest mb-2">
+              <p className="text-[#E61B23] font-bold text-sm uppercase tracking-widest mb-3">
                 Our Expertise
               </p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black tracking-tight leading-tight">
                 Specialized Domestic <br className="hidden sm:block" />
-                Electrical Services
+                <span className="text-red-600">
+                  Electrical Services
+                </span>
               </h2>
             </div>
-            <div className="hidden md:block w-32 h-[3px] bg-red-600 rounded-full mb-3"></div>
           </div>
 
-          {/* 6 CARDS GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {/* Card 1 */}
-            <div className="bg-blue-50/30 rounded-2xl p-8 border border-blue-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.12)] hover:border-blue-300 hover:bg-blue-50/60 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-blue-600 group-hover:text-white transition duration-300">
-                <FiHome />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                New Home Wiring
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                End-to-end electrical planning and execution for new residential
-                constructions ensuring lifelong safety and compliance.
-              </p>
-            </div>
+          {/* 6 CARDS GRID - Spaced generously */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            {expertiseCards.map((card, idx) => (
+              <div
+                key={idx}
+                className="bg-gradient-to-br from-[#FFF5F6] via-[#FFF9F2] to-white rounded-[24px] p-8 border border-[#FFEAEA] hover:border-[#E61B23] hover:shadow-[0_20px_48px_rgba(249,115,22,0.18)] hover:-translate-y-2 transition-all duration-500 group cursor-pointer relative overflow-hidden"
+                style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.06)" }}
+              >
+                <div className="flex gap-5 items-start">
+                  {/* Left Side: Icon Container */}
+                  <div className="relative flex-shrink-0 w-16 h-16 flex items-center justify-center">
+                    {/* Outer dashed border - orange to red on hover */}
+                    <div className="absolute inset-0 rounded-full border border-dashed border-[#f97316]/30 group-hover:border-[#E61B23] transition-all duration-500" />
+                    {/* Inner circle with icon - red/orange gradient on hover */}
+                    <div className="relative w-11 h-11 rounded-full bg-gradient-to-br from-[#FFF5F6] to-[#FFF9F2] border border-[#FFEAEA] shadow-[0_4px_12px_rgba(230,27,35,0.06)] text-[#E61B23] flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-[#E61B23] group-hover:to-[#f97316] group-hover:text-white transition-all duration-300">
+                      {card.icon}
+                    </div>
+                  </div>
 
-            {/* Card 2 */}
-            <div className="bg-amber-50/30 rounded-2xl p-8 border border-amber-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(245,158,11,0.12)] hover:border-amber-300 hover:bg-amber-50/60 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-600 group-hover:text-white transition duration-300">
-                <FiZap />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Complete Rewiring
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Upgrading outdated electrical systems with modern fire-retardant
-                cables and high-performance conduits for peak durability.
-              </p>
-            </div>
+                  {/* Right Side: Text content */}
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-bold text-black leading-snug transition-colors duration-300 group-hover:text-[#E61B23]">
+                      {card.title}
+                    </h3>
+                    {/* red line */}
+                    <div className="w-8 h-[2px] bg-[#E61B23] mt-2 mb-3 rounded-full"></div>
+                    <p className="text-gray-500 text-xs sm:text-sm leading-relaxed">
+                      {card.desc}
+                    </p>
+                  </div>
+                </div>
 
-            {/* Card 3 */}
-            <div className="bg-purple-50/30 rounded-2xl p-8 border border-purple-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(139,92,246,0.12)] hover:border-purple-300 hover:bg-purple-50/60 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-purple-600 group-hover:text-white transition duration-300">
-                <FiGrid />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Distribution Board
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Precision installation of main distribution boards with advanced
-                circuit breakers, MCBs, RCCBs, and surge protection.
-              </p>
-            </div>
+                {/* Learn More link */}
+                <div className="mt-8 flex items-center gap-1.5 text-[#E61B23] font-bold text-xs uppercase tracking-wider">
+                  <span>Learn More</span>
+                  <FiArrowRight className="transform group-hover:translate-x-1.5 transition-transform duration-300" />
+                </div>
 
-            {/* Card 4 */}
-            <div className="bg-teal-50/30 rounded-2xl p-8 border border-teal-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(20,184,166,0.12)] hover:border-teal-300 hover:bg-teal-50/60 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition duration-300">
-                <FiToggleRight />
+                {/* Custom bottom-right red corner outline accent matching the double-layer color effect */}
+                {/* Red corner stroke */}
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-r-4 border-b-4 border-[#E61B23] rounded-br-[24px] z-10 transition-transform duration-300 group-hover:scale-105" />
+                {/* Orange offset shadow stroke */}
+                <div className="absolute bottom-[-1.5px] right-[-1.5px] w-9 h-9 border-r-4 border-b-4 border-[#f97316] rounded-br-[25px] z-0 pointer-events-none transition-transform duration-300 group-hover:scale-105" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Switch & Socket
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Professional mounting of aesthetic modular switches and power
-                sockets with perfect alignment and heavy-load support.
-              </p>
-            </div>
-
-            {/* Card 5 */}
-            <div className="bg-pink-50/30 rounded-2xl p-8 border border-pink-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(236,72,153,0.12)] hover:border-pink-300 hover:bg-pink-50/60 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-pink-600 group-hover:text-white transition duration-300">
-                <FiSun />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Lighting Solutions
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Integrated lighting design including ambient, task, and accent
-                systems for premium home interiors and architectural beauty.
-              </p>
-            </div>
-
-            {/* Card 6 */}
-            <div className="bg-emerald-50/30 rounded-2xl p-8 border border-emerald-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.12)] hover:border-emerald-300 hover:bg-emerald-50/60 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-emerald-600 group-hover:text-white transition duration-300">
-                <FiShield />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Safety Inspection
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Rigorous testing including insulation resistance, earthing
-                check, and load balance verification by certified inspectors.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>

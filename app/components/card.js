@@ -1,14 +1,15 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 
-export default function Card({ img, title, desc }) {
-  const [isActive, setIsActive] = useState(false);
-
+export default function Card({ img, title, desc, isActive, onToggle }) {
   return (
     <div
-      onClick={() => setIsActive(!isActive)}
-      className="group relative overflow-hidden rounded-[24px] cursor-pointer select-none shadow-md bg-[#1A1813]"
+      onClick={() => {
+        if (typeof window !== "undefined" && window.innerWidth < 768) {
+          onToggle();
+        }
+      }}
+      className="group relative overflow-hidden rounded-[24px] cursor-pointer select-none shadow-md bg-[#1A1813] h-[320px] md:h-[420px]"
     >
       {/* IMAGE */}
       <Image
@@ -18,7 +19,7 @@ export default function Card({ img, title, desc }) {
         height={500}
         className={`card-image w-full object-cover transition-all duration-800 ease-in-out ${
           isActive
-            ? "h-[125px] md:h-[205px]"
+            ? "h-[125px] md:h-[205px] active"
             : "h-[320px] md:h-[420px] group-hover:h-[125px] md:group-hover:h-[205px]"
         }`}
       />
@@ -27,12 +28,12 @@ export default function Card({ img, title, desc }) {
       <div
         className={`card-overlay absolute bottom-0 left-0 w-full p-4 md:p-5 bg-[#1A1813] border-t border-white/5 rounded-b-[24px] flex flex-col justify-end h-[195px] md:h-[215px] transform transition-transform duration-800 ease-in-out ${
           isActive
-            ? "translate-y-0"
+            ? "translate-y-0 active"
             : "translate-y-full group-hover:translate-y-0"
         }`}
       >
         {/* SHIELD CHECK ICON */}
-        <div className="mb-2 md:mb-3 w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full bg-[#110f0a] border border-[#3a3528]">
+        <div className="mb-2 md:mb-3 w-8 h-8 md:w-9 md:h-9 flex items-center justify-center rounded-full bg-[#110f0a] border border-[#3a3528] shrink-0">
           <svg
             className="w-4 h-4 md:w-4.5 md:h-4.5 text-white"
             fill="none"

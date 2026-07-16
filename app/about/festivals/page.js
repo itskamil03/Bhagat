@@ -173,10 +173,15 @@ export default function Festivals() {
 
                   {/* Card Content */}
                   <div
-                    className={`p-6 md:px-8 md:py-5 flex flex-col justify-center h-full ${
+                    className={`p-6 md:px-8 md:py-5 flex flex-col justify-center md:h-full ${
                       item.imageFirst ? "md:order-2" : "md:order-1"
                     }`}
                   >
+                    {/* Mobile Category Tag */}
+                    <span className="text-red-500 font-bold text-[10px] md:hidden uppercase tracking-wider mb-1.5 block">
+                      {item.year}
+                    </span>
+
                     <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-snug">
                       {item.title}
                     </h3>

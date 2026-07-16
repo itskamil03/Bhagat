@@ -35,7 +35,7 @@ export default function Feature() {
 
           {/* Red Divider Line */}
           {i !== 0 && (
-            <div className="absolute left-0 top-0 h-full w-[2px] bg-red-600 z-10"></div>
+            <div className="absolute left-0 top-0 h-[2px] md:h-full w-full md:w-[2px] bg-red-600 z-10"></div>
           )}
 
           {/* Content */}
