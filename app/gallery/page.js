@@ -57,7 +57,9 @@ export default function LegacyPage() {
     <main className="min-h-screen bg-gray-100">
       {/* Hero Section */}
       <section className="bg-[#1F1719] text-white relative overflow-hidden flex flex-col md:block">
-        <style dangerouslySetInnerHTML={{__html: `
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           .gallery-gradient {
             background: linear-gradient(180deg, #1F1719 0%, #1B1416 50%, rgba(35,20,22,0.66) 75%, rgba(48,19,23,0) 100%);
           }
@@ -91,7 +93,9 @@ export default function LegacyPage() {
               );
             }
           }
-        `}} />
+        `,
+          }}
+        />
 
         {/* Gradient Background Layer (z-0 behind the image illustration) */}
         <div className="gallery-gradient absolute inset-0 z-0 pointer-events-none" />
@@ -106,8 +110,10 @@ export default function LegacyPage() {
           transition={{ duration: 1, ease: "easeOut" }}
           className="absolute right-0 top-0 w-full md:w-[48%] h-full z-10 select-none pointer-events-none overflow-visible"
           style={{
-            maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)'
+            maskImage:
+              "linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)",
           }}
         >
           <img

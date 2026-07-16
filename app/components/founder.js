@@ -47,13 +47,14 @@ export default function Founder() {
 
         {/* CENTER IMAGE */}
         <div className="flex justify-center">
-          <Image
-            src="/m1.png" // 👈 apni image yaha rakho
-            alt="Founder"
-            width={350}
-            height={500}
-            className="object-contain"
-          />
+          <div className="relative w-[380px] h-[300px] overflow-hidden rounded-2xl shadow-lg bg-white group">
+            <Image
+              src="/drim1.png"
+              alt="Founder Mahavir Prasad Bhagat"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
         </div>
 
         {/* RIGHT CARDS */}

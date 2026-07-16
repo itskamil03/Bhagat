@@ -32,29 +32,15 @@ export default function Director() {
 
       {/* MAIN CARD */}
       <div className="mt-4 bg-white rounded-2xl shadow-2xl p-6 lg:p-10 flex flex-col lg:flex-row gap-8">
-        {/* LEFT IMAGE + NUMBER */}
-        <div className="relative w-full lg:w-1/3">
-          {/* RED NUMBER */}
-          <div className="relative w-[380px] h-[300px] overflow-hidden rounded-2xl">
+        {/* LEFT IMAGE */}
+        <div className="relative w-full lg:w-1/3 flex justify-center">
+          <div className="relative w-[380px] h-[300px] overflow-hidden rounded-2xl shadow-lg">
             <Image
-              src="/m2.png" // 👈 tumhara image
-              alt="01"
+              src="/drim2.png"
+              alt="Director Anand Kumar"
               fill
               className="object-cover"
             />
-
-            {/* IMAGE */}
-
-            <Image
-              src="/v.png" // replace with your image
-              alt="Director"
-              width={120}
-              height={320}
-              className="absolute bg-red-600 opacity-75 left-0 top-0 h-full w-[120px] object-cover z-10"
-            />
-            <h2 className="absolute top-5 left-6 z-20 text-[82px] font-extrabold text-red-400 ">
-              01
-            </h2>
           </div>
         </div>
 

@@ -3,7 +3,10 @@ import Image from "next/image";
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative w-full min-h-[500px] flex items-start">
+    <section
+      id="contact"
+      className="relative w-full min-h-[500px] flex items-start"
+    >
       {/* BACKGROUND IMAGE */}
       <Image
         src="/sa2.jpg" // apna image yaha daalo
@@ -33,21 +36,21 @@ export default function Contact() {
 
         {/* CONTACT BUTTONS */}
         <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-          <a 
+          <a
             href="tel:+916299923388"
             className="px-5 py-3 border border-white/30 text-white rounded-md bg-white/10 backdrop-blur-sm hover:bg-white/20 transition text-sm font-semibold"
           >
             +91 6299923388
           </a>
 
-          <a 
+          <a
             href="tel:18008890705"
             className="px-5 py-3 border border-white/30 text-white rounded-md bg-white/10 backdrop-blur-sm hover:bg-white/20 transition text-sm font-semibold"
           >
             1800 8890 705
           </a>
 
-          <a 
+          <a
             href="mailto:info@bhagatengg.in"
             className="px-5 py-3 border border-white/30 text-white rounded-md bg-white/10 backdrop-blur-sm hover:bg-white/20 transition text-sm font-semibold"
           >

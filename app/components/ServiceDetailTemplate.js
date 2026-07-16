@@ -9,7 +9,7 @@ import {
   FiCheckCircle,
   FiPhoneCall,
   FiShield,
-  FiTag
+  FiTag,
 } from "react-icons/fi";
 
 export default function ServiceDetailTemplate({
@@ -38,7 +38,7 @@ export default function ServiceDetailTemplate({
   processSteps = [], // Array of 5 objects: { num, title, desc }
   ctaTitle,
   ctaDesc,
-  formServicesList = [] // Array of strings for select dropdown
+  formServicesList = [], // Array of strings for select dropdown
 }) {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -46,8 +46,8 @@ export default function ServiceDetailTemplate({
     phone: "",
     email: "",
     location: "",
-    service: formServiceDefault || (formServicesList[0] || ""),
-    message: ""
+    service: formServiceDefault || formServicesList[0] || "",
+    message: "",
   });
 
   const handleInputChange = (e) => {
@@ -65,8 +65,8 @@ export default function ServiceDetailTemplate({
         phone: "",
         email: "",
         location: "",
-        service: formServiceDefault || (formServicesList[0] || ""),
-        message: ""
+        service: formServiceDefault || formServicesList[0] || "",
+        message: "",
       });
     }, 5000);
   };
@@ -195,9 +195,11 @@ export default function ServiceDetailTemplate({
       {/* ========================================================
           3. WHY ENGINEERS CHOOSE US + CONSULTATION FORM
       ======================================================== */}
-      <section id="consultation-form" className="w-full py-20 px-6 lg:px-20 bg-white">
+      <section
+        id="consultation-form"
+        className="w-full py-20 px-6 lg:px-20 bg-white"
+      >
         <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-start">
-          
           {/* LEFT COLUMN: THE BHAGAT EDGE */}
           <div className="lg:col-span-7">
             <p className="text-red-600 font-semibold text-sm uppercase tracking-widest mb-2">
@@ -367,7 +369,8 @@ export default function ServiceDetailTemplate({
               </h2>
             </div>
             <p className="text-gray-400 text-xs md:text-sm max-w-sm mt-4 md:mt-0 text-left md:text-right leading-relaxed">
-              A glimpse into our high-precision electrical engineering works and infrastructure layouts.
+              A glimpse into our high-precision electrical engineering works and
+              infrastructure layouts.
             </p>
           </div>
 
@@ -450,7 +453,10 @@ export default function ServiceDetailTemplate({
             <div className="hidden lg:block absolute top-6 left-[10%] right-[10%] h-[2px] bg-gray-200 -z-0"></div>
 
             {processSteps.map((step, idx) => (
-              <div key={idx} className="flex flex-col items-center text-center relative z-10">
+              <div
+                key={idx}
+                className="flex flex-col items-center text-center relative z-10"
+              >
                 <div className="w-12 h-12 rounded-full bg-red-600 text-white font-bold text-sm flex items-center justify-center shadow-lg shadow-red-600/30">
                   {step.num}
                 </div>

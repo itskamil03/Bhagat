@@ -9,40 +9,40 @@ import {
   FiActivity,
   FiAward,
   FiShield,
-  FiCheckCircle
+  FiCheckCircle,
 } from "react-icons/fi";
 
 const expertiseCards = [
   {
     title: "Facade Lighting Design",
     desc: "Developing architectural lighting schematics, 3D renderings, and load matching specifications.",
-    icon: <FiGrid />
+    icon: <FiGrid />,
   },
   {
     title: "Aesthetic LED Washers",
     desc: "Installing linear wall washers, projection floods, and high-luminosity architectural spots.",
-    icon: <FiSun />
+    icon: <FiSun />,
   },
   {
     title: "Smart DMX Controls",
     desc: "Programming DMX512 dynamic controllers for color fades, chases, and automated light shows.",
-    icon: <FiActivity />
+    icon: <FiActivity />,
   },
   {
     title: "Acrylic Signage Boards",
     desc: "Designing and mounting weather-proof custom illuminated acrylic brand logos and signages.",
-    icon: <FiAward />
+    icon: <FiAward />,
   },
   {
     title: "Weatherproof Conduit Laying",
     desc: "Outdoor-grade IP67/IP68 cable running, moisture sealing, and protective enclosures.",
-    icon: <FiShield />
+    icon: <FiShield />,
   },
   {
     title: "Energy Efficiency Audit",
     desc: "Upgrading legacy facade lamps to modern, energy-safe LEDs to lower power footprints.",
-    icon: <FiCheckCircle />
-  }
+    icon: <FiCheckCircle />,
+  },
 ];
 
 const whyChooseUsChecklist = [
@@ -51,15 +51,35 @@ const whyChooseUsChecklist = [
   "DMX512 dynamic control protocols",
   "Aesthetic 3D render mockups",
   "Safe boom-lift aerial operations",
-  "Eco-friendly low wattage runs"
+  "Eco-friendly low wattage runs",
 ];
 
 const processSteps = [
-  { num: "01", title: "Building Survey", desc: "Evaluating building structure, height, angles, and power hookups." },
-  { num: "02", title: "Visual Designing", desc: "Providing 3D rendering designs showing fixture distributions." },
-  { num: "03", title: "IP67 Cabling", desc: "Laying weatherproof outdoor conduits and cabling paths safely." },
-  { num: "04", title: "Fixture Mounting", desc: "Installing LED washes, spots, and controller panel setups." },
-  { num: "05", title: "Programming", desc: "Programming DMX dynamic fade transitions and finalizing handover." }
+  {
+    num: "01",
+    title: "Building Survey",
+    desc: "Evaluating building structure, height, angles, and power hookups.",
+  },
+  {
+    num: "02",
+    title: "Visual Designing",
+    desc: "Providing 3D rendering designs showing fixture distributions.",
+  },
+  {
+    num: "03",
+    title: "IP67 Cabling",
+    desc: "Laying weatherproof outdoor conduits and cabling paths safely.",
+  },
+  {
+    num: "04",
+    title: "Fixture Mounting",
+    desc: "Installing LED washes, spots, and controller panel setups.",
+  },
+  {
+    num: "05",
+    title: "Programming",
+    desc: "Programming DMX dynamic fade transitions and finalizing handover.",
+  },
 ];
 
 const formServicesList = [
@@ -67,7 +87,7 @@ const formServicesList = [
   "LED Washer Installation",
   "DMX Control Programming",
   "Acrylic Signage Panels",
-  "Other Outdoor Lighting"
+  "Other Outdoor Lighting",
 ];
 
 export default function FacadeLightingPage() {

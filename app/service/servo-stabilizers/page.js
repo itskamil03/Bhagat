@@ -9,40 +9,40 @@ import {
   FiActivity,
   FiSliders,
   FiShield,
-  FiCheckCircle
+  FiCheckCircle,
 } from "react-icons/fi";
 
 const expertiseCards = [
   {
     title: "Stabilizer Supply & Sizing",
     desc: "Detailed load auditing and electrical profiling to select the correct air/oil-cooled capacity.",
-    icon: <FiGrid />
+    icon: <FiGrid />,
   },
   {
     title: "Turnkey Installation",
     desc: "Rigging, mounting, alignment, and terminations of high-capacity stabilizers inside your switch-rooms.",
-    icon: <FiSettings />
+    icon: <FiSettings />,
   },
   {
     title: "Microcontroller Calibration",
     desc: "Tuning carbon brush sliders, gear motors, servo controllers, and digital displays for speed.",
-    icon: <FiActivity />
+    icon: <FiActivity />,
   },
   {
     title: "Preventive Maintenance",
     desc: "Lubricating servo gears, inspecting motorized variac contact points, carbon brush changes.",
-    icon: <FiSliders />
+    icon: <FiSliders />,
   },
   {
     title: "Diagnostic & Repair",
     desc: "Emergency fault repairs on buck-boost coils, electronic driver cards, and servo motor systems.",
-    icon: <FiShield />
+    icon: <FiShield />,
   },
   {
     title: "Full-Load Stress Test",
     desc: "Verifying response speed and voltage correction limits under simulated heavy loads.",
-    icon: <FiCheckCircle />
-  }
+    icon: <FiCheckCircle />,
+  },
 ];
 
 const whyChooseUsChecklist = [
@@ -51,15 +51,35 @@ const whyChooseUsChecklist = [
   "Balanced & unbalanced load support",
   "Over & under voltage cutoff shields",
   "Authorized OEM channel partners",
-  "Correction speed up to 70V/sec"
+  "Correction speed up to 70V/sec",
 ];
 
 const processSteps = [
-  { num: "01", title: "Load Assessment", desc: "Profiling voltage spikes, phase shifts, and peak load requirements." },
-  { num: "02", title: "Stabilizer Selection", desc: "Deciding between air-cooled or oil-cooled buck-boost setups." },
-  { num: "03", title: "Mounting & Wiring", desc: "Laying HT/LT bypass cabling and secure switch-room installation." },
-  { num: "04", title: "Calibration & Test", desc: "Calibrating servo motorized variacs and checking cut-offs." },
-  { num: "05", title: "System Handover", desc: "Providing electrical load reports and operational manuals." }
+  {
+    num: "01",
+    title: "Load Assessment",
+    desc: "Profiling voltage spikes, phase shifts, and peak load requirements.",
+  },
+  {
+    num: "02",
+    title: "Stabilizer Selection",
+    desc: "Deciding between air-cooled or oil-cooled buck-boost setups.",
+  },
+  {
+    num: "03",
+    title: "Mounting & Wiring",
+    desc: "Laying HT/LT bypass cabling and secure switch-room installation.",
+  },
+  {
+    num: "04",
+    title: "Calibration & Test",
+    desc: "Calibrating servo motorized variacs and checking cut-offs.",
+  },
+  {
+    num: "05",
+    title: "System Handover",
+    desc: "Providing electrical load reports and operational manuals.",
+  },
 ];
 
 const formServicesList = [
@@ -67,7 +87,7 @@ const formServicesList = [
   "Stabilizer Installation",
   "Servo Maintenance & Repair",
   "Calibration & Load Testing",
-  "Emergency Fault Repair"
+  "Emergency Fault Repair",
 ];
 
 export default function ServoStabilizersPage() {

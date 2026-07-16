@@ -13,7 +13,7 @@ const festivalEvents = [
     title: "Vishwakarma Puja Celebration",
     description:
       "As engineers and creators, Vishwakarma Puja holds special significance at Bhagat Engineering Works. We clean and worship our machines, tools, and heavy erection gears, followed by community feasts with our site workers, engineers, and executive teams.",
-    image: "/a8.jpg",
+    image: "/fi4.jpg",
     imageFirst: true,
   },
   {
@@ -22,7 +22,7 @@ const festivalEvents = [
     title: "Diwali & Corporate Milan",
     description:
       "Celebrating the festival of lights with sweets distribution, office lighting, and an annual milan ceremony that brings families of our employees together to honor our year-round accomplishments.",
-    image: "/a7.jpg",
+    image: "/fi5.jpg",
     imageFirst: false,
   },
   {
@@ -31,7 +31,25 @@ const festivalEvents = [
     title: "Independence Day and Republic Day",
     description:
       "Flag hoisting ceremonies at our corporate head office in Patna and major railway site substations across India, commemorating our pride in building the country's utility infrastructure.",
-    image: "/a9.png",
+    image: "/indim1.jpg",
+    imageFirst: true,
+  },
+  {
+    year: "Chhath",
+    date: "October/November, Annual",
+    title: "Chhath Puja Celebration",
+    description:
+      "Deeply rooted in the cultural fabric of Bihar, we celebrate Chhath Puja with spiritual devotion. We support our team members with festive breaks, distribute traditional offerings (Thekua), and organize community support camps at the Ganga ghats in Patna.",
+    image: "/chhatim1.jpg",
+    imageFirst: false,
+  },
+  {
+    year: "Holi",
+    date: "March, Annual",
+    title: "Holi & Spring Milan",
+    description:
+      "Welcoming the spring season with vibrant colors, organic gulal, traditional music, and special festive delicacies. Our offices and sites come together for a special pre-Holi milan, reinforcing our team bonds.",
+    image: "/holi1.jpg",
     imageFirst: true,
   },
 ];
@@ -40,12 +58,11 @@ export default function Festivals() {
   return (
     <main className="min-h-screen bg-gray-100 font-sans">
       {/* ================= HERO SECTION (DARK NAVY / RED GRADIENT) ================= */}
-      <section className="bg-[#17162b] text-white relative overflow-hidden w-full min-h-[473px] flex items-center">
-        
-        {/* Absolute Background Image touching the right edge of screen */}
-        <div className="absolute right-0 top-0 w-full md:w-1/2 h-full z-0 pointer-events-none select-none overflow-hidden">
+      <section className="bg-[#17162b] text-white relative overflow-hidden w-full min-h-[473px] flex flex-col md:block">
+        {/* Background Image Container */}
+        <div className="relative w-full md:absolute md:right-0 md:top-0 md:w-1/2 h-[260px] md:h-full z-10 pointer-events-none select-none overflow-hidden">
           <Image
-            src="/c1.png"
+            src="/fhi1.png"
             alt="Team celebrations and culture background"
             fill
             className="object-cover object-center md:object-right"
@@ -53,17 +70,17 @@ export default function Festivals() {
           />
           {/* Crimson & Dark Navy Gradient Blend Overlay matching gallery page */}
           <div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none hidden md:block"
             style={{
               background:
-                "linear-gradient(90deg, rgba(23,22,43,1) 0%, rgba(95,16,26,0.85) 35%, rgba(130,25,35,0.4) 65%, rgba(23,22,43,0) 100%)",
+                "linear-gradient(90deg, rgba(23,22,43,1) 0%, rgba(95,16,26,0.85) 15%, rgba(130,25,35,0.4) 40%, rgba(23,22,43,0) 75%)",
             }}
           />
           <div
-            className="absolute inset-y-0 left-0 w-full md:w-1/2 pointer-events-none"
+            className="absolute inset-y-0 left-0 w-full md:w-1/3 pointer-events-none hidden md:block"
             style={{
               background:
-                "linear-gradient(90deg, rgba(23,22,43,1) 0%, rgba(23,22,43,0.7) 60%, rgba(23,22,43,0) 100%)",
+                "linear-gradient(90deg, rgba(23,22,43,1) 0%, rgba(23,22,43,0) 100%)",
             }}
           />
         </div>
@@ -77,9 +94,16 @@ export default function Festivals() {
           >
             {/* Breadcrumbs */}
             <nav className="text-xs md:text-sm text-gray-400 mb-6 flex items-center gap-2">
-              <Link href="/" className="hover:text-red-500 transition-colors">Home</Link>
+              <Link href="/" className="hover:text-red-500 transition-colors">
+                Home
+              </Link>
               <span>&gt;</span>
-              <Link href="/about" className="hover:text-red-500 transition-colors">About Us</Link>
+              <Link
+                href="/gallery"
+                className="hover:text-red-500 transition-colors"
+              >
+                Gallery
+              </Link>
               <span>&gt;</span>
               <span className="text-white">Festivals & Culture</span>
             </nav>
@@ -88,16 +112,14 @@ export default function Festivals() {
               CULTURE & TRADITIONS
             </p>
             <h1 className="text-4xl md:text-5xl lg:text-[54px] font-bold mt-3 leading-tight">
-              Festivals &
-              <span className="block text-[#E61B23]">
-                Culture
-              </span>
+              Festivals &<span className="block text-[#E61B23]">Culture</span>
             </h1>
 
             <p className="text-gray-300 max-w-xl text-sm md:text-base leading-relaxed mt-5">
-              Life at Bhagat Engineering is vibrant, connected, and celebratory. We honor our
-              traditions and unite our nationwide workforce through national celebrations, religious
-              festivals, and community building.
+              Life at Bhagat Engineering is vibrant, connected, and celebratory.
+              We honor our traditions and unite our nationwide workforce through
+              national celebrations, religious festivals, and community
+              building.
             </p>
           </motion.div>
 
@@ -155,19 +177,19 @@ export default function Festivals() {
                       item.imageFirst ? "md:order-2" : "md:order-1"
                     }`}
                   >
-                    <span className="text-[#E61B23] font-extrabold text-xs tracking-wider uppercase">
-                      {item.date}
-                    </span>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 mt-1 leading-snug">
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-snug">
                       {item.title}
                     </h3>
                     <p className="text-gray-500 mt-3 text-xs md:text-[13px] leading-relaxed">
                       {item.description}
                     </p>
-                    <button className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5">
-                      <span>Explore Moments</span>
+                    <Link
+                      href={`/about/festivals/gallery?festival=${item.year.toLowerCase()}&title=${encodeURIComponent(item.title)}&description=${encodeURIComponent(item.description)}&image=${encodeURIComponent(item.image)}`}
+                      className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5 decoration-none"
+                    >
+                      <span>Explore Festival</span>
                       <span>→</span>
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

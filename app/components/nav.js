@@ -189,10 +189,23 @@ function Nav() {
                   <div className="pt-2 space-y-1">
                     <Link
                       href="/about"
-                      onClick={() => setOpenDropdown(null)}
+                      scroll={true}
+                      onClick={() => {
+                        setOpenDropdown(null);
+                        if (typeof window !== "undefined" && window.location.pathname === "/about") {
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }
+                      }}
                       className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
                     >
                       Overview
+                    </Link>
+                    <Link
+                      href="/about/founders-and-director-message"
+                      onClick={() => setOpenDropdown(null)}
+                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                    >
+                      Founders & Director Message
                     </Link>
                     <Link
                       href="/about/our-core-team"
@@ -202,25 +215,11 @@ function Nav() {
                       Our Core Team
                     </Link>
                     <Link
-                      href="/about/festivals"
+                      href="/about/our-infrastructure"
                       onClick={() => setOpenDropdown(null)}
                       className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
                     >
-                      Festivals
-                    </Link>
-                    <Link
-                      href="/about/celebrating-50-years"
-                      onClick={() => setOpenDropdown(null)}
-                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
-                    >
-                      Celebrating 50 years
-                    </Link>
-                    <Link
-                      href="/about/employee-awards"
-                      onClick={() => setOpenDropdown(null)}
-                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
-                    >
-                      Employee awards
+                      Our Infrastructure
                     </Link>
                   </div>
                 </div>
@@ -241,9 +240,9 @@ function Nav() {
                 }
                 className="flex items-center gap-1.5 text-gray-800 hover:text-red-600 transition-colors focus:outline-none"
               >
-                <Link href="/service" className="hover:text-red-600">
+                <span className="hover:text-red-600 cursor-pointer">
                   Services
-                </Link>
+                </span>
                 <FaChevronDown
                   size={11}
                   className={`transition-transform duration-200 ${
@@ -364,12 +363,63 @@ function Nav() {
               )}
             </div>
 
-            <Link
-              href="/gallery"
-              className="text-gray-800 hover:text-red-600 transition-colors"
+            {/* GALLERY HOVER DROPDOWN */}
+            <div
+              className="relative py-3 group"
+              onMouseEnter={() => handleMouseEnter("gallery")}
+              onMouseLeave={handleMouseLeave}
             >
-              Gallery
-            </Link>
+              <button
+                onClick={() =>
+                  setOpenDropdown(
+                    openDropdown === "gallery" ? null : "gallery",
+                  )
+                }
+                className="flex items-center gap-1.5 text-gray-800 hover:text-red-600 transition-colors focus:outline-none"
+              >
+                <Link href="/gallery" className="hover:text-red-600">
+                  Gallery
+                </Link>
+                <FaChevronDown
+                  size={11}
+                  className={`transition-transform duration-200 ${
+                    openDropdown === "gallery" ? "rotate-180 text-red-600" : ""
+                  }`}
+                />
+              </button>
+
+              {/* DROPDOWN MENU PANEL */}
+              {openDropdown === "gallery" && (
+                <div className="absolute top-full left-0 mt-1 w-60 bg-white/95 backdrop-blur-xl shadow-2xl rounded-2xl border border-gray-100 p-3 z-[9999]">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-gray-400 px-3 pb-2 border-b border-gray-100">
+                    Our Gallery
+                  </div>
+                  <div className="pt-2 space-y-1">
+                    <Link
+                      href="/about/celebrating-50-years"
+                      onClick={() => setOpenDropdown(null)}
+                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                    >
+                      Celebrating 50 Years
+                    </Link>
+                    <Link
+                      href="/about/festivals"
+                      onClick={() => setOpenDropdown(null)}
+                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                    >
+                      Festivals
+                    </Link>
+                    <Link
+                      href="/about/employee-awards"
+                      onClick={() => setOpenDropdown(null)}
+                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                    >
+                      Employee Awards
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <Link
               href="/career"
@@ -412,7 +462,11 @@ function Nav() {
           <div className="relative ml-auto w-[290px] sm:w-[320px] h-full bg-white shadow-2xl flex flex-col z-10 transition-transform duration-300">
             {/* DRAWER HEADER */}
             <div className="flex items-center justify-between p-4 border-b border-gray-100">
-              <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileOpen(false)}>
+              <Link
+                href="/"
+                className="flex items-center gap-2"
+                onClick={() => setIsMobileOpen(false)}
+              >
                 <Image
                   src="/a1.png"
                   alt="logo"
@@ -424,7 +478,7 @@ function Nav() {
                   Bhagat Engineering
                 </span>
               </Link>
-              
+
               <button
                 onClick={() => setIsMobileOpen(false)}
                 className="p-2 text-gray-500 hover:text-red-600 hover:bg-gray-100 rounded-lg transition"
@@ -450,7 +504,7 @@ function Nav() {
                 <button
                   onClick={() =>
                     setActiveMobileDropdown(
-                      activeMobileDropdown === "about" ? null : "about"
+                      activeMobileDropdown === "about" ? null : "about",
                     )
                   }
                   className="w-full flex items-center justify-between py-2 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition text-left"
@@ -459,7 +513,9 @@ function Nav() {
                   <FaChevronDown
                     size={10}
                     className={`transition-transform duration-200 ${
-                      activeMobileDropdown === "about" ? "rotate-180 text-red-600" : ""
+                      activeMobileDropdown === "about"
+                        ? "rotate-180 text-red-600"
+                        : ""
                     }`}
                   />
                 </button>
@@ -467,10 +523,23 @@ function Nav() {
                   <div className="pl-6 space-y-1 bg-gray-50 rounded-xl p-2 mt-1">
                     <Link
                       href="/about"
-                      onClick={() => setIsMobileOpen(false)}
+                      scroll={true}
+                      onClick={() => {
+                        setIsMobileOpen(false);
+                        if (typeof window !== "undefined" && window.location.pathname === "/about") {
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }
+                      }}
                       className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
                     >
                       Overview
+                    </Link>
+                    <Link
+                      href="/about/founders-and-director-message"
+                      onClick={() => setIsMobileOpen(false)}
+                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
+                    >
+                      Founders & Director Message
                     </Link>
                     <Link
                       href="/about/our-core-team"
@@ -480,25 +549,11 @@ function Nav() {
                       Our Core Team
                     </Link>
                     <Link
-                      href="/about/festivals"
+                      href="/about/our-infrastructure"
                       onClick={() => setIsMobileOpen(false)}
                       className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
                     >
-                      Festivals
-                    </Link>
-                    <Link
-                      href="/about/celebrating-50-years"
-                      onClick={() => setIsMobileOpen(false)}
-                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
-                    >
-                      Celebrating 50 Years
-                    </Link>
-                    <Link
-                      href="/about/employee-awards"
-                      onClick={() => setIsMobileOpen(false)}
-                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
-                    >
-                      Employee Awards
+                      Our Infrastructure
                     </Link>
                   </div>
                 )}
@@ -509,7 +564,7 @@ function Nav() {
                 <button
                   onClick={() =>
                     setActiveMobileDropdown(
-                      activeMobileDropdown === "services" ? null : "services"
+                      activeMobileDropdown === "services" ? null : "services",
                     )
                   }
                   className="w-full flex items-center justify-between py-2 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition text-left"
@@ -518,7 +573,9 @@ function Nav() {
                   <FaChevronDown
                     size={10}
                     className={`transition-transform duration-200 ${
-                      activeMobileDropdown === "services" ? "rotate-180 text-red-600" : ""
+                      activeMobileDropdown === "services"
+                        ? "rotate-180 text-red-600"
+                        : ""
                     }`}
                   />
                 </button>
@@ -582,7 +639,7 @@ function Nav() {
                 <button
                   onClick={() =>
                     setActiveMobileDropdown(
-                      activeMobileDropdown === "projects" ? null : "projects"
+                      activeMobileDropdown === "projects" ? null : "projects",
                     )
                   }
                   className="w-full flex items-center justify-between py-2 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition text-left"
@@ -591,7 +648,9 @@ function Nav() {
                   <FaChevronDown
                     size={10}
                     className={`transition-transform duration-200 ${
-                      activeMobileDropdown === "projects" ? "rotate-180 text-red-600" : ""
+                      activeMobileDropdown === "projects"
+                        ? "rotate-180 text-red-600"
+                        : ""
                     }`}
                   />
                 </button>
@@ -629,14 +688,52 @@ function Nav() {
                 )}
               </div>
 
-              {/* GALLERY LINK */}
-              <Link
-                href="/gallery"
-                onClick={() => setIsMobileOpen(false)}
-                className="block py-2 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition"
-              >
-                Gallery
-              </Link>
+              {/* GALLERY ACCORDION */}
+              <div className="space-y-1">
+                <button
+                  onClick={() =>
+                    setActiveMobileDropdown(
+                      activeMobileDropdown === "gallery" ? null : "gallery",
+                    )
+                  }
+                  className="w-full flex items-center justify-between py-2 px-3 hover:bg-red-50 hover:text-red-600 rounded-xl transition text-left"
+                >
+                  <span>Gallery</span>
+                  <FaChevronDown
+                    size={10}
+                    className={`transition-transform duration-200 ${
+                      activeMobileDropdown === "gallery"
+                        ? "rotate-180 text-red-600"
+                        : ""
+                    }`}
+                  />
+                </button>
+                {activeMobileDropdown === "gallery" && (
+                  <div className="pl-6 space-y-1 bg-gray-50 rounded-xl p-2 mt-1">
+                    <Link
+                      href="/about/celebrating-50-years"
+                      onClick={() => setIsMobileOpen(false)}
+                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
+                    >
+                      Celebrating 50 Years
+                    </Link>
+                    <Link
+                      href="/about/festivals"
+                      onClick={() => setIsMobileOpen(false)}
+                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
+                    >
+                      Festivals
+                    </Link>
+                    <Link
+                      href="/about/employee-awards"
+                      onClick={() => setIsMobileOpen(false)}
+                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
+                    >
+                      Employee Awards
+                    </Link>
+                  </div>
+                )}
+              </div>
 
               {/* CAREER LINK */}
               <Link
@@ -650,12 +747,16 @@ function Nav() {
 
             {/* DRAWER FOOTER */}
             <div className="p-4 border-t border-gray-100 space-y-3">
-              <Link href="/contact" onClick={() => setIsMobileOpen(false)} className="block w-full">
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileOpen(false)}
+                className="block w-full"
+              >
                 <button className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
                   <span>Contact Us</span>
                 </button>
               </Link>
-              
+
               <a href="tel:+916299923388" className="block w-full">
                 <button className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 py-3 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-2">
                   <span>Call: +91 62999 23388</span>

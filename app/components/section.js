@@ -10,17 +10,17 @@ export default function Section() {
       desc: "Precision & innovation: Technical excellence in every installation",
     },
     {
-      img: "/e2.png",
+      img: "/im24.png",
       title: "Technical mastry drives every installation",
       desc: "Trust and Integrity: Honest dealings from start to finish",
     },
     {
-      img: "/e3.png",
+      img: "/im25.png",
       title: "Honest dealings from start to finish",
       desc: "Trust and Integrity: We stand behind every project with complete transparency and accountability",
     },
     {
-      img: "/e4.png",
+      img: "/im26.png",
       title: "Technical excellence in every installation",
       desc: "Precision and Innovation: Our engineers solve complex problems with proven methods and modern techniques",
     },
@@ -57,8 +57,8 @@ export default function Section() {
         ))}
       </div>
 
-      <Link 
-        href="/about" 
+      <Link
+        href="/about"
         className="group flex items-center justify-between bg-red-600 text-white px-8 py-6 rounded-2xl w-[260px] md:w-[320px] mx-auto md:mx-0 md:ml-6 hover:bg-red-700 transition duration-300"
       >
         {/* TEXT */}

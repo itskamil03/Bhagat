@@ -357,7 +357,7 @@ export default function ContactPage() {
                         Bhagat Engineering Works
                       </p>
                       <p className="text-[11px] text-gray-500">
-                        Bihar, India • 49+ Years of Trust
+                        Bihar, India • 50+ Years of Trust
                       </p>
                     </div>
                   </div>

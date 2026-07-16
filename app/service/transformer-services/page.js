@@ -9,40 +9,40 @@ import {
   FiCheckCircle,
   FiSettings,
   FiSun,
-  FiShield
+  FiShield,
 } from "react-icons/fi";
 
 const expertiseCards = [
   {
     title: "Transformer Erection",
     desc: "Rigging, mounting, alignment, and termination of oil-cooled and dry-type transformers up to 10MVA.",
-    icon: <FiGrid />
+    icon: <FiGrid />,
   },
   {
     title: "Oil Filtration & Degassing",
     desc: "High-vacuum transformer oil dehydration to improve dielectric breakdown voltage (BDV).",
-    icon: <FiActivity />
+    icon: <FiActivity />,
   },
   {
     title: "Testing & Diagnostics",
     desc: "BDV checks, insulation resistance, turns ratio, winding resistance, and acidity testing.",
-    icon: <FiCheckCircle />
+    icon: <FiCheckCircle />,
   },
   {
     title: "Bushing & Gasket Repairs",
     desc: "Inspecting and replacing damaged porcelain HV/LV bushings, gaskets, and fixing oil leaks.",
-    icon: <FiSettings />
+    icon: <FiSettings />,
   },
   {
     title: "Breather Servicing",
     desc: "Silica gel inspection, charging, replacement, and breather servicing to prevent moisture ingress.",
-    icon: <FiSun />
+    icon: <FiSun />,
   },
   {
     title: "Radiator Maintenance",
     desc: "Cleaning, flushing, and pressure testing cooling fins for maximum heat dissipation.",
-    icon: <FiShield />
-  }
+    icon: <FiShield />,
+  },
 ];
 
 const whyChooseUsChecklist = [
@@ -51,15 +51,35 @@ const whyChooseUsChecklist = [
   "On-site diagnostic testing kits",
   "IS 2026 Testing Compliance",
   "Premium Gaskets & Consumables",
-  "24/7 Breakdown Assistance"
+  "24/7 Breakdown Assistance",
 ];
 
 const processSteps = [
-  { num: "01", title: "Site Assessment", desc: "Inspecting physical condition, checking oil level, and detecting leaks." },
-  { num: "02", title: "Diagnostic Testing", desc: "Running initial insulation, winding, and dielectric breakdown tests." },
-  { num: "03", title: "Vacuum Oil Filtration", desc: "Circulating hot oil under high vacuum to extract moisture and gas." },
-  { num: "04", title: "Mechanical Servicing", desc: "Replacing bushings, tightening gaskets, and servicing breathers." },
-  { num: "05", title: "Final Handover", desc: "Signing off safety reports and providing oil parameter log sheets." }
+  {
+    num: "01",
+    title: "Site Assessment",
+    desc: "Inspecting physical condition, checking oil level, and detecting leaks.",
+  },
+  {
+    num: "02",
+    title: "Diagnostic Testing",
+    desc: "Running initial insulation, winding, and dielectric breakdown tests.",
+  },
+  {
+    num: "03",
+    title: "Vacuum Oil Filtration",
+    desc: "Circulating hot oil under high vacuum to extract moisture and gas.",
+  },
+  {
+    num: "04",
+    title: "Mechanical Servicing",
+    desc: "Replacing bushings, tightening gaskets, and servicing breathers.",
+  },
+  {
+    num: "05",
+    title: "Final Handover",
+    desc: "Signing off safety reports and providing oil parameter log sheets.",
+  },
 ];
 
 const formServicesList = [
@@ -67,7 +87,7 @@ const formServicesList = [
   "Testing & Diagnostics",
   "Bushing & Leak Repair",
   "New Unit Erection",
-  "Breather Servicing & Maintenance"
+  "Breather Servicing & Maintenance",
 ];
 
 export default function TransformerServicesPage() {

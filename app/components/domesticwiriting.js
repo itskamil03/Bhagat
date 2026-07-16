@@ -136,7 +136,7 @@ export default function DomesticWiriting() {
       {/* ========================================================
           2. SPECIALIZED DOMESTIC ELECTRICAL SERVICES (EXPERTISE)
       ======================================================== */}
-      <section className="w-full py-20 px-6 lg:px-20 bg-gray-50/50">
+      <section className="w-full py-12 lg:py-16 px-6 lg:px-20 bg-gray-50/50">
         <div className="max-w-7xl mx-auto">
           {/* HEADER */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-14">
@@ -155,8 +155,8 @@ export default function DomesticWiriting() {
           {/* 6 CARDS GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Card 1 */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-red-200 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-red-600 group-hover:text-white transition duration-300">
+            <div className="bg-blue-50/30 rounded-2xl p-8 border border-blue-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(59,130,246,0.12)] hover:border-blue-300 hover:bg-blue-50/60 transition duration-300 group">
+              <div className="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-blue-600 group-hover:text-white transition duration-300">
                 <FiHome />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -169,8 +169,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Card 2 */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-red-200 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-red-600 group-hover:text-white transition duration-300">
+            <div className="bg-amber-50/30 rounded-2xl p-8 border border-amber-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(245,158,11,0.12)] hover:border-amber-300 hover:bg-amber-50/60 transition duration-300 group">
+              <div className="w-14 h-14 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-amber-600 group-hover:text-white transition duration-300">
                 <FiZap />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -183,8 +183,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Card 3 */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-red-200 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-red-600 group-hover:text-white transition duration-300">
+            <div className="bg-purple-50/30 rounded-2xl p-8 border border-purple-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(139,92,246,0.12)] hover:border-purple-300 hover:bg-purple-50/60 transition duration-300 group">
+              <div className="w-14 h-14 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-purple-600 group-hover:text-white transition duration-300">
                 <FiGrid />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -197,8 +197,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Card 4 */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-red-200 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-red-600 group-hover:text-white transition duration-300">
+            <div className="bg-teal-50/30 rounded-2xl p-8 border border-teal-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(20,184,166,0.12)] hover:border-teal-300 hover:bg-teal-50/60 transition duration-300 group">
+              <div className="w-14 h-14 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition duration-300">
                 <FiToggleRight />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -211,8 +211,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Card 5 */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-red-200 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-red-600 group-hover:text-white transition duration-300">
+            <div className="bg-pink-50/30 rounded-2xl p-8 border border-pink-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(236,72,153,0.12)] hover:border-pink-300 hover:bg-pink-50/60 transition duration-300 group">
+              <div className="w-14 h-14 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-pink-600 group-hover:text-white transition duration-300">
                 <FiSun />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -225,8 +225,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Card 6 */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-red-200 transition duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-red-600 group-hover:text-white transition duration-300">
+            <div className="bg-emerald-50/30 rounded-2xl p-8 border border-emerald-100/60 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.12)] hover:border-emerald-300 hover:bg-emerald-50/60 transition duration-300 group">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-emerald-600 group-hover:text-white transition duration-300">
                 <FiShield />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -685,8 +685,6 @@ export default function DomesticWiriting() {
           </a>
         </div>
       </section>
-
-
     </div>
   );
 }

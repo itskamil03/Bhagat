@@ -94,28 +94,28 @@ const eras = {
   "1976 - 1985": {
     titleLeft: "Foundation for",
     titleRight: "Excellence.",
-    desc: "The beginning of our journey in electrical contracting and power infrastructure. Built on integrity, technical expertise, and customer trust, we established the foundation that continues to power our growth today."
+    desc: "The beginning of our journey in electrical contracting and power infrastructure. Built on integrity, technical expertise, and customer trust, we established the foundation that continues to power our growth today.",
   },
   "1986 - 1995": {
     titleLeft: "Expanding",
     titleRight: "Horizons.",
-    desc: "Entering industrial infrastructure and expanding services across Bihar. We undertook our first major government substation projects and established ourselves as a reliable utility partner."
+    desc: "Entering industrial infrastructure and expanding services across Bihar. We undertook our first major government substation projects and established ourselves as a reliable utility partner.",
   },
   "1996 - 2005": {
     titleLeft: "Technological",
     titleRight: "Leap.",
-    desc: "Adopting advanced transformer services, servo stabilizers, and high-voltage setups. We modernized our installation methods and scaled our engineering workforce to meet rising energy demands."
+    desc: "Adopting advanced transformer services, servo stabilizers, and high-voltage setups. We modernized our installation methods and scaled our engineering workforce to meet rising energy demands.",
   },
   "2006 - 2015": {
     titleLeft: "National",
     titleRight: "Footprint.",
-    desc: "Executing major railway electrification and sub-station projects across India. We grew our pan-India presence and achieved ISO certifications, partnering with national corporations."
+    desc: "Executing major railway electrification and sub-station projects across India. We grew our pan-India presence and achieved ISO certifications, partnering with national corporations.",
   },
   "2016 - 2026": {
     titleLeft: "Powering the",
     titleRight: "Future.",
-    desc: "Celebrating 50 years of engineering leadership. We are pioneering sustainable, modern smart grid systems, facade lighting, and next-generation power infrastructure to build a stronger nation."
-  }
+    desc: "Celebrating 50 years of engineering leadership. We are pioneering sustainable, modern smart grid systems, facade lighting, and next-generation power infrastructure to build a stronger nation.",
+  },
 };
 
 export default function ProjectsPage() {
@@ -123,7 +123,7 @@ export default function ProjectsPage() {
   const [selectedDecade, setSelectedDecade] = useState("1976 - 1985");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
-  
+
   const dropdownRef = useRef(null);
 
   // Close dropdown on click outside
@@ -151,13 +151,15 @@ export default function ProjectsPage() {
   return (
     <main className="min-h-screen bg-white text-[#17162b] font-sans">
       {/* Hero Section - 1440px x 420px matching Figma specs */}
-      <motion.section 
+      <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         className="w-full relative overflow-hidden bg-[#1F1719] text-white min-h-[420px] flex items-center"
       >
-        <style dangerouslySetInnerHTML={{__html: `
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           .gallery-gradient {
             background: linear-gradient(180deg, #1F1719 0%, #1B1416 50%, rgba(35,20,22,0.66) 75%, rgba(48,19,23,0) 100%);
           }
@@ -184,7 +186,9 @@ export default function ProjectsPage() {
               transparent 100%
             );
           }
-        `}} />
+        `,
+          }}
+        />
 
         {/* Gradient Background Layer */}
         <div className="gallery-gradient absolute inset-0 z-0 pointer-events-none" />
@@ -208,13 +212,13 @@ export default function ProjectsPage() {
           <div className="py-12 md:py-16 flex flex-col justify-center h-full select-none">
             {/* Decade Selector Dropdown */}
             <div className="relative w-fit mb-4" ref={dropdownRef}>
-              <motion.button 
+              <motion.button
                 initial={{ opacity: 0, y: -20, filter: "blur(4px)" }}
-                animate={{ 
-                  opacity: 1, 
-                  y: 0, 
+                animate={{
+                  opacity: 1,
+                  y: 0,
                   filter: "blur(0px)",
-                  transitionEnd: { filter: "none" }
+                  transitionEnd: { filter: "none" },
                 }}
                 transition={{ duration: 0.5 }}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -268,34 +272,36 @@ export default function ProjectsPage() {
 
             {/* Title with Era Transition */}
             <AnimatePresence mode="wait">
-              <motion.h1 
+              <motion.h1
                 key={selectedDecade}
                 initial={{ opacity: 0, x: -40, filter: "blur(8px)" }}
-                animate={{ 
-                  opacity: 1, 
-                  x: 0, 
+                animate={{
+                  opacity: 1,
+                  x: 0,
                   filter: "blur(0px)",
-                  transitionEnd: { filter: "none" }
+                  transitionEnd: { filter: "none" },
                 }}
                 exit={{ opacity: 0, x: 40, filter: "blur(8px)" }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="text-4xl md:text-5xl lg:text-[54px] font-extrabold leading-none tracking-tight select-text"
               >
                 {currentEra.titleLeft}
-                <span className="block text-[#E31E24] mt-1">{currentEra.titleRight}</span>
+                <span className="block text-[#E31E24] mt-1">
+                  {currentEra.titleRight}
+                </span>
               </motion.h1>
             </AnimatePresence>
 
             {/* Description with Era Transition */}
             <AnimatePresence mode="wait">
-              <motion.p 
+              <motion.p
                 key={selectedDecade}
                 initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
-                animate={{ 
-                  opacity: 1, 
-                  y: 0, 
+                animate={{
+                  opacity: 1,
+                  y: 0,
                   filter: "blur(0px)",
-                  transitionEnd: { filter: "none" }
+                  transitionEnd: { filter: "none" },
                 }}
                 exit={{ opacity: 0, y: -20, filter: "blur(6px)" }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -375,7 +381,7 @@ export default function ProjectsPage() {
         {/* Pagination Button: Load More / Show Less */}
         <div className="text-center mt-12 mb-6">
           {filteredProjects.length > 6 && (
-            <button 
+            <button
               onClick={() => {
                 if (visibleCount >= filteredProjects.length) {
                   setVisibleCount(6);
@@ -385,7 +391,11 @@ export default function ProjectsPage() {
               }}
               className="inline-flex items-center gap-2 border border-[#E61B23] text-[#E61B23] hover:bg-[#E61B23] hover:text-white px-6 py-2.5 rounded-md text-xs font-bold transition-all shadow-sm"
             >
-              <span>{visibleCount >= filteredProjects.length ? "Show Less" : "Load more photos"}</span>
+              <span>
+                {visibleCount >= filteredProjects.length
+                  ? "Show Less"
+                  : "Load more photos"}
+              </span>
               <span className="text-sm">↻</span>
             </button>
           )}
@@ -437,9 +447,12 @@ export default function ProjectsPage() {
             </h2>
           </div>
           <div className="flex flex-wrap items-center gap-4">
-            <button 
+            <button
               onClick={() => {
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                window.scrollTo({
+                  top: document.body.scrollHeight,
+                  behavior: "smooth",
+                });
               }}
               className="bg-[#E61B23] text-white px-6 py-2.5 rounded-md font-semibold text-xs md:text-sm hover:bg-red-700 transition-colors shadow-sm active:scale-[0.98]"
             >
@@ -461,11 +474,14 @@ export default function ProjectsPage() {
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>
           <filter id="remove-gray" colorInterpolationFilters="sRGB">
-            <feColorMatrix type="matrix" values="
+            <feColorMatrix
+              type="matrix"
+              values="
               1 0 0 0 0
               0 1 0 0 0
               0 0 1 0 0
-              1.6 -0.8 -0.8 0 -0.05" />
+              1.6 -0.8 -0.8 0 -0.05"
+            />
           </filter>
         </defs>
       </svg>

@@ -9,40 +9,40 @@ import {
   FiAward,
   FiShield,
   FiCheckCircle,
-  FiActivity
+  FiActivity,
 } from "react-icons/fi";
 
 const expertiseCards = [
   {
     title: "Substation Design",
     desc: "Custom engineering layout, CAD planning, and load calculation for up to 33kV switchyard erections.",
-    icon: <FiGrid />
+    icon: <FiGrid />,
   },
   {
     title: "Switchgear Installation",
     desc: "Installing high-vacuum circuit breakers, isolators, control panels, and protection relays.",
-    icon: <FiZap />
+    icon: <FiZap />,
   },
   {
     title: "Structure Erection",
     desc: "Mounting heavy steel gantries, lattice columns, support structures, and overhead busbar layouts.",
-    icon: <FiAward />
+    icon: <FiAward />,
   },
   {
     title: "Earthing Grid Layout",
     desc: "Installing low-resistance earthing grids using copper or galvanized iron electrodes for fault protection.",
-    icon: <FiShield />
+    icon: <FiShield />,
   },
   {
     title: "Testing & Commissioning",
     desc: "High-potential testing, CT/PT calibration, insulation resistance checks, and grid synchronization.",
-    icon: <FiCheckCircle />
+    icon: <FiCheckCircle />,
   },
   {
     title: "Preventive O&M",
     desc: "Scheduled maintenance checks, transformer oil health audits, breaker servicing, and parameter logging.",
-    icon: <FiActivity />
-  }
+    icon: <FiActivity />,
+  },
 ];
 
 const whyChooseUsChecklist = [
@@ -51,15 +51,35 @@ const whyChooseUsChecklist = [
   "Railway & Metro Grid Certified",
   "Strict IS/IEC Standard Compliance",
   "High-Voltage Testing Kits",
-  "Robust Safety Grounding"
+  "Robust Safety Grounding",
 ];
 
 const processSteps = [
-  { num: "01", title: "Site Inspection", desc: "Evaluating terrain, clearance parameters, and existing grid inputs." },
-  { num: "02", title: "Planning & Design", desc: "Developing engineering schematics and equipment bill-of-materials." },
-  { num: "03", title: "Installation", desc: "Rigging gantries, mounting breakers, and laying secondary cables." },
-  { num: "04", title: "Testing & Calibration", desc: "Performing insulation resistance, ratio tests, and relay trips." },
-  { num: "05", title: "Commissioning", desc: "Synchronizing with power grid, safety approvals, and final handover." }
+  {
+    num: "01",
+    title: "Site Inspection",
+    desc: "Evaluating terrain, clearance parameters, and existing grid inputs.",
+  },
+  {
+    num: "02",
+    title: "Planning & Design",
+    desc: "Developing engineering schematics and equipment bill-of-materials.",
+  },
+  {
+    num: "03",
+    title: "Installation",
+    desc: "Rigging gantries, mounting breakers, and laying secondary cables.",
+  },
+  {
+    num: "04",
+    title: "Testing & Calibration",
+    desc: "Performing insulation resistance, ratio tests, and relay trips.",
+  },
+  {
+    num: "05",
+    title: "Commissioning",
+    desc: "Synchronizing with power grid, safety approvals, and final handover.",
+  },
 ];
 
 const formServicesList = [
@@ -67,7 +87,7 @@ const formServicesList = [
   "Preventive Maintenance",
   "Relay Calibration & Testing",
   "Switchgear Upgrades",
-  "Other Substation Works"
+  "Other Substation Works",
 ];
 
 export default function PowerSubstationPage() {

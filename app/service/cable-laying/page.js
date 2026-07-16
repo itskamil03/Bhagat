@@ -9,40 +9,40 @@ import {
   FiZap,
   FiShield,
   FiActivity,
-  FiSliders
+  FiSliders,
 } from "react-icons/fi";
 
 const expertiseCards = [
   {
     title: "Underground Trenching",
     desc: "Route surveying, excavation, sand-cushioning, protective brick/tile laying, and backfilling.",
-    icon: <FiGrid />
+    icon: <FiGrid />,
   },
   {
     title: "Overhead Cable Trays",
     desc: "Fitting heavy-duty GI cable trays, hangers, conduits, and brackets along industrial structures.",
-    icon: <FiSettings />
+    icon: <FiSettings />,
   },
   {
     title: "Joints & Terminations",
     desc: "Professional Raychem heat-shrinkable jointing and terminations to protect against moisture ingress.",
-    icon: <FiZap />
+    icon: <FiZap />,
   },
   {
     title: "Megger & Hi-Pot Testing",
     desc: "Insulation resistance megger testing and high-potential checks to verify cable health.",
-    icon: <FiShield />
+    icon: <FiShield />,
   },
   {
     title: "HT Cable Winch Pulling",
     desc: "Winch-assisted pulling of high-tension cables, conforming to safety bending radii.",
-    icon: <FiActivity />
+    icon: <FiActivity />,
   },
   {
     title: "Tray Fabrication & Racks",
     desc: "On-site customized steel bracket fabrication, welding, and structural matching support.",
-    icon: <FiSliders />
-  }
+    icon: <FiSliders />,
+  },
 ];
 
 const whyChooseUsChecklist = [
@@ -51,15 +51,35 @@ const whyChooseUsChecklist = [
   "Precision Insulation Testing",
   "Trench Depth Regulation Match",
   "GI Heavy Duty Tray Fittings",
-  "Robust Shield Grounding"
+  "Robust Shield Grounding",
 ];
 
 const processSteps = [
-  { num: "01", title: "Route Survey", desc: "Profiling depths, crossings, and obstacles along the cabling path." },
-  { num: "02", title: "Tray & Trench Setup", desc: "Excavation or gantry brackets installation per engineering design." },
-  { num: "03", title: "Cable Winch Pulling", desc: "Mechanical or hand pulling conforming to safety bending limits." },
-  { num: "04", title: "Jointing Kits", desc: "Applying Raychem heat-shrink terminations and conductor jointing." },
-  { num: "05", title: "High-Pot Testing", desc: "Performing high-voltage testing, shield grounding, and signoff." }
+  {
+    num: "01",
+    title: "Route Survey",
+    desc: "Profiling depths, crossings, and obstacles along the cabling path.",
+  },
+  {
+    num: "02",
+    title: "Tray & Trench Setup",
+    desc: "Excavation or gantry brackets installation per engineering design.",
+  },
+  {
+    num: "03",
+    title: "Cable Winch Pulling",
+    desc: "Mechanical or hand pulling conforming to safety bending limits.",
+  },
+  {
+    num: "04",
+    title: "Jointing Kits",
+    desc: "Applying Raychem heat-shrink terminations and conductor jointing.",
+  },
+  {
+    num: "05",
+    title: "High-Pot Testing",
+    desc: "Performing high-voltage testing, shield grounding, and signoff.",
+  },
 ];
 
 const formServicesList = [
@@ -67,7 +87,7 @@ const formServicesList = [
   "Overhead Cable Trays",
   "HT Termination & Jointing",
   "Megger & Hi-Pot Testing",
-  "Other Cabling Support"
+  "Other Cabling Support",
 ];
 
 export default function CableLayingPage() {

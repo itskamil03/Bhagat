@@ -23,7 +23,7 @@ const data = [
     title: "Transmission Lines & Cabling",
     desc: "High-voltage overhead transmission lines and underground cabling networks designed and installed for high-reliability energy delivery.",
     img: "/d2.png",
-  }
+  },
 ];
 
 export default function Project() {
@@ -32,7 +32,9 @@ export default function Project() {
   return (
     <section className="w-full bg-[#f4f6f8] py-14 px-6 md:px-12 mt-4 overflow-hidden">
       {/* Inject CSS custom variables for dynamic, SSR-safe scroll translations */}
-      <style dangerouslySetInnerHTML={{__html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         .project-slider-track {
           transform: translateX(calc(-1 * var(--active-index) * (100% + 24px)));
         }
@@ -41,7 +43,9 @@ export default function Project() {
             transform: translateX(calc(-1 * min(var(--active-index), 1) * (33.333% + 8px)));
           }
         }
-      `}} />
+      `,
+        }}
+      />
 
       {/* TOP HEADER */}
       <div className="flex items-center justify-between mb-10 max-w-[1308px] mx-auto w-full">
@@ -63,10 +67,10 @@ export default function Project() {
       {/* SLIDER VIEWPORT */}
       <div className="max-w-[1308px] mx-auto w-full overflow-hidden">
         {/* Track */}
-        <div 
+        <div
           className="project-slider-track flex transition-transform duration-500 ease-out gap-6"
           style={{
-            "--active-index": activeIndex
+            "--active-index": activeIndex,
           }}
         >
           {data.map((item, i) => (
@@ -108,7 +112,9 @@ export default function Project() {
               key={i}
               onClick={() => setActiveIndex(i)}
               className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                isActive ? "bg-blue-600 scale-125" : "bg-gray-300 hover:bg-gray-400"
+                isActive
+                  ? "bg-blue-600 scale-125"
+                  : "bg-gray-300 hover:bg-gray-400"
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />
