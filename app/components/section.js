@@ -10,7 +10,7 @@ export default function Section() {
 
   const data = [
     {
-      img: "/im2.png",
+      img: "/im2.jpeg",
       title: "ISO 9001:2015 certified process protect everyone",
       desc: "Precision & innovation: Technical excellence in every installation",
     },
@@ -55,17 +55,6 @@ export default function Section() {
         <br />
         transparent dealings
       </h1>
-
-      {/* NUMBER + PROGRESS LINE */}
-      <div className="flex items-center gap-4 mt-10">
-        {/* NUMBER */}
-        <span className="text-2xl font-semibold text-black">01</span>
-
-        {/* LINE */}
-        <div className="flex items-center w-45 h-[6px] bg-red-200 rounded-full overflow-hidden">
-          <div className="w-1/3 h-full bg-red-600 rounded-full"></div>
-        </div>
-      </div>
 
       <div ref={sectionRef} className="grid md:grid-cols-4 gap-6 px-6 py-10">
         {data.map((item, i) => (

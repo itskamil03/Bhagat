@@ -46,7 +46,7 @@ const expertiseCards = [
 ];
 
 const whyChooseUsChecklist = [
-  "48+ Years Experience",
+  "50+ Years Experience",
   "Up to 33kV Erection Capacity",
   "Railway & Metro Grid Certified",
   "Strict IS/IEC Standard Compliance",

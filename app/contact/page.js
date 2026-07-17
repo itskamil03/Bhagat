@@ -106,7 +106,7 @@ export default function ContactPage() {
                 Direct Inquiry & Support
               </p>
               <h3 className="text-xl font-bold text-gray-900 mb-2">
-                +91 6299923388
+                
               </h3>
               <p className="text-sm text-gray-600 leading-relaxed">
                 Toll Free Line:{" "}
@@ -388,7 +388,7 @@ export default function ContactPage() {
                     Our emergency maintenance units are on standby.
                   </p>
                   <p className="text-sm font-bold text-red-400 mt-3">
-                    Call: +91 6299923388
+                    
                   </p>
                 </div>
               </div>

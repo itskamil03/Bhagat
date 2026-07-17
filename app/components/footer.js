@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="bg-gray-100 text-gray-700 pt-12 pb-6 px-6 md:px-16">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         {/* LEFT LOGO + TEXT */}
-        <div>
+        <div className="-ml-12">
           <div className="flex items-center gap-3">
             {/* LOGO IMAGE */}
             <Image
@@ -20,11 +20,11 @@ export default function Footer() {
             />
 
             <div>
-              <h2 className="text-lg font-bold text-blue-950">
+              <h2 className="text-sm sm:text-base md:text-xl font-extrabold text-blue-950 font-sans tracking-tight whitespace-nowrap">
                 Bhagat Engineering Works
               </h2>
 
-              <p className="text-sm text-gray-500 flex items-center gap-2">
+              <p className="text-[11px] font-bold tracking-[0.2em] text-gray-600 uppercase flex items-center gap-2">
                 A SYMBOL OF TRUST
                 <span className="w-6 h-[2px] bg-red-500 inline-block"></span>
               </p>
@@ -57,19 +57,19 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li className="hover:text-red-500 transition">
               <Link href="/service/power-substation">
-                Erection and Maintenance
+                Erection and Maintenance of Power Substation
               </Link>
             </li>
             <li className="hover:text-red-500 transition">
-              <Link href="/service/domestic-wiring">Domestic Wiring</Link>
+              <Link href="/service/domestic-wiring">Installation and Commissioning of Compact Substation</Link>
             </li>
             <li className="hover:text-red-500 transition">
               <Link href="/service/transformer-services">
-                Transformer Related
+                Overhead and Underground Cable Laying
               </Link>
             </li>
             <li className="hover:text-red-500 transition">
-              <Link href="/service/cable-laying">Cable Laying</Link>
+              <Link href="/service/cable-laying">Industrial / Quarter Wiring</Link>
             </li>
           </ul>
         </div>
@@ -84,14 +84,14 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Original Website
+                
               </a>
             </li>
             <li className="hover:text-red-500 transition">
               <a href="mailto:info@bhagatengg.in">info@bhagatengg.in</a>
             </li>
             <li className="hover:text-red-500 transition">
-              <a href="tel:+916299923388">+91 6299923388</a>
+              <a href="tel:+916299923388">1800 8890 705</a>
             </li>
           </ul>
         </div>

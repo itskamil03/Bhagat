@@ -138,7 +138,7 @@ export default function ServiceDetailTemplate({
               {/* BOTTOM FLOATING BADGE */}
               <div className="absolute bottom-6 left-6 right-6 sm:right-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl px-6 py-4 border border-gray-100 flex items-center gap-4">
                 <div className="text-red-600 text-3xl font-black leading-none">
-                  48+
+                  50+
                 </div>
                 <div className="text-gray-700 text-xs sm:text-sm font-semibold leading-snug border-l border-gray-200 pl-4">
                   Years of Engineering <br />

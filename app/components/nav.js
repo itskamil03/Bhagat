@@ -319,9 +319,9 @@ function Nav() {
                 }
                 className="flex items-center gap-1.5 text-gray-800 hover:text-red-600 transition-colors focus:outline-none"
               >
-                <Link href="/project" className="hover:text-red-600">
+                <span className="hover:text-red-600 cursor-pointer">
                   Projects
-                </Link>
+                </span>
                 <FaChevronDown
                   size={11}
                   className={`transition-transform duration-200 ${
@@ -656,13 +656,6 @@ function Nav() {
                 </button>
                 {activeMobileDropdown === "projects" && (
                   <div className="pl-6 space-y-1 bg-gray-50 rounded-xl p-2 mt-1">
-                    <Link
-                      href="/project"
-                      onClick={() => setIsMobileOpen(false)}
-                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition border-b border-gray-200/50 pb-2 mb-1"
-                    >
-                      All Projects
-                    </Link>
                     <Link
                       href="/project/ongoing"
                       onClick={() => setIsMobileOpen(false)}

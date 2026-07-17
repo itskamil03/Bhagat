@@ -35,7 +35,7 @@ const chooseUsData = [
     isOutline: true,
     text: (
       <>
-        Nearly fifty years of
+        Fifty years of
         <br />
         uninterrupted service
       </>

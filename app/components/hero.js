@@ -144,12 +144,12 @@ export default function Hero() {
           </h1>
 
           <p className="text-sm md:text-base text-white/80 mt-4 leading-relaxed max-w-[500px]">
-            Bhagat Engineering Works delivers integrated electrical, mechanical
-            and civil engineering solutions, from design and fabrication to
-            installation, commissioning and maintenance.
+            Bhagat Engineering Works is a leading engineering solutions provider, delivering
+             integrated electrical, mechanical, and civil services with precision, innovation, and
+              reliability from concept and design to fabrication, installation, and project completion.
           </p>
 
-          <div className="mt-6 flex gap-3 md:gap-4">
+          <div className="mt-2 flex gap-3 md:gap-4">
             <Link
               href="/service"
               className="bg-red-700 px-0 md:px-6 py-3 rounded-md hover:bg-red-800 transition text-sm md:text-base text-center font-semibold flex-1 max-w-[170px] md:max-w-none md:flex-none"
@@ -229,7 +229,7 @@ export default function Hero() {
         animate="visible"
         className="relative md:absolute mt-10 md:mt-0 md:bottom-6 md:left-1/2 md:-translate-x-1/2 w-[calc(100%-32px)] max-w-[1410px] h-auto md:h-[98px] rounded-[16px] md:rounded-[6px] bg-[rgba(140,0,0,0.88)] backdrop-blur-[8px] border border-[rgba(255,255,255,0.15)] z-20 shadow-xl overflow-hidden flex items-center justify-center mx-auto"
       >
-        <div className="w-full h-full grid grid-cols-2 md:grid-cols-4 items-center p-2 md:p-0 md:px-6">
+        <div className="w-full h-full grid grid-cols-2 md:grid-cols-5 items-center p-2 md:p-0 md:px-3">
           {/* Column 1 */}
           <motion.div
             variants={itemVariants}
@@ -237,60 +237,76 @@ export default function Hero() {
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
-              className="text-[32px] md:text-[48px] font-bold leading-none text-white transition-transform duration-200"
+              className="text-[24px] md:text-[36px] font-bold leading-none text-white transition-transform duration-200"
             >
               <CountUp end="50" suffix="+" />
             </motion.h2>
-            <p className="text-[11px] md:text-[14px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
-              Years of trust
+            <p className="text-[10px] md:text-[12px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
+              Years of Trust
             </p>
           </motion.div>
 
           {/* Column 2 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-b border-[rgba(255,255,255,0.15)] md:border-b-0 md:border-r md:border-[rgba(255,255,255,0.2)] md:px-6"
+            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-b border-[rgba(255,255,255,0.15)] md:border-b-0 md:border-r md:border-[rgba(255,255,255,0.2)] md:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
-              className="text-[32px] md:text-[48px] font-bold leading-none text-white transition-transform duration-200"
+              className="text-[24px] md:text-[36px] font-bold leading-none text-white transition-transform duration-200"
             >
-              <CountUp end="100" suffix="+" />
+              <CountUp end="1000" suffix="+" />
             </motion.h2>
-            <p className="text-[11px] md:text-[14px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
-              Crore turnover
+            <p className="text-[10px] md:text-[12px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
+              Project delivered
             </p>
           </motion.div>
 
           {/* Column 3 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-r border-[rgba(255,255,255,0.15)] md:border-r md:border-[rgba(255,255,255,0.2)] md:px-6"
+            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-r border-[rgba(255,255,255,0.15)] md:border-r md:border-[rgba(255,255,255,0.2)] md:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
-              className="text-[32px] md:text-[48px] font-bold leading-none text-white transition-transform duration-200"
+              className="text-[18px] md:text-[28px] font-bold leading-none text-white transition-transform duration-200 whitespace-nowrap"
             >
-              <CountUp end="1662" />
+              PAN India
             </motion.h2>
-            <p className="text-[11px] md:text-[14px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
-              Hours of work
+            <p className="text-[10px] md:text-[12px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
+              Presence
             </p>
           </motion.div>
 
           {/* Column 4 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full md:px-6"
+            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full md:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
-              className="text-[32px] md:text-[48px] font-bold leading-none text-white transition-transform duration-200"
+              className="text-[24px] md:text-[36px] font-bold leading-none text-white transition-transform duration-200"
             >
-              <CountUp end="33" />
+              <CountUp end="500" suffix="+" />
             </motion.h2>
-            <p className="text-[11px] md:text-[14px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
-              kV O&M capability
+            <p className="text-[10px] md:text-[12px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
+              Skilled Professionals
+            </p>
+          </motion.div>
+
+          {/* Column 5 */}
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full md:px-3"
+          >
+            <motion.h2
+              whileHover={{ scale: 1.03 }}
+              className="text-[24px] md:text-[36px] font-bold leading-none text-white transition-transform duration-200"
+            >
+              <CountUp end="33" suffix="" />
+            </motion.h2>
+            <p className="text-[10px] md:text-[12px] font-normal leading-tight text-[rgba(255,255,255,0.85)] mt-1 select-none">
+              KV O&M Capability
             </p>
           </motion.div>
         </div>

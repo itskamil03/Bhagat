@@ -95,24 +95,6 @@ export default function Client() {
                   {item.text}
                 </h3>
 
-                {/* USER */}
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="relative w-12 h-12">
-                    <Image
-                      src={item.avatar}
-                      alt="user"
-                      fill
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-
-                  <div>
-                    <h2 className="font-bold">{item.name}</h2>
-                    <p className="text-sm opacity-80 font-semibold">
-                      {item.role}
-                    </p>
-                  </div>
-                </div>
 
                 {/* LINK */}
                 <p className="flex items-center gap-2 font-medium">
