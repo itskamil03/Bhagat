@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="bg-gray-100 text-gray-700 pt-12 pb-6 px-6 md:px-16">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         {/* LEFT LOGO + TEXT */}
-        <div className="-ml-12">
+        <div className="md:-ml-12">
           <div className="flex items-center gap-3">
             {/* LOGO IMAGE */}
             <Image
