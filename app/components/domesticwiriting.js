@@ -583,8 +583,8 @@ export default function DomesticWiriting() {
             <div className="hidden lg:block absolute top-6 left-[10%] right-[10%] h-[2px] bg-gray-200 -z-0"></div>
 
             {/* Step 1 */}
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-12 h-12 rounded-full bg-red-600 text-white font-bold text-sm flex items-center justify-center shadow-lg shadow-red-600/30">
+            <div className="flex flex-col items-center text-center relative z-10 group">
+              <div className="w-12 h-12 rounded-full bg-red-600 text-white font-bold text-sm flex items-center justify-center shadow-lg shadow-red-600/30 transition-all duration-300 transform group-hover:scale-110">
                 01
               </div>
               <h3 className="text-lg font-bold text-gray-900 mt-5 mb-2">
@@ -596,8 +596,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Step 2 */}
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-12 h-12 rounded-full bg-black text-white font-bold text-sm flex items-center justify-center shadow-md">
+            <div className="flex flex-col items-center text-center relative z-10 group">
+              <div className="w-12 h-12 rounded-full bg-white text-gray-900 border border-gray-200 font-bold text-sm flex items-center justify-center shadow-md transition-all duration-300 transform group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 group-hover:shadow-lg group-hover:shadow-red-600/30 cursor-pointer">
                 02
               </div>
               <h3 className="text-lg font-bold text-gray-900 mt-5 mb-2">
@@ -609,8 +609,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Step 3 */}
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-12 h-12 rounded-full bg-black text-white font-bold text-sm flex items-center justify-center shadow-md">
+            <div className="flex flex-col items-center text-center relative z-10 group">
+              <div className="w-12 h-12 rounded-full bg-white text-gray-900 border border-gray-200 font-bold text-sm flex items-center justify-center shadow-md transition-all duration-300 transform group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 group-hover:shadow-lg group-hover:shadow-red-600/30 cursor-pointer">
                 03
               </div>
               <h3 className="text-lg font-bold text-gray-900 mt-5 mb-2">
@@ -622,8 +622,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Step 4 */}
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-12 h-12 rounded-full bg-black text-white font-bold text-sm flex items-center justify-center shadow-md">
+            <div className="flex flex-col items-center text-center relative z-10 group">
+              <div className="w-12 h-12 rounded-full bg-white text-gray-900 border border-gray-200 font-bold text-sm flex items-center justify-center shadow-md transition-all duration-300 transform group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 group-hover:shadow-lg group-hover:shadow-red-600/30 cursor-pointer">
                 04
               </div>
               <h3 className="text-lg font-bold text-gray-900 mt-5 mb-2">
@@ -635,8 +635,8 @@ export default function DomesticWiriting() {
             </div>
 
             {/* Step 5 */}
-            <div className="flex flex-col items-center text-center relative z-10">
-              <div className="w-12 h-12 rounded-full bg-black text-white font-bold text-sm flex items-center justify-center shadow-md">
+            <div className="flex flex-col items-center text-center relative z-10 group">
+              <div className="w-12 h-12 rounded-full bg-white text-gray-900 border border-gray-200 font-bold text-sm flex items-center justify-center shadow-md transition-all duration-300 transform group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 group-hover:shadow-lg group-hover:shadow-red-600/30 cursor-pointer">
                 05
               </div>
               <h3 className="text-lg font-bold text-gray-900 mt-5 mb-2">
@@ -650,8 +650,8 @@ export default function DomesticWiriting() {
 
           {/* 4 GUARANTEE / VALUE BADGES */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4">
+            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110">
                 <FiShield />
               </div>
               <h4 className="font-bold text-gray-900 mb-1">Safe Wiring</h4>
@@ -660,8 +660,8 @@ export default function DomesticWiriting() {
               </p>
             </div>
 
-            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4">
+            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110">
                 <FiAward />
               </div>
               <h4 className="font-bold text-gray-900 mb-1">ISI Certified</h4>
@@ -670,8 +670,8 @@ export default function DomesticWiriting() {
               </p>
             </div>
 
-            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4">
+            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110">
                 <FiTag />
               </div>
               <h4 className="font-bold text-gray-900 mb-1">
@@ -682,8 +682,8 @@ export default function DomesticWiriting() {
               </p>
             </div>
 
-            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4">
+            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110">
                 <FiCheckCircle />
               </div>
               <h4 className="font-bold text-gray-900 mb-1">

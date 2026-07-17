@@ -533,9 +533,15 @@ export default function ServiceDetailTemplate({
             {processSteps.map((step, idx) => (
               <div
                 key={idx}
-                className="flex flex-col items-center text-center relative z-10"
+                className="flex flex-col items-center text-center relative z-10 group"
               >
-                <div className="w-12 h-12 rounded-full bg-red-600 text-white font-bold text-sm flex items-center justify-center shadow-lg shadow-red-600/30">
+                <div
+                  className={`w-12 h-12 rounded-full font-bold text-sm flex items-center justify-center transition-all duration-300 transform group-hover:scale-110 ${
+                    idx === 0 || step.num === "01"
+                      ? "bg-red-600 text-white shadow-lg shadow-red-600/30"
+                      : "bg-white text-gray-900 border border-gray-200 shadow-md group-hover:bg-red-600 group-hover:text-white group-hover:border-red-600 group-hover:shadow-lg group-hover:shadow-red-600/30 cursor-pointer"
+                  }`}
+                >
                   {step.num}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mt-5 mb-2 leading-snug">
@@ -550,8 +556,8 @@ export default function ServiceDetailTemplate({
 
           {/* 4 GUARANTEE / VALUE BADGES */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4">
+            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110">
                 <FiShield />
               </div>
               <h4 className="font-bold text-gray-900 mb-1">Safe Execution</h4>
@@ -560,8 +566,8 @@ export default function ServiceDetailTemplate({
               </p>
             </div>
 
-            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4">
+            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110">
                 <FiAward />
               </div>
               <h4 className="font-bold text-gray-900 mb-1">ISI Certified</h4>
@@ -570,8 +576,8 @@ export default function ServiceDetailTemplate({
               </p>
             </div>
 
-            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4">
+            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110">
                 <FiTag />
               </div>
               <h4 className="font-bold text-gray-900 mb-1">
@@ -582,8 +588,8 @@ export default function ServiceDetailTemplate({
               </p>
             </div>
 
-            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition">
-              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4">
+            <div className="bg-gray-50/80 border border-gray-200/80 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center text-xl mb-4 transition-all duration-300 group-hover:bg-red-600 group-hover:text-white group-hover:scale-110">
                 <FiCheckCircle />
               </div>
               <h4 className="font-bold text-gray-900 mb-1">

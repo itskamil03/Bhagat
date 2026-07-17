@@ -29,8 +29,8 @@ export default function Founder() {
 
       <div className="max-w-[1308px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center relative z-10 w-full h-full">
         {/* LEFT COLUMN: Founder's Message Content (Span 4) */}
-        <div className="lg:col-span-4 flex flex-col justify-center">
-          <p className="text-red-600 font-bold text-xs sm:text-sm uppercase tracking-widest mb-3">
+        <div className="lg:col-span-4 flex flex-col justify-center lg:-ml-[58px]">
+          <p className="text-red-600 font-bold text-sm sm:text-base uppercase tracking-widest mb-3">
             FOUNDER'S MESSAGE
           </p>
 
@@ -72,7 +72,7 @@ export default function Founder() {
 
           {/* Founder Name & Designation */}
           <div className="mt-4">
-            <h3 className="text-[#E61B23] text-lg font-bold">
+            <h3 className="text-[#E61B23] text-xl md:text-2xl font-bold">
               Mahavir Prasad Bhagat
             </h3>
             <p className="text-gray-500 text-xs font-semibold uppercase tracking-wider mt-0.5">Founder</p>
@@ -127,7 +127,7 @@ export default function Founder() {
         </div>
 
         {/* RIGHT COLUMN: Vertically Stacked Crimson Cards (Span 4) */}
-        <div className="lg:col-span-4 flex flex-col gap-6 w-full py-2">
+        <div className="lg:col-span-4 flex flex-col gap-6 w-full py-2 lg:translate-x-[38px]">
           {/* CARD 1 */}
           <div 
             className="flex gap-4 items-center relative overflow-hidden bg-gradient-to-br from-[#E30613] to-[#C5000D] text-white p-6 rounded-[20px] transition-all duration-[350ms] ease-out hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(227,6,19,0.25)] group cursor-pointer" 

@@ -2,11 +2,11 @@ import { FaRegLightbulb, FaHandshake, FaCheckCircle } from "react-icons/fa";
 
 export default function Overview() {
   return (
-    <section className="w-full bg-[#f7eaea] mt-0 py-16 px-6 lg:px-20">
-      <div className="max-w-[1308px] mx-auto grid md:grid-cols-2 gap-10 w-full">
+    <section className="w-full bg-[#f7eaea] mt-0 py-16 px-6">
+      <div className="max-w-[1400px] mx-auto grid md:grid-cols-2 gap-10 w-full">
         {/* LEFT CONTENT */}
         <div>
-          <p className="text-red-600 font-bold text-xs sm:text-sm uppercase tracking-widest mb-3">OVERVIEW</p>
+          <p className="text-red-600 font-bold text-sm sm:text-base uppercase tracking-widest mb-3">OVERVIEW</p>
 
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
             Bhagat Engineering <br />
