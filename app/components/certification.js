@@ -37,9 +37,9 @@ export default function Certification() {
         }}
       >
         {/* ALL IMAGE CARDS */}
-        <Card img="/cer1.png" />
-        <Card img="/cer2.png" />
-        <Card img="/cer3.png" />
+        <Card img="/cer2_page-0001.jpg" />
+        <Card img="/cer1_page-0001.jpg" />
+        <Card img="/cer3_page-0001.jpg" />
       </motion.div>
     </section>
   );
@@ -59,14 +59,14 @@ function Card({ img }) {
         shadow: "0 25px 50px -12px rgba(230, 27, 35, 0.25)",
         transition: { duration: 0.25 }
       }}
-      className="bg-white border-2 border-red-500 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer"
+      className="group bg-white border-2 border-red-500 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer relative w-full aspect-[4/3]"
     >
       <Image
         src={img}
         alt="certificate"
-        width={400}
-        height={300}
-        className="w-full h-full object-cover"
+        fill
+        className="object-cover transition-all duration-300 group-hover:object-contain bg-white"
+        sizes="(max-w-768px) 100vw, 33vw"
       />
     </motion.div>
   );
