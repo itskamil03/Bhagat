@@ -15,17 +15,17 @@ export default function Section() {
       desc: "Precision & innovation: Technical excellence in every installation",
     },
     {
-      img: "/im24.png",
+      img: "/im24.jpeg",
       title: "Technical mastry drives every installation",
       desc: "Trust and Integrity: Honest dealings from start to finish",
     },
     {
-      img: "/im25.png",
+      img: "/im25.jpeg",
       title: "Honest dealings from start to finish",
       desc: "Trust and Integrity: We stand behind every project with complete transparency and accountability",
     },
     {
-      img: "/im26.png",
+      img: "/im26.jpeg",
       title: "Technical excellence in every installation",
       desc: "Precision and Innovation: Our engineers solve complex problems with proven methods and modern techniques",
     },
