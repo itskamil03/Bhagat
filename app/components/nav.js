@@ -432,7 +432,7 @@ function Nav() {
 
           {/* RIGHT BUTTON */}
           <div className="flex items-center gap-3">
-            <Link href="/contact" className="hidden sm:block">
+            <Link href="/contact" className="hidden lg:block">
               <button className="border-2 border-red-600 text-red-600 px-6 py-1.5 rounded-full hover:bg-red-600 hover:text-white transition-all duration-300 font-bold text-sm shadow-sm hover:shadow-md">
                 Contact Us
               </button>

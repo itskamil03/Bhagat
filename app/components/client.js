@@ -63,7 +63,7 @@ export default function Client() {
               onMouseEnter={() => setActive(i)}
               onMouseLeave={() => setActive(null)}
               onClick={() => setActive(isActive ? null : i)}
-              className="relative border border-red-500 overflow-hidden cursor-pointer transition-all duration-500 h-[390px] rounded-xl shadow-sm testimonial-card-desktop"
+              className={`relative border border-red-500 overflow-hidden cursor-pointer transition-all duration-500 h-[390px] rounded-xl shadow-sm testimonial-card-desktop ${isActive ? "active" : ""}`}
             >
               {/* OVERLAY */}
               <div

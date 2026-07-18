@@ -50,7 +50,7 @@ export default function Section() {
       </p>
 
       {/* MAIN HEADING */}
-      <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight max-w-4xl">
+      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight max-w-4xl">
         We build on honesty and
         <br />
         transparent dealings
@@ -58,7 +58,7 @@ export default function Section() {
 
       <div
         ref={sectionRef}
-        className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 px-6 py-10"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-6 py-10"
       >
         {data.map((item, i) => (
           <Card
@@ -74,13 +74,13 @@ export default function Section() {
 
       <Link
         href="/about"
-        className="group flex items-center justify-between bg-red-600 text-white px-8 py-6 rounded-2xl w-[260px] md:w-[320px] mx-auto md:mx-0 md:ml-6 hover:bg-red-700 transition duration-300"
+        className="group flex items-center justify-between bg-red-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl w-[220px] md:w-[280px] mx-auto md:mx-0 md:ml-6 hover:bg-red-700 transition duration-300 shadow-md"
       >
         {/* TEXT */}
-        <span className="text-2xl font-semibold">Learn more</span>
+        <span className="text-lg md:text-xl font-semibold">Learn more</span>
 
         {/* ARROW */}
-        <span className="text-2xl transform group-hover:translate-x-2 transition duration-300">
+        <span className="text-lg md:text-xl transform group-hover:translate-x-2 transition duration-300">
           <FaArrowRightLong />
         </span>
       </Link>

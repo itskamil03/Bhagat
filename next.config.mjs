@@ -4,6 +4,9 @@ const nextConfig = {
     appIsrStatus: false, // Disables the static/route status indicator badge (the circular "N" logo)
     buildActivity: false, // Disables the compiling build activity indicator
   },
+  turbopack: {
+    root: "C:/Users/kamil/Desktop/bhagat_website-main",
+  },
 };
 
 export default nextConfig;

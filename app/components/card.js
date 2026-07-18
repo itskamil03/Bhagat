@@ -5,7 +5,7 @@ export default function Card({ img, title, desc, isActive, onToggle }) {
   return (
     <div
       onClick={() => {
-        if (typeof window !== "undefined" && window.innerWidth < 768) {
+        if (typeof window !== "undefined" && window.innerWidth < 1024) {
           onToggle();
         }
       }}
@@ -63,8 +63,8 @@ export default function Card({ img, title, desc, isActive, onToggle }) {
         </p>
       </div>
 
-      {/* Mobile Hint Tag (Only visible on screens smaller than md) */}
-      <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider px-2 py-1 rounded-full md:hidden transition-opacity duration-300 pointer-events-none">
+      {/* Mobile Hint Tag (Only visible on screens smaller than lg) */}
+      <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider px-2 py-1 rounded-full lg:hidden transition-opacity duration-300 pointer-events-none">
         {isActive ? "Close" : "Tap for Info"}
       </div>
     </div>

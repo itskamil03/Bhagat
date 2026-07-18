@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { FaArrowUp } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -106,25 +107,13 @@ export default function Footer() {
           concept.
         </p>
 
-        <div className="mt-4 md:mt-0 flex items-center gap-4 bg-gray-800 text-white px-4 py-2 rounded-full shadow-lg">
+        <div className="mt-4 md:mt-0">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="hover:text-red-500 transition font-bold px-2 text-base"
+            className="flex items-center justify-center w-10 h-10 bg-gray-800 text-white hover:bg-red-600 transition-colors rounded-full shadow-lg"
             title="Scroll to Top"
           >
-            {"<"}
-          </button>
-          <button
-            onClick={() =>
-              window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: "smooth",
-              })
-            }
-            className="hover:text-red-500 transition font-bold px-2 text-base"
-            title="Scroll to Bottom"
-          >
-            {">"}
+            <FaArrowUp />
           </button>
         </div>
       </div>
