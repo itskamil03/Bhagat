@@ -84,7 +84,7 @@ const itemVariants = {
 
 export default function Hero() {
   return (
-    <section className="w-full h-auto md:h-[110vh] text-white relative overflow-hidden bg-[#530503] pb-12 md:pb-0">
+    <section className="w-full h-auto md:min-h-[110vh] text-white relative overflow-hidden bg-[#530503] pb-12 md:pb-40">
       {/* Static Background Image */}
       <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
         <div
