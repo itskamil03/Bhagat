@@ -148,7 +148,7 @@ function Nav() {
           {/* CENTER MENU */}
           <nav
             ref={dropdownRef}
-            className="hidden md:flex items-center gap-6 lg:gap-8 text-gray-800 font-semibold text-base relative"
+            className="hidden lg:flex items-center gap-6 lg:gap-8 text-gray-800 font-semibold text-base relative"
           >
             <Link
               href="/"
@@ -441,7 +441,7 @@ function Nav() {
             {/* MOBILE HAMBURGER BUTTON */}
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="flex md:hidden items-center justify-center p-2 text-gray-700 hover:text-red-600 hover:bg-gray-100 rounded-xl transition focus:outline-none -mr-2"
+              className="flex lg:hidden items-center justify-center p-2 text-gray-700 hover:text-red-600 hover:bg-gray-100 rounded-xl transition focus:outline-none -mr-2"
               aria-label="Toggle Menu"
             >
               {isMobileOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
@@ -452,7 +452,7 @@ function Nav() {
 
       {/* MOBILE DRAWER */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-[99999] flex md:hidden">
+        <div className="fixed inset-0 z-[99999] flex lg:hidden">
           {/* BACKDROP */}
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-sm"

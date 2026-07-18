@@ -214,7 +214,7 @@ export default function Service() {
       {/* HEADER SECTION (Desktop: Grid-aligned to Column 2; Mobile: Centered flex) */}
       <div className="max-w-[1308px] mx-auto w-full mb-8">
         {/* Desktop Grid Layout */}
-        <div className="hidden md:grid md:grid-cols-[300px_1.8fr_1.2fr] gap-8 items-center w-full min-h-[50px]">
+        <div className="hidden lg:grid lg:grid-cols-[300px_1.8fr_1.2fr] gap-8 items-center w-full min-h-[50px]">
           {/* Column 1: Spacer */}
           <div />
 
@@ -247,7 +247,7 @@ export default function Service() {
         </div>
 
         {/* Mobile Flex Layout */}
-        <div className="flex flex-col items-center gap-4 md:hidden w-full">
+        <div className="flex flex-col items-center gap-4 lg:hidden w-full">
           <h2 className="text-3xl font-bold text-gray-900 select-none tracking-tight text-center">
             Integrated Services
           </h2>
@@ -255,7 +255,7 @@ export default function Service() {
       </div>
 
       {/* CORE DISPLAY (GRID SIDEBAR + CARD VIEWPORT) */}
-      <div className="hidden md:grid max-w-[1308px] mx-auto md:grid-cols-[300px_1.8fr_1.2fr] gap-8 items-stretch relative">
+      <div className="hidden lg:grid max-w-[1308px] mx-auto lg:grid-cols-[300px_1.8fr_1.2fr] gap-8 items-stretch relative">
         {/* LEFT COLUMN: SIDEBAR SERVICE LIST (DESKTOP) */}
         <div className="relative h-[500px]">
           <span className="absolute -top-7 left-0 text-[#c00000] font-bold text-xs uppercase tracking-widest select-none">
@@ -312,7 +312,7 @@ export default function Service() {
         </div>
 
         {/* CENTER COLUMN: MAIN IMAGE & FLOATING THUMBNAILS IN BOTTOM-LEFT */}
-        <div className="relative overflow-hidden rounded-[20px] bg-gray-100 shadow-lg h-[300px] md:h-[500px] w-full">
+        <div className="relative overflow-hidden rounded-[20px] bg-gray-100 shadow-lg h-[300px] lg:h-[500px] w-full">
           {/* Main Slider Images */}
           {activeService?.images.map((img, i) => {
             const isVisible = i === activeImageIndex;
@@ -337,7 +337,7 @@ export default function Service() {
           {/* Floating Thumbnails centered at bottom */}
           <div
             ref={containerRef}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-fit max-w-[90%] md:max-w-[470px] overflow-hidden flex justify-start py-2 px-2"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-fit max-w-[90%] lg:max-w-[470px] overflow-hidden flex justify-start py-2 px-2"
           >
             <div
               ref={trackRef}
@@ -376,7 +376,7 @@ export default function Service() {
         </div>
 
         {/* RIGHT COLUMN: SERVICE DETAILS (Framer Motion transitions on change) */}
-        <div className="flex flex-col h-auto md:h-[500px] justify-between py-1 overflow-hidden">
+        <div className="flex flex-col h-auto lg:h-[500px] justify-between py-1 overflow-hidden">
           <motion.div
             key={activeServiceIndex}
             initial={{ opacity: 0, y: 15 }}
@@ -408,7 +408,7 @@ export default function Service() {
       </div>
 
       {/* MOBILE/TABLET VIEW (Hidden on Desktop) */}
-      <div className="md:hidden flex flex-col gap-4 mt-8 max-w-[600px] mx-auto">
+      <div className="lg:hidden flex flex-col gap-4 mt-8 max-w-[800px] w-[calc(100%-32px)] mx-auto">
         {servicesData.map((service, i) => {
           const isOpen = i === activeServiceIndex;
           return (

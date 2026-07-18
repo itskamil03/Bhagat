@@ -84,7 +84,7 @@ const itemVariants = {
 
 export default function Hero() {
   return (
-    <section className="w-full h-auto md:h-[110vh] text-white relative overflow-hidden bg-[#530503] pb-12 md:pb-0">
+    <section className="w-full h-auto lg:h-[110vh] lg:min-h-[800px] text-white relative overflow-hidden bg-[#530503] pb-12 lg:pb-0">
       {/* Static Background Image */}
       <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
         <div
@@ -106,7 +106,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-6 pt-10 md:pt-14 relative z-10 w-full">
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 px-6 pt-10 lg:pt-14 relative z-10 w-full">
         {/* LEFT CONTENT */}
         <div className="flex flex-col justify-start">
           <p className="text-green-400 tracking-widest text-xs md:text-sm mb-3">
@@ -114,10 +114,10 @@ export default function Hero() {
           </p>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight select-none">
-            Engineering the <br className="hidden md:inline" />
-            future with <br className="hidden md:inline" />
-            legacy, <br className="hidden md:inline" />
-            precision, and <br className="hidden md:inline" />
+            Engineering the <br className="hidden lg:inline" />
+            future with <br className="hidden lg:inline" />
+            legacy, <br className="hidden lg:inline" />
+            precision, and <br className="hidden lg:inline" />
             innovation.
           </h1>
 
@@ -131,13 +131,13 @@ export default function Hero() {
           <div className="mt-2 flex gap-3 md:gap-4">
             <Link
               href="/service"
-              className="bg-red-700 px-0 md:px-6 py-3 rounded-md hover:bg-red-800 transition text-sm md:text-base text-center font-semibold flex-1 max-w-[170px] md:max-w-none md:flex-none"
+              className="bg-red-700 px-0 sm:px-6 py-3 rounded-md hover:bg-red-800 transition text-sm sm:text-base text-center font-semibold flex-1 max-w-[170px] sm:max-w-none sm:flex-none"
             >
               Explore Services
             </Link>
             <Link
               href="/about"
-              className="border border-white px-0 md:px-6 py-3 rounded-md hover:bg-white hover:text-black transition text-sm md:text-base text-center font-semibold flex-1 max-w-[170px] md:max-w-none md:flex-none md:ml-10"
+              className="border border-white px-0 sm:px-6 py-3 rounded-md hover:bg-white hover:text-black transition text-sm sm:text-base text-center font-semibold flex-1 max-w-[170px] sm:max-w-none sm:flex-none sm:ml-10"
             >
               Know More
             </Link>
@@ -145,24 +145,24 @@ export default function Hero() {
         </div>
 
         {/* Spacer for desktop layout grid flow */}
-        <div className="hidden md:block pointer-events-none h-full" />
+        <div className="hidden lg:block pointer-events-none h-full" />
       </div>
 
       {/* RIGHT SIDE SLIDER VIEWPORT (FULL HERO HEIGHT ON DESKTOP - MOVES IN FLOW ON MOBILE) */}
-      <div className="w-[calc(100%-48px)] mx-auto md:mx-0 md:w-[48%] h-[350px] md:h-full md:absolute md:right-0 md:top-0 overflow-hidden relative z-0 mt-8 md:mt-0">
+      <div className="w-[calc(100%-48px)] mx-auto lg:mx-0 lg:w-[48%] h-[350px] sm:h-[450px] lg:h-full lg:absolute lg:right-0 lg:top-0 overflow-hidden relative z-0 mt-8 lg:mt-0">
         <div
-          className="absolute w-full flex justify-center gap-3 px-4 md:px-0 md:pr-8 animate-parallaxRight"
+          className="absolute w-full flex justify-center gap-3 px-4 lg:px-0 lg:pr-8 animate-parallaxRight"
           style={{
             height: "calc(100% + 240px)",
             top: "-120px",
           }}
         >
           {/* LEFT COLUMN (DOWN - MOVING DOWNWARD) */}
-          <div className="flex-1 md:flex-none md:w-[298px] flex flex-col gap-5 animate-downSlow">
+          <div className="flex-1 lg:flex-none lg:w-[298px] flex flex-col gap-5 animate-downSlow">
             {[...colLeft, ...colLeft].map((img, i) => (
               <div
                 key={i}
-                className="w-full max-w-[298px] h-[180px] md:h-[317px] flex-shrink-0 mx-auto"
+                className="w-full max-w-[298px] h-[180px] sm:h-[240px] lg:h-[317px] flex-shrink-0 mx-auto"
               >
                 <div className="relative w-full h-full overflow-hidden rounded-none">
                   <Image
@@ -179,11 +179,11 @@ export default function Hero() {
           </div>
 
           {/* RIGHT COLUMN (UP - MOVING UPWARD) */}
-          <div className="flex-1 md:flex-none md:w-[298px] flex flex-col gap-5 animate-upFast mt-12">
+          <div className="flex-1 lg:flex-none lg:w-[298px] flex flex-col gap-5 animate-upFast mt-12">
             {[...colRight, ...colRight].map((img, i) => (
               <div
                 key={i}
-                className="w-full max-w-[298px] h-[180px] md:h-[317px] flex-shrink-0 mx-auto"
+                className="w-full max-w-[298px] h-[180px] sm:h-[240px] lg:h-[317px] flex-shrink-0 mx-auto"
               >
                 <div className="relative w-full h-full overflow-hidden rounded-none">
                   <Image
@@ -206,13 +206,13 @@ export default function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative md:absolute mt-10 md:mt-0 md:bottom-6 md:left-1/2 md:-translate-x-1/2 w-[calc(100%-32px)] max-w-[1410px] h-auto md:h-[98px] rounded-[16px] md:rounded-[6px] bg-[rgba(140,0,0,0.88)] backdrop-blur-[8px] border border-[rgba(255,255,255,0.15)] z-20 shadow-xl overflow-hidden flex items-center justify-center mx-auto"
+        className="relative lg:absolute mt-10 lg:mt-0 lg:bottom-6 lg:left-1/2 lg:-translate-x-1/2 w-[calc(100%-32px)] max-w-[1410px] h-auto lg:h-[98px] rounded-[16px] lg:rounded-[6px] bg-[rgba(140,0,0,0.88)] backdrop-blur-[8px] border border-[rgba(255,255,255,0.15)] z-20 shadow-xl overflow-hidden flex items-center justify-center mx-auto"
       >
-        <div className="w-full h-full grid grid-cols-2 md:grid-cols-5 items-center p-2 md:p-0 md:px-3">
+        <div className="w-full h-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 items-center p-2 lg:p-0 lg:px-3">
           {/* Column 1 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-r border-b border-[rgba(255,255,255,0.15)] md:border-b-0 md:border-r md:border-[rgba(255,255,255,0.2)]"
+            className="flex flex-col justify-center items-center lg:items-start text-center lg:text-left h-[110px] lg:h-full border-r border-b border-[rgba(255,255,255,0.15)] lg:border-b-0 lg:border-r lg:border-[rgba(255,255,255,0.2)]"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
@@ -228,7 +228,7 @@ export default function Hero() {
           {/* Column 2 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-b border-[rgba(255,255,255,0.15)] md:border-b-0 md:border-r md:border-[rgba(255,255,255,0.2)] md:px-3"
+            className="flex flex-col justify-center items-center lg:items-start text-center lg:text-left h-[110px] lg:h-full border-b border-[rgba(255,255,255,0.15)] sm:border-r sm:border-[rgba(255,255,255,0.15)] lg:border-b-0 lg:border-r lg:border-[rgba(255,255,255,0.2)] lg:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
@@ -244,7 +244,7 @@ export default function Hero() {
           {/* Column 3 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-r border-b border-[rgba(255,255,255,0.15)] md:border-b-0 md:border-r md:border-[rgba(255,255,255,0.2)] md:px-3"
+            className="flex flex-col justify-center items-center lg:items-start text-center lg:text-left h-[110px] lg:h-full border-r border-b sm:border-b-0 sm:border-[rgba(255,255,255,0.15)] border-[rgba(255,255,255,0.15)] lg:border-b-0 lg:border-r lg:border-[rgba(255,255,255,0.2)] lg:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
@@ -260,7 +260,7 @@ export default function Hero() {
           {/* Column 4 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-b border-[rgba(255,255,255,0.15)] md:border-b-0 md:px-3"
+            className="flex flex-col justify-center items-center lg:items-start text-center lg:text-left h-[110px] lg:h-full border-b sm:border-r border-[rgba(255,255,255,0.15)] sm:border-[rgba(255,255,255,0.15)] lg:border-r lg:border-[rgba(255,255,255,0.2)] lg:border-b-0 lg:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
@@ -276,7 +276,7 @@ export default function Hero() {
           {/* Column 5 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full col-span-2 md:col-span-1 md:px-3"
+            className="flex flex-col justify-center items-center lg:items-start text-center lg:text-left h-[110px] lg:h-full col-span-2 sm:col-span-1 lg:col-span-1 lg:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}

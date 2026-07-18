@@ -88,7 +88,12 @@ export default function Project() {
         .project-slider-track {
           transform: var(--slider-transform);
         }
-        @media (min-width: 768px) {
+        @media (min-width: 640px) and (max-width: 1023px) {
+          .project-slider-track {
+            transform: translateX(calc(-1 * min(var(--active-index), 2) * (50% + 12px))) !important;
+          }
+        }
+        @media (min-width: 1024px) {
           .project-slider-track {
             transform: translateX(calc(-1 * min(var(--active-index), 1) * (33.333% + 8px))) !important;
           }
@@ -109,7 +114,7 @@ export default function Project() {
           </h1>
         </div>
 
-        <button className="hidden md:block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold shrink-0">
+        <button className="hidden lg:block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold shrink-0">
           Start a Requirement
         </button>
       </div>
@@ -138,7 +143,7 @@ export default function Project() {
           {data.map((item, i) => (
             <div
               key={i}
-              className="w-full md:w-[calc(33.333%-16px)] flex-shrink-0 bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition"
+              className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0 bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition"
             >
               {/* IMAGE */}
               <div className="relative w-full h-[220px]">
