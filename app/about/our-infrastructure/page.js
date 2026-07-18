@@ -134,11 +134,11 @@ export default function OurInfrastructure() {
           {/* Uniform 3-Column Grid Gallery */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
              {[
-               "/fi1.jpg", "/fi2.jpg", "/fi3.jpg", 
-               "/fi4.jpg", "/fi5.jpg", "/ec1.jpg", 
+               , 
+           "/ec1.jpg", 
                "/ec2.jpg", "/ec3.jpg", "/ec22.jpg", 
                "/iq1.jpg", "/iq2.jpg", "/iq3.jpg",
-               "/indim1.jpg", "/im2.jpeg", "/k1.jpg"
+                "/im2.jpeg", 
              ].map((imgSrc, index) => (
                <div key={index} className="relative w-full aspect-[4/3] rounded-xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300">
                   <Image 
