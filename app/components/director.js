@@ -12,7 +12,7 @@ export default function Director() {
         height={720}
         className="absolute top-0 right-0 opacity-45 z-0"
       />
-      
+
       <div className="max-w-[1384px] mx-auto w-full relative z-10">
         {/* TOP HEADING */}
         <div className="text-center max-w-3xl mx-auto">
@@ -52,21 +52,24 @@ export default function Director() {
 
           {/* CENTER TEXT */}
           <div className="px-4">
-            <h3 className="text-red-600 font-bold text-2xl mb-1">Anand Kumar</h3>
+            <h3 className="text-red-600 font-bold text-2xl mb-1">
+              Anand Kumar
+            </h3>
             <p className="text-gray-805 text-2xl font-bold mb-3">Director</p>
 
             <p className="text-red-500 text-6xl">“</p>
 
             <p className="text-gray-600 text-sm font-bold leading-relaxed">
-              Our vision has always been to transform engineering challenges into
-              opportunities for innovation. Every project reflects our commitment
-              to precision, professionalism, and long-term value creation.
+              Our vision has always been to transform engineering challenges
+              into opportunities for innovation. Every project reflects our
+              commitment to precision, professionalism, and long-term value
+              creation.
             </p>
 
             <p className="text-gray-500 text-sm font-bold mt-3">
               For decades, Bhagat Engineering Works has delivered complex
-              electrical, mechanical, and infrastructure projects with confidence
-              and technical excellence.
+              electrical, mechanical, and infrastructure projects with
+              confidence and technical excellence.
             </p>
           </div>
 

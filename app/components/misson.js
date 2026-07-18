@@ -97,8 +97,7 @@ export default function Misson() {
         <div className="max-w-[1400px] mx-auto flex flex-col gap-6 md:gap-8 relative z-10 w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             {/* Desktop cropped blueprint image spaceholder (extends left) */}
-            <div className="order-2 md:order-1 relative h-[164px] w-full overflow-visible hidden md:block select-none pointer-events-none">
-            </div>
+            <div className="order-2 md:order-1 relative h-[164px] w-full overflow-visible hidden md:block select-none pointer-events-none"></div>
 
             <div className="order-1 md:order-2 flex flex-col justify-center">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">

@@ -192,7 +192,10 @@ function Nav() {
                       scroll={true}
                       onClick={() => {
                         setOpenDropdown(null);
-                        if (typeof window !== "undefined" && window.location.pathname === "/about") {
+                        if (
+                          typeof window !== "undefined" &&
+                          window.location.pathname === "/about"
+                        ) {
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }
                       }}
@@ -371,9 +374,7 @@ function Nav() {
             >
               <button
                 onClick={() =>
-                  setOpenDropdown(
-                    openDropdown === "gallery" ? null : "gallery",
-                  )
+                  setOpenDropdown(openDropdown === "gallery" ? null : "gallery")
                 }
                 className="flex items-center gap-1.5 text-gray-800 hover:text-red-600 transition-colors focus:outline-none"
               >
@@ -526,7 +527,10 @@ function Nav() {
                       scroll={true}
                       onClick={() => {
                         setIsMobileOpen(false);
-                        if (typeof window !== "undefined" && window.location.pathname === "/about") {
+                        if (
+                          typeof window !== "undefined" &&
+                          window.location.pathname === "/about"
+                        ) {
                           window.scrollTo({ top: 0, behavior: "smooth" });
                         }
                       }}

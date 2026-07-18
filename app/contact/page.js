@@ -105,9 +105,7 @@ export default function ContactPage() {
               <p className="text-xs font-bold tracking-wider uppercase text-gray-400 mb-1">
                 Direct Inquiry & Support
               </p>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                
-              </h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2"></h3>
               <p className="text-sm text-gray-600 leading-relaxed">
                 Toll Free Line:{" "}
                 <strong className="text-gray-800">1800 8890 705</strong>
@@ -387,9 +385,7 @@ export default function ContactPage() {
                     Have an urgent substation fault or transformer breakdown?
                     Our emergency maintenance units are on standby.
                   </p>
-                  <p className="text-sm font-bold text-red-400 mt-3">
-                    
-                  </p>
+                  <p className="text-sm font-bold text-red-400 mt-3"></p>
                 </div>
               </div>
             </div>

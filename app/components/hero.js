@@ -114,21 +114,18 @@ export default function Hero() {
           </p>
 
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight select-none">
-            Engineering the
-            <br />
-            future with
-            <br />
-            legacy,
-            <br />
-            precision, and
-            <br />
+            Engineering the <br className="hidden md:inline" />
+            future with <br className="hidden md:inline" />
+            legacy, <br className="hidden md:inline" />
+            precision, and <br className="hidden md:inline" />
             innovation.
           </h1>
 
           <p className="text-sm md:text-base text-white/80 mt-4 leading-relaxed max-w-[500px]">
-            Bhagat Engineering Works is a leading engineering solutions provider, delivering
-             integrated electrical, mechanical, and civil services with precision, innovation, and
-              reliability from concept and design to fabrication, installation, and project completion.
+            Bhagat Engineering Works is a leading engineering solutions
+            provider, delivering integrated electrical, mechanical, and civil
+            services with precision, innovation, and reliability from concept
+            and design to fabrication, installation, and project completion.
           </p>
 
           <div className="mt-2 flex gap-3 md:gap-4">
@@ -247,7 +244,7 @@ export default function Hero() {
           {/* Column 3 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-r border-[rgba(255,255,255,0.15)] md:border-r md:border-[rgba(255,255,255,0.2)] md:px-3"
+            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-r border-b border-[rgba(255,255,255,0.15)] md:border-b-0 md:border-r md:border-[rgba(255,255,255,0.2)] md:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
@@ -263,7 +260,7 @@ export default function Hero() {
           {/* Column 4 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full md:px-3"
+            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full border-b border-[rgba(255,255,255,0.15)] md:border-b-0 md:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}
@@ -279,7 +276,7 @@ export default function Hero() {
           {/* Column 5 */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full md:px-3"
+            className="flex flex-col justify-center items-center md:items-start text-center md:text-left h-[110px] md:h-full col-span-2 md:col-span-1 md:px-3"
           >
             <motion.h2
               whileHover={{ scale: 1.03 }}

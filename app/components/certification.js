@@ -21,7 +21,7 @@ export default function Certification() {
       </p>
 
       {/* CARDS */}
-      <motion.div 
+      <motion.div
         className="mt-12 grid md:grid-cols-3 gap-6"
         initial="hidden"
         whileInView="visible"
@@ -31,9 +31,9 @@ export default function Certification() {
           visible: {
             opacity: 1,
             transition: {
-              staggerChildren: 0.15
-            }
-          }
+              staggerChildren: 0.15,
+            },
+          },
         }}
       >
         {/* ALL IMAGE CARDS */}
@@ -48,16 +48,20 @@ export default function Certification() {
 /* CARD COMPONENT */
 function Card({ img }) {
   return (
-    <motion.div 
+    <motion.div
       variants={{
         hidden: { opacity: 0, y: 40 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.5, ease: "easeOut" },
+        },
       }}
-      whileHover={{ 
+      whileHover={{
         scale: 1.04,
         y: -6,
         shadow: "0 25px 50px -12px rgba(230, 27, 35, 0.25)",
-        transition: { duration: 0.25 }
+        transition: { duration: 0.25 },
       }}
       className="group bg-white border-2 border-red-500 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer relative w-full aspect-[4/3]"
     >

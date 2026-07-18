@@ -35,7 +35,7 @@ const servicesData = [
   {
     title: "Over head and underground Cable Laying",
     category: "Electrical",
-    desc: "Our services cover underground HT/LT cable trenching, overhead GI cable tray installation, and professional Raychem heat-shrinkable jointing. We execute precise route mapping, design earth resistivity layouts, install heavy-duty armored cables, and conduct complete insulation testing to ensure high durability and compliance with strict safety regulations.",
+    desc: "Our services cover underground HT/LT cable trenching, overhead GI cable tray installation, and professional professional heat-shrink cable jointing and termination services. We execute precise route mapping, design earth resistivity layouts, install heavy-duty armored cables, and conduct complete insulation testing to ensure high durability and compliance with strict safety regulations.",
     images: [
       "/Cable Laying 4.jpeg",
       "/Cable Laying 6.jpeg",
@@ -72,7 +72,12 @@ const servicesData = [
     title: "Erection and commissioning of High Mast Pole/Tower and Poles",
     category: "Turnkey",
     desc: "We handle the complete structural erection, foundation construction, cabling, and commissioning of high mast poles, transmission towers, street light poles, and area lighting masts. Our teams specialize in motorized winch alignment, luminaire carriage mounting, and automated control panel installation for reliable wide-area illumination.",
-    images: ["/Erection and commissioning of Power Sub-station 9.jpeg", "/public/Cable Laying 2.jpeg", "/Erection and commissioning of Power Sub-station 3.jpeg", "/Erection and commissioning of Power Sub-station 5.jpeg", "/"],
+    images: [
+      "/Erection and commissioning of Power Sub-station 9.jpeg",
+      "/Cable Laying 2.jpeg",
+      "/Erection and commissioning of Power Sub-station 3.jpeg",
+      "/Erection and commissioning of Power Sub-station 5.jpeg",
+    ],
     href: "/service/servo-stabilizers",
   },
 ];

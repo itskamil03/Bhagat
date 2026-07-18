@@ -56,13 +56,18 @@ export default function Section() {
         transparent dealings
       </h1>
 
-      <div ref={sectionRef} className="grid md:grid-cols-4 gap-6 px-6 py-10">
+      <div
+        ref={sectionRef}
+        className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 px-6 py-10"
+      >
         {data.map((item, i) => (
-          <Card 
-            key={i} 
-            {...item} 
+          <Card
+            key={i}
+            {...item}
             isActive={activeCardIndex === i}
-            onToggle={() => setActiveCardIndex(activeCardIndex === i ? null : i)}
+            onToggle={() =>
+              setActiveCardIndex(activeCardIndex === i ? null : i)
+            }
           />
         ))}
       </div>

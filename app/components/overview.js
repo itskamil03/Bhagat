@@ -6,7 +6,9 @@ export default function Overview() {
       <div className="max-w-[1400px] mx-auto grid md:grid-cols-2 gap-10 w-full">
         {/* LEFT CONTENT */}
         <div>
-          <p className="text-red-600 font-bold text-sm sm:text-base uppercase tracking-widest mb-3">OVERVIEW</p>
+          <p className="text-red-600 font-bold text-sm sm:text-base uppercase tracking-widest mb-3">
+            OVERVIEW
+          </p>
 
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
             Bhagat Engineering <br />

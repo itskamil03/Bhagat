@@ -61,7 +61,9 @@ export default function Footer() {
               </Link>
             </li>
             <li className="hover:text-red-500 transition">
-              <Link href="/service/domestic-wiring">Installation and Commissioning of Compact Substation</Link>
+              <Link href="/service/domestic-wiring">
+                Installation and Commissioning of Compact Substation
+              </Link>
             </li>
             <li className="hover:text-red-500 transition">
               <Link href="/service/transformer-services">
@@ -69,7 +71,9 @@ export default function Footer() {
               </Link>
             </li>
             <li className="hover:text-red-500 transition">
-              <Link href="/service/cable-laying">Industrial / Quarter Wiring</Link>
+              <Link href="/service/cable-laying">
+                Industrial / Quarter Wiring
+              </Link>
             </li>
           </ul>
         </div>
@@ -83,9 +87,7 @@ export default function Footer() {
                 href="http://bhagatengg.in"
                 target="_blank"
                 rel="noopener noreferrer"
-              >
-                
-              </a>
+              ></a>
             </li>
             <li className="hover:text-red-500 transition">
               <a href="mailto:info@bhagatengg.in">info@bhagatengg.in</a>

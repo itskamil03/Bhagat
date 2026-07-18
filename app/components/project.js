@@ -43,7 +43,7 @@ export default function Project() {
     if (!touchStart) return;
     const currentX = e.targetTouches[0].clientX;
     const deltaX = currentX - touchStart;
-    
+
     // Apply rubber banding when dragging past boundaries
     let finalOffset = deltaX;
     if (activeIndex === 0 && deltaX > 0) {
@@ -51,7 +51,7 @@ export default function Project() {
     } else if (activeIndex === data.length - 1 && deltaX < 0) {
       finalOffset = deltaX * 0.3;
     }
-    
+
     setDragOffset(finalOffset);
   };
 
@@ -115,7 +115,7 @@ export default function Project() {
       </div>
 
       {/* SLIDER VIEWPORT with touch swipe gesture support for mobile */}
-      <div 
+      <div
         className="max-w-[1308px] mx-auto w-full overflow-hidden"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
@@ -124,7 +124,9 @@ export default function Project() {
         {/* Track */}
         <div
           className={`project-slider-track flex gap-6 ${
-            isDragging ? "transition-none" : "transition-transform duration-500 ease-out"
+            isDragging
+              ? "transition-none"
+              : "transition-transform duration-500 ease-out"
           }`}
           style={{
             "--active-index": activeIndex,

@@ -43,7 +43,8 @@ export default function Leader() {
 
             <p className="text-gray-500 text-sm font-bold mt-3">
               At Bhagat Engineering Works, every project is approached with
-              originality, precision, and a commitment to sustainable engineering.
+              originality, precision, and a commitment to sustainable
+              engineering.
             </p>
           </div>
 

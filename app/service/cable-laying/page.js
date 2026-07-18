@@ -25,7 +25,7 @@ const expertiseCards = [
   },
   {
     title: "Joints & Terminations",
-    desc: "Professional Raychem heat-shrinkable jointing and terminations to protect against moisture ingress.",
+    desc: "professional heat-shrink cable jointing and termination services and terminations to protect against moisture ingress.",
     icon: <FiZap />,
   },
   {

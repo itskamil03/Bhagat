@@ -6,7 +6,7 @@ import Founder from "../components/founder";
 import Director from "../components/director";
 import Leader from "../components/leader";
 import Certification from "../components/certification";
-import Additional from "../components/additional";
+import Contact from "../components/contact";
 
 function page() {
   return (
@@ -18,7 +18,7 @@ function page() {
       <Director />
       <Leader />
       <Certification />
-      <Additional />
+      <Contact />
     </>
   );
 }

@@ -21,32 +21,44 @@ const expertiseCards = [
   {
     title: "New Home Wiring",
     desc: "End-to-end electrical planning and execution for new residential constructions ensuring lifelong safety.",
-    icon: <FiHome className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+    icon: (
+      <FiHome className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+    ),
   },
   {
     title: "Complete Rewiring",
     desc: "Upgrading outdated electrical systems with modern fire-resistant cables and high-performance conduits.",
-    icon: <FiZap className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+    icon: (
+      <FiZap className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+    ),
   },
   {
     title: "Distribution Board",
     desc: "Precision installation of main distribution boards with advanced circuit breakers and surge protection.",
-    icon: <FiGrid className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+    icon: (
+      <FiGrid className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+    ),
   },
   {
     title: "Switch & Socket",
     desc: "Professional mounting of aesthetic modular switches and power sockets with perfect alignment.",
-    icon: <FiToggleRight className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+    icon: (
+      <FiToggleRight className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+    ),
   },
   {
     title: "Lighting Solutions",
     desc: "Integrated lighting design including ambient, task, and accent systems for premium home interiors.",
-    icon: <FaLightbulb className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+    icon: (
+      <FaLightbulb className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+    ),
   },
   {
     title: "Safety Inspection",
     desc: "Rigorous testing including insulation resistance, earthing check, and load balance certification.",
-    icon: <FiShield className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />,
+    icon: (
+      <FiShield className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+    ),
   },
 ];
 
@@ -172,26 +184,38 @@ export default function DomesticWiriting() {
       ======================================================== */}
       <section className="w-full py-16 lg:py-20 px-6 lg:px-20 bg-[#FCFBF9] relative overflow-hidden">
         {/* Subtle red radial gradients */}
-        <div 
-          className="absolute inset-0 pointer-events-none opacity-40 z-0" 
+        <div
+          className="absolute inset-0 pointer-events-none opacity-40 z-0"
           style={{
             background: `
               radial-gradient(circle at 10% 20%, rgba(230, 27, 35, 0.035) 0%, transparent 45%),
               radial-gradient(circle at 90% 80%, rgba(230, 27, 35, 0.035) 0%, transparent 45%)
-            `
+            `,
           }}
         />
 
         {/* Abstract concentric curved lines in corners */}
         {/* Bottom-left curve */}
-        <svg className="absolute left-0 bottom-0 w-80 h-80 opacity-[0.08] pointer-events-none text-[#E61B23]" viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1">
+        <svg
+          className="absolute left-0 bottom-0 w-80 h-80 opacity-[0.08] pointer-events-none text-[#E61B23]"
+          viewBox="0 0 200 200"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+        >
           <circle cx="0" cy="200" r="180" />
           <circle cx="0" cy="200" r="150" />
           <circle cx="0" cy="200" r="120" />
           <circle cx="0" cy="200" r="90" />
         </svg>
         {/* Top-right curve */}
-        <svg className="absolute right-0 top-0 w-80 h-80 opacity-[0.08] pointer-events-none text-[#E61B23]" viewBox="0 0 200 200" fill="none" stroke="currentColor" strokeWidth="1">
+        <svg
+          className="absolute right-0 top-0 w-80 h-80 opacity-[0.08] pointer-events-none text-[#E61B23]"
+          viewBox="0 0 200 200"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+        >
           <circle cx="200" cy="0" r="180" />
           <circle cx="200" cy="0" r="150" />
           <circle cx="200" cy="0" r="120" />
@@ -201,7 +225,14 @@ export default function DomesticWiriting() {
         {/* Dotted red pattern in the top-right area */}
         <div className="absolute right-8 top-8 w-36 h-36 opacity-[0.12] pointer-events-none hidden md:block">
           <svg className="w-full h-full text-[#E61B23]" fill="currentColor">
-            <pattern id="grid-dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+            <pattern
+              id="grid-dots"
+              x="0"
+              y="0"
+              width="16"
+              height="16"
+              patternUnits="userSpaceOnUse"
+            >
               <circle cx="2" cy="2" r="1.5" />
             </pattern>
             <rect width="100%" height="100%" fill="url(#grid-dots)" />
@@ -217,9 +248,7 @@ export default function DomesticWiriting() {
               </p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black tracking-tight leading-tight">
                 Specialized Domestic <br className="hidden sm:block" />
-                <span className="text-red-600">
-                  Electrical Services
-                </span>
+                <span className="text-red-600">Electrical Services</span>
               </h2>
             </div>
           </div>

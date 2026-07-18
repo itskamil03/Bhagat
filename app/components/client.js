@@ -47,7 +47,9 @@ export default function Client() {
       {/* HEADING */}
       <div className="max-w-7xl mx-auto mb-12">
         <h2 className="text-3xl md:text-5xl font-bold mb-4">Client voices</h2>
-        <p className="text-base md:text-lg text-gray-600">What our partners say</p>
+        <p className="text-base md:text-lg text-gray-600">
+          What our partners say
+        </p>
       </div>
 
       {/* CARDS */}
@@ -94,7 +96,6 @@ export default function Client() {
                 <h3 className="mb-6 leading-relaxed font-semibold">
                   {item.text}
                 </h3>
-
 
                 {/* LINK */}
                 <p className="flex items-center gap-2 font-medium">

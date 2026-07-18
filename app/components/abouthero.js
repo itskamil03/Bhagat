@@ -15,7 +15,7 @@ function Counter({ target, duration = 1500, suffix = "" }) {
           setStarted(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const currentRef = ref.current;
@@ -45,7 +45,12 @@ function Counter({ target, duration = 1500, suffix = "" }) {
     window.requestAnimationFrame(step);
   }, [started, target, duration]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {count}
+      {suffix}
+    </span>
+  );
 }
 
 export default function Abouthero() {
