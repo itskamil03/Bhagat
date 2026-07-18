@@ -94,9 +94,9 @@ export default function ServoStabilizersPage() {
   return (
     <>
       <ServiceDetailTemplate
-        breadcrumb="Servo Stabilizers"
-        titlePart1="Servo"
-        titlePart2="Stabilizers"
+        breadcrumb="Erection and commissioning of High Mast Pole/Tower and Poles"
+        titlePart1="Erection and commissioning of"
+        titlePart2="High Mast Pole/Tower and Poles"
         subtext="Voltage Regulation. Peak Protection. Stable power for heavy industrial loads and sensitive CNC machines."
         description="Inconsistent utility supply voltage causes premature equipment breakdown. Bhagat Engineering Works offers premium Servo voltage stabilizers to protect your industrial machinery by correcting supply anomalies in milliseconds."
         heroImage="/pa1.png"

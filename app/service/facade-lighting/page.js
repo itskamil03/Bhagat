@@ -95,8 +95,8 @@ export default function FacadeLightingPage() {
     <>
       <ServiceDetailTemplate
         breadcrumb="Facade Lighting"
-        titlePart1="Facade &"
-        titlePart2="Acrylic Lighting"
+        titlePart1="Facade Lighting"
+        titlePart2=""
         subtext="State-of-the-art exterior lighting designs, LED installations, architectural highlights, and acrylic structures."
         description="Aesthetically engineered exterior lighting transforms commercial and public buildings, while guaranteeing safety, structural highlight, and low power consumption. Bhagat Engineering Works offers end-to-end weatherproof IP67 LED lighting structures."
         heroImage="/pk2.png"

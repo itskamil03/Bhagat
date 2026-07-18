@@ -174,9 +174,8 @@ function Nav() {
                 </Link>
                 <FaChevronDown
                   size={11}
-                  className={`transition-transform duration-200 ${
-                    openDropdown === "about" ? "rotate-180 text-red-600" : ""
-                  }`}
+                  className={`transition-transform duration-200 ${openDropdown === "about" ? "rotate-180 text-red-600" : ""
+                    }`}
                 />
               </button>
 
@@ -248,9 +247,8 @@ function Nav() {
                 </span>
                 <FaChevronDown
                   size={11}
-                  className={`transition-transform duration-200 ${
-                    openDropdown === "services" ? "rotate-180 text-red-600" : ""
-                  }`}
+                  className={`transition-transform duration-200 ${openDropdown === "services" ? "rotate-180 text-red-600" : ""
+                    }`}
                 />
               </button>
 
@@ -266,35 +264,28 @@ function Nav() {
                       onClick={() => setOpenDropdown(null)}
                       className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
                     >
-                      Power Substation
-                    </Link>
-                    <Link
-                      href="/service/domestic-wiring"
-                      onClick={() => setOpenDropdown(null)}
-                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
-                    >
-                      Domestic Wiring
+                      Erection and Maintenance of Power Substation
                     </Link>
                     <Link
                       href="/service/transformer-services"
                       onClick={() => setOpenDropdown(null)}
                       className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
                     >
-                      Transformer Services
-                    </Link>
-                    <Link
-                      href="/service/servo-stabilizers"
-                      onClick={() => setOpenDropdown(null)}
-                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
-                    >
-                      Servo Stabilizers
+                      Installation and Commissioning of Compact Substation
                     </Link>
                     <Link
                       href="/service/cable-laying"
                       onClick={() => setOpenDropdown(null)}
                       className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
                     >
-                      Cable Laying
+                      Over head and underground Cable Laying
+                    </Link>
+                    <Link
+                      href="/service/domestic-wiring"
+                      onClick={() => setOpenDropdown(null)}
+                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                    >
+                      Industrial/Quarter Wiring
                     </Link>
                     <Link
                       href="/service/facade-lighting"
@@ -302,6 +293,13 @@ function Nav() {
                       className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
                     >
                       Facade Lighting
+                    </Link>
+                    <Link
+                      href="/service/servo-stabilizers"
+                      onClick={() => setOpenDropdown(null)}
+                      className="block px-3 py-2 rounded-xl text-sm font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 transition"
+                    >
+                      Erection and commissioning of High Mast Pole/Tower and Poles
                     </Link>
                   </div>
                 </div>
@@ -327,9 +325,8 @@ function Nav() {
                 </span>
                 <FaChevronDown
                   size={11}
-                  className={`transition-transform duration-200 ${
-                    openDropdown === "projects" ? "rotate-180 text-red-600" : ""
-                  }`}
+                  className={`transition-transform duration-200 ${openDropdown === "projects" ? "rotate-180 text-red-600" : ""
+                    }`}
                 />
               </button>
 
@@ -383,9 +380,8 @@ function Nav() {
                 </Link>
                 <FaChevronDown
                   size={11}
-                  className={`transition-transform duration-200 ${
-                    openDropdown === "gallery" ? "rotate-180 text-red-600" : ""
-                  }`}
+                  className={`transition-transform duration-200 ${openDropdown === "gallery" ? "rotate-180 text-red-600" : ""
+                    }`}
                 />
               </button>
 
@@ -513,11 +509,10 @@ function Nav() {
                   <span>About Us</span>
                   <FaChevronDown
                     size={10}
-                    className={`transition-transform duration-200 ${
-                      activeMobileDropdown === "about"
-                        ? "rotate-180 text-red-600"
-                        : ""
-                    }`}
+                    className={`transition-transform duration-200 ${activeMobileDropdown === "about"
+                      ? "rotate-180 text-red-600"
+                      : ""
+                      }`}
                   />
                 </button>
                 {activeMobileDropdown === "about" && (
@@ -576,56 +571,41 @@ function Nav() {
                   <span>Services</span>
                   <FaChevronDown
                     size={10}
-                    className={`transition-transform duration-200 ${
-                      activeMobileDropdown === "services"
-                        ? "rotate-180 text-red-600"
-                        : ""
-                    }`}
+                    className={`transition-transform duration-200 ${activeMobileDropdown === "services"
+                      ? "rotate-180 text-red-600"
+                      : ""
+                      }`}
                   />
                 </button>
                 {activeMobileDropdown === "services" && (
                   <div className="pl-6 space-y-1 bg-gray-50 rounded-xl p-2 mt-1">
                     <Link
-                      href="/service"
-                      onClick={() => setIsMobileOpen(false)}
-                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition border-b border-gray-200/50 pb-2 mb-1"
-                    >
-                      All Services
-                    </Link>
-                    <Link
                       href="/service/power-substation"
                       onClick={() => setIsMobileOpen(false)}
                       className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
                     >
-                      Power Substation
-                    </Link>
-                    <Link
-                      href="/service/domestic-wiring"
-                      onClick={() => setIsMobileOpen(false)}
-                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
-                    >
-                      Domestic Wiring
+                      Erection and Maintenance of Power Substation
                     </Link>
                     <Link
                       href="/service/transformer-services"
                       onClick={() => setIsMobileOpen(false)}
                       className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
                     >
-                      Transformer Services
-                    </Link>
-                    <Link
-                      href="/service/servo-stabilizers"
-                      onClick={() => setIsMobileOpen(false)}
-                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
-                    >
-                      Servo Stabilizers
+                      Installation and Commissioning of Compact Substation
                     </Link>
                     <Link
                       href="/service/cable-laying"
                       onClick={() => setIsMobileOpen(false)}
                       className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
                     >
-                      Cable Laying
+                      Over head and underground Cable Laying
+                    </Link>
+                    <Link
+                      href="/service/domestic-wiring"
+                      onClick={() => setIsMobileOpen(false)}
+                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
+                    >
+                      Industrial/Quarter Wiring
                     </Link>
                     <Link
                       href="/service/facade-lighting"
@@ -633,6 +613,13 @@ function Nav() {
                       className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
                     >
                       Facade Lighting
+                    </Link>
+                    <Link
+                      href="/service/servo-stabilizers"
+                      onClick={() => setIsMobileOpen(false)}
+                      className="block py-1.5 px-3 text-xs font-semibold text-gray-600 hover:text-red-600 transition"
+                    >
+                      Erection and commissioning of High Mast Pole/Tower and Poles
                     </Link>
                   </div>
                 )}
@@ -651,11 +638,10 @@ function Nav() {
                   <span>Projects</span>
                   <FaChevronDown
                     size={10}
-                    className={`transition-transform duration-200 ${
-                      activeMobileDropdown === "projects"
-                        ? "rotate-180 text-red-600"
-                        : ""
-                    }`}
+                    className={`transition-transform duration-200 ${activeMobileDropdown === "projects"
+                      ? "rotate-180 text-red-600"
+                      : ""
+                      }`}
                   />
                 </button>
                 {activeMobileDropdown === "projects" && (
@@ -698,11 +684,10 @@ function Nav() {
                   <span>Gallery</span>
                   <FaChevronDown
                     size={10}
-                    className={`transition-transform duration-200 ${
-                      activeMobileDropdown === "gallery"
-                        ? "rotate-180 text-red-600"
-                        : ""
-                    }`}
+                    className={`transition-transform duration-200 ${activeMobileDropdown === "gallery"
+                      ? "rotate-180 text-red-600"
+                      : ""
+                      }`}
                   />
                 </button>
                 {activeMobileDropdown === "gallery" && (

@@ -52,7 +52,7 @@ const colLeft = [
   "/lr1.png",
   "/lr2.png",
   "/lr3.png",
-  "/lr41.jpeg",
+  "/lr411.jpeg",
   "/lr4.png",
   "/lr5.png",
 ];

@@ -34,6 +34,18 @@ const fadeInUp = {
 };
 
 export default function OurCoreTeam() {
+  const isUnderConstruction = true;
+  
+  if (isUnderConstruction) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[#E61B23]">
+          Page Under Construction
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-white text-gray-800 font-sans">
       {/* ================= HERO SECTION (WHITE BG) ================= */}

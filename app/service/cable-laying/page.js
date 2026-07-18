@@ -94,9 +94,9 @@ export default function CableLayingPage() {
   return (
     <>
       <ServiceDetailTemplate
-        breadcrumb="Cable Laying"
-        titlePart1="Cable Laying"
-        titlePart2="& Jointing"
+        breadcrumb="Over head and underground Cable Laying"
+        titlePart1="Over head and underground"
+        titlePart2="Cable Laying"
         subtext="Underground trenching, overhead conduit fitting, and certified heat-shrink jointing terminations up to 33kV."
         description="Laying high voltage cabling requires strict compliance with mechanical bending radii, trench depth regulations, and loop reserves. Bhagat Engineering Works offers professional underground excavation, sand-cushioning, protective tiling, and overhead cabling options."
         heroImage="/dw1.jpg"

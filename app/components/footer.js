@@ -7,7 +7,7 @@ import { FaArrowUp } from "react-icons/fa";
 export default function Footer() {
   return (
     <footer className="bg-gray-100 text-gray-700 pt-12 pb-6 px-6 md:px-16">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 lg:grid-cols-[1fr_0.75fr_1.25fr_1fr] gap-12">
         {/* LEFT LOGO + TEXT */}
         <div className="md:-ml-12">
           <div className="flex items-center gap-3">
@@ -80,7 +80,7 @@ export default function Footer() {
         </div>
 
         {/* CONTACT */}
-        <div>
+        <div className="lg:pl-24">
           <h3 className="font-semibold text-gray-900 mb-4">Connect</h3>
           <ul className="space-y-2 text-sm">
             <li className="hover:text-red-500 transition">

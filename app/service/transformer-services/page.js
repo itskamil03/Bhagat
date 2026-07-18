@@ -94,9 +94,9 @@ export default function TransformerServicesPage() {
   return (
     <>
       <ServiceDetailTemplate
-        breadcrumb="Transformer Services"
-        titlePart1="Transformer"
-        titlePart2="Filtration & Testing"
+        breadcrumb="Installation and Commissioning of Compact Substation"
+        titlePart1="Installation and Commissioning of"
+        titlePart2="Compact Substation"
         subtext="Complete transformer lifecycle support. Turnkey installation, hot vacuum oil filtration, ratio audits, and gasket repair up to 10MVA."
         description="Transformers represent the heart of your electrical power distribution system. Bhagat Engineering Works offers certified testing engineers to install, test, filter, and commission distribution and power transformers, extending the life cycle of your substation cores."
         heroImage="/pk.png"

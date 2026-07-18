@@ -107,13 +107,13 @@ export default function DomesticWiriting() {
             <p className="text-sm font-medium text-gray-400 mb-4 tracking-wide">
               Home &nbsp;›&nbsp; Services &nbsp;›&nbsp;
               <span className="text-red-600 font-semibold">
-                Domestic Wiring
+                Industrial/Quarter Wiring
               </span>
             </p>
 
             {/* HEADING */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
-              Domestic <br />
+              Industrial/Quarter <br />
               <span className="text-red-600 relative inline-block">
                 Wiring
                 <span className="block h-1.5 w-20 bg-red-600 mt-2 rounded-full"></span>
