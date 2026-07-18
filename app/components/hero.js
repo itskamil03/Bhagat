@@ -49,20 +49,20 @@ function CountUp({ end, suffix = "", duration = 1.5 }) {
 }
 
 const colLeft = [
-  "/Erection and commissioning of Power Sub-station 1.jpeg",
-  "/Erection and commissioning of Power Sub-station 2.jpeg",
-  "/Erection and commissioning of Power Sub-station 3.jpeg",
-  "/Erection and commissioning of Power Sub-station 4.jpeg",
-  "/Erection and commissioning of Power Sub-station 5.jpeg",
-  "/Erection and commissioning of Power Sub-station 7.jpeg",
+  "/lr1.png",
+  "/lr2.png",
+  "/lr3.png",
+  "/lr41.jpeg",
+  "/lr4.png",
+  "/lr5.png",
 ];
 const colRight = [
-  "/Erection and commissioning of Power Sub-station 8.jpeg",
-  "/Cable Laying 1 (1).jpeg",
-  "/Cable Laying 4.jpeg",
-  "/Cable Laying 6.jpeg",
-  "/Cable Laying 7.jpeg",
-  "/Cable Laying 8.jpeg",
+  "/rr1.png",
+  "/rr2.png",
+  "/rr3.png",
+  "/rr4.png",
+  "/rr5.png",
+  "/rr6.png",
 ];
 
 const containerVariants = {
