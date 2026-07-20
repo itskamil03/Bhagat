@@ -134,17 +134,17 @@ export default function DomesticWiriting() {
             </p>
 
             {/* BUTTONS */}
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full">
               <a
                 href="#consultation-form"
-                className="bg-red-600 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-red-700 transition shadow-lg shadow-red-600/20 flex items-center gap-2"
+                className="w-full sm:w-auto justify-center bg-red-600 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-red-700 transition shadow-lg shadow-red-600/20 flex items-center gap-2"
               >
                 Request a Quote <FiArrowRight />
               </a>
 
               <a
                 href="tel:+916299923388"
-                className="border-2 border-gray-300 text-gray-800 font-semibold px-7 py-3 rounded-full hover:bg-gray-200/80 hover:border-gray-400 transition flex items-center gap-2"
+                className="w-full sm:w-auto justify-center border-2 border-gray-300 text-gray-800 font-semibold px-7 py-3 rounded-full hover:bg-gray-200/80 hover:border-gray-400 transition flex items-center gap-2"
               >
                 <FiPhoneCall className="text-red-600" /> Call Now
               </a>

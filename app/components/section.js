@@ -45,20 +45,20 @@ export default function Section() {
   return (
     <section className="w-full bg-[#f5f5f5] px-8 md:px-16 py-6 relative overflow-hidden">
       {/* SMALL TITLE */}
-      <p className="text-red-600 text-3xl font-bold tracking-wide mb-4">
+      <p className="text-red-600 text-3xl md:text-3xl [@media(width:800px)]:text-[22px] [@media(width:800px)]:text-center [@media(width:1024px)]:text-center font-bold tracking-wide mb-2 md:mb-4">
         FOUNDATION
       </p>
 
       {/* MAIN HEADING */}
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight max-w-4xl">
+      <h1 className="text-4xl md:text-5xl [@media(width:800px)]:text-3xl [@media(width:800px)]:text-center [@media(width:1024px)]:text-center font-bold text-gray-900 leading-tight max-w-4xl mx-auto">
         We build on honesty and
-        <br />
-        transparent dealings
+        <br className="[@media(width:800px)]:hidden [@media(width:1024px)]:hidden" />
+        <span className="[@media(width:800px)]:ml-1 [@media(width:1024px)]:ml-1">transparent dealings</span>
       </h1>
 
       <div
         ref={sectionRef}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-6 py-10"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6 px-6 py-10"
       >
         {data.map((item, i) => (
           <Card
@@ -74,13 +74,13 @@ export default function Section() {
 
       <Link
         href="/about"
-        className="group flex items-center justify-between bg-red-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl w-[220px] md:w-[280px] mx-auto md:mx-0 md:ml-6 hover:bg-red-700 transition duration-300 shadow-md"
+        className="group flex items-center justify-between bg-red-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl w-[220px] md:w-[280px] [@media(width:800px)]:w-[240px] mx-auto md:mx-0 md:ml-6 [@media(width:800px)]:mx-auto [@media(width:1024px)]:mx-auto hover:bg-red-700 transition duration-300 shadow-md"
       >
         {/* TEXT */}
-        <span className="text-lg md:text-xl font-semibold">Learn more</span>
+        <span className="text-lg md:text-xl [@media(width:800px)]:text-lg font-semibold">Learn more</span>
 
         {/* ARROW */}
-        <span className="text-lg md:text-xl transform group-hover:translate-x-2 transition duration-300">
+        <span className="text-lg md:text-xl [@media(width:800px)]:text-lg transform group-hover:translate-x-2 transition duration-300">
           <FaArrowRightLong />
         </span>
       </Link>

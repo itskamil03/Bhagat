@@ -180,7 +180,10 @@ export default function Service() {
     }
 
     // Calculate translation using left alignment of the active thumbnail
-    const itemWidth = 144; // w-36 = 144px
+    let itemWidth = 144; // fallback for w-36
+    if (trackRef.current && trackRef.current.children.length > 0) {
+      itemWidth = trackRef.current.children[0].offsetWidth;
+    }
     const gap = 10; // gap-2.5 = 10px
     const slotWidth = itemWidth + gap;
 
@@ -214,12 +217,12 @@ export default function Service() {
       {/* HEADER SECTION (Desktop: Grid-aligned to Column 2; Mobile: Centered flex) */}
       <div className="max-w-[1308px] mx-auto w-full mb-8">
         {/* Desktop Grid Layout */}
-        <div className="hidden lg:grid lg:grid-cols-[300px_1.8fr_1.2fr] gap-8 items-center w-full min-h-[50px]">
+        <div className="hidden lg:grid lg:grid-cols-[200px_1.4fr_1fr] xl:grid-cols-[300px_1.8fr_1.2fr] gap-4 xl:gap-8 items-center w-full min-h-[50px]">
           {/* Column 1: Spacer */}
           <div />
 
           {/* Column 2: Centered Heading exactly over the main image column */}
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 select-none tracking-tight text-center">
+          <h2 className="text-3xl md:text-5xl lg:text-3xl xl:text-5xl font-bold text-gray-900 select-none tracking-tight text-center min-w-0">
             Integrated Services
           </h2>
 
@@ -255,7 +258,7 @@ export default function Service() {
       </div>
 
       {/* CORE DISPLAY (GRID SIDEBAR + CARD VIEWPORT) */}
-      <div className="hidden lg:grid max-w-[1308px] mx-auto lg:grid-cols-[300px_1.8fr_1.2fr] gap-8 items-stretch relative">
+      <div className="hidden lg:grid max-w-[1308px] mx-auto lg:grid-cols-[200px_1.4fr_1fr] xl:grid-cols-[300px_1.8fr_1.2fr] gap-4 xl:gap-8 items-stretch relative">
         {/* LEFT COLUMN: SIDEBAR SERVICE LIST (DESKTOP) */}
         <div className="relative h-[500px]">
           <span className="absolute -top-7 left-0 text-[#c00000] font-bold text-xs uppercase tracking-widest select-none">
@@ -312,7 +315,7 @@ export default function Service() {
         </div>
 
         {/* CENTER COLUMN: MAIN IMAGE & FLOATING THUMBNAILS IN BOTTOM-LEFT */}
-        <div className="relative overflow-hidden rounded-[20px] bg-gray-100 shadow-lg h-[300px] lg:h-[500px] w-full">
+        <div className="relative overflow-hidden rounded-[20px] bg-gray-100 shadow-lg h-[300px] lg:h-[500px] w-full min-w-0">
           {/* Main Slider Images */}
           {activeService?.images.map((img, i) => {
             const isVisible = i === activeImageIndex;
@@ -359,7 +362,7 @@ export default function Service() {
                       handleThumbnailClick(i);
                     }
                   }}
-                  className={`relative w-36 h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
+                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
                     i === activeImageIndex ? "scale-105" : ""
                   }`}
                 >
@@ -376,7 +379,7 @@ export default function Service() {
         </div>
 
         {/* RIGHT COLUMN: SERVICE DETAILS (Framer Motion transitions on change) */}
-        <div className="flex flex-col h-auto lg:h-[500px] justify-between py-1 overflow-hidden">
+        <div className="flex flex-col h-auto lg:h-[500px] justify-between py-1 overflow-hidden min-w-0">
           <motion.div
             key={activeServiceIndex}
             initial={{ opacity: 0, y: 15 }}
@@ -388,10 +391,10 @@ export default function Service() {
               <span className="text-red-600 font-bold text-xs uppercase tracking-widest mb-3 block">
                 {activeService?.category.toUpperCase()}
               </span>
-              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight mb-4 tracking-tight">
+              <h3 className="text-2xl lg:text-2xl xl:text-3xl font-bold text-gray-900 leading-tight mb-2 xl:mb-4 tracking-tight">
                 {activeService?.title}
               </h3>
-              <p className="text-gray-600 text-sm leading-relaxed mb-6">
+              <p className="text-gray-600 text-xs xl:text-sm leading-relaxed mb-3 xl:mb-6">
                 {activeService?.desc}
               </p>
             </div>

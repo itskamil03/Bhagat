@@ -6,11 +6,11 @@ import { FaArrowUp } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-100 text-gray-700 pt-12 pb-6 px-6 md:px-16">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 lg:grid-cols-[1fr_0.75fr_1.25fr_1fr] gap-12">
+    <footer className="bg-gray-100 text-gray-700 pt-12 pb-6 px-6 md:px-8 xl:px-16">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 [@media(width:800px)]:grid-cols-1 lg:grid-cols-4 [@media(width:1024px)]:grid-cols-1 xl:grid-cols-[1fr_0.75fr_1.25fr_1fr] gap-8 xl:gap-12 [@media(width:800px)]:gap-10 [@media(width:1024px)]:gap-10">
         {/* LEFT LOGO + TEXT */}
-        <div className="md:-ml-12">
-          <div className="flex items-center gap-3">
+        <div className="xl:-ml-12 lg:mt-0">
+          <div className="flex items-center lg:items-start xl:items-center gap-3">
             {/* LOGO IMAGE */}
             <Image
               src="/a1.png"
@@ -21,7 +21,7 @@ export default function Footer() {
             />
 
             <div>
-              <h2 className="text-sm sm:text-base md:text-xl font-extrabold text-blue-950 font-sans tracking-tight whitespace-nowrap">
+              <h2 className="text-sm sm:text-base md:text-xl font-extrabold text-blue-950 font-sans tracking-tight lg:whitespace-normal xl:whitespace-nowrap lg:leading-tight">
                 Bhagat Engineering Works
               </h2>
 
@@ -80,7 +80,7 @@ export default function Footer() {
         </div>
 
         {/* CONTACT */}
-        <div className="lg:pl-24">
+        <div className="xl:pl-24">
           <h3 className="font-semibold text-gray-900 mb-4">Connect</h3>
           <ul className="space-y-2 text-sm">
             <li className="hover:text-red-500 transition">
@@ -101,13 +101,13 @@ export default function Footer() {
       </div>
 
       {/* BOTTOM BAR */}
-      <div className="mt-10 border-t pt-4 flex flex-col md:flex-row items-center justify-between text-sm text-gray-600">
+      <div className="mt-10 border-t pt-4 flex flex-col md:flex-row [@media(width:800px)]:flex-col [@media(width:1024px)]:flex-col [@media(width:800px)]:text-center [@media(width:1024px)]:text-center items-center justify-between text-sm text-gray-600 gap-4 md:gap-0 [@media(width:800px)]:gap-4 [@media(width:1024px)]:gap-4">
         <p>
           © 2026 Bhagat Engineering Works. Designed as a modern dynamic website
           concept.
         </p>
 
-        <div className="mt-4 md:mt-0">
+        <div className="mt-4 md:mt-0 [@media(width:800px)]:mt-0 [@media(width:1024px)]:mt-0">
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="flex items-center justify-center w-10 h-10 bg-gray-800 text-white hover:bg-red-600 transition-colors rounded-full shadow-lg"

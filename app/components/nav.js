@@ -148,7 +148,7 @@ function Nav() {
           {/* CENTER MENU */}
           <nav
             ref={dropdownRef}
-            className="hidden lg:flex items-center gap-6 lg:gap-8 text-gray-800 font-semibold text-base relative"
+            className="hidden lg:flex items-center gap-4 xl:gap-8 text-gray-800 font-semibold text-sm xl:text-base relative"
           >
             <Link
               href="/"

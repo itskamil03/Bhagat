@@ -46,8 +46,8 @@ export default function Client() {
     <section className="bg-gray-100 py-12 px-6">
       {/* HEADING */}
       <div className="max-w-7xl mx-auto mb-12">
-        <h2 className="text-3xl md:text-5xl font-bold mb-4">Client voices</h2>
-        <p className="text-base md:text-lg text-gray-600">
+        <h2 className="text-3xl md:text-5xl [@media(width:800px)]:text-center [@media(width:1024px)]:text-center font-bold mb-4">Client voices</h2>
+        <p className="text-base md:text-lg [@media(width:800px)]:text-center [@media(width:1024px)]:text-center text-gray-600">
           What our partners say
         </p>
       </div>

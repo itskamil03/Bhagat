@@ -75,10 +75,10 @@ export default function Banner() {
   };
 
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 h-auto md:h-[450px]">
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 [@media(width:800px)]:grid-cols-1 [@media(width:1024px)]:grid-cols-1 h-auto md:h-[450px] [@media(width:800px)]:h-auto [@media(width:1024px)]:h-auto">
       {/* ================= LEFT SIDE ================= */}
       <div
-        className="relative flex items-center min-h-[260px] md:min-h-0 py-12 md:py-0"
+        className="relative flex items-center min-h-[260px] md:min-h-0 [@media(width:800px)]:min-h-[300px] [@media(width:1024px)]:min-h-[300px] py-12 md:py-0 [@media(width:800px)]:py-16 [@media(width:1024px)]:py-16"
         style={{
           backgroundImage: "url('/d1.png')",
           backgroundSize: "cover",
@@ -89,7 +89,7 @@ export default function Banner() {
         <div className="absolute inset-0 bg-black/60"></div>
 
         {/* Content */}
-        <div className="relative z-10 text-white pl-8 md:pl-16 pr-8 md:pr-10 max-w-xl">
+        <div className="relative z-10 text-white pl-8 md:pl-16 [@media(width:800px)]:pl-16 [@media(width:1024px)]:pl-16 pr-8 md:pr-10 [@media(width:800px)]:pr-12 [@media(width:1024px)]:pr-12 max-w-xl [@media(width:800px)]:max-w-2xl [@media(width:1024px)]:max-w-2xl">
           <h1 className="text-2xl md:text-4xl font-bold leading-tight">
             “We aim to be the leading provider of highest-quality
             techno-commercial solutions for all electrical projects.”
@@ -102,7 +102,7 @@ export default function Banner() {
       </div>
 
       {/* ================= RIGHT SIDE ================= */}
-      <div className="relative bg-[#f5f5f5] flex items-center overflow-hidden h-auto md:h-full py-12 md:py-0 pb-24 md:pb-0">
+      <div className="relative bg-[#f5f5f5] flex items-center overflow-hidden h-auto md:h-full [@media(width:800px)]:h-auto [@media(width:1024px)]:h-auto py-12 md:py-0 [@media(width:800px)]:py-16 [@media(width:1024px)]:py-16 pb-24 md:pb-0 [@media(width:800px)]:pb-24 [@media(width:1024px)]:pb-24">
         {/* Background faded image */}
         <div
           className="absolute inset-0 bg-right bg-contain bg-no-repeat opacity-20"
@@ -123,7 +123,7 @@ export default function Banner() {
         </div>
 
         {/* CONTENT */}
-        <div className="relative z-10 pl-16 md:pl-28 pr-6 md:pr-10 w-full">
+        <div className="relative z-10 pl-16 md:pl-28 [@media(width:800px)]:pl-24 [@media(width:1024px)]:pl-24 pr-6 md:pr-10 [@media(width:800px)]:pr-10 [@media(width:1024px)]:pr-10 w-full">
           <p className="text-red-600 text-sm font-semibold pb-4">
             Why Choose Us?
           </p>

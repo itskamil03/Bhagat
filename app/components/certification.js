@@ -6,15 +6,15 @@ export default function Certification() {
   return (
     <section className="w-full bg-gray-100 py-12 px-6 lg:px-20 text-center">
       {/* HEADING */}
-      <p className="text-red-600 text-2xl font-bold tracking-widest">
-        <span className="text-2xl text-black">CERTIFICATIONS</span>
+      <p className="text-red-600 text-lg sm:text-xl lg:text-2xl font-bold tracking-widest">
+        <span className="text-black">CERTIFICATIONS</span>
       </p>
 
-      <h2 className="text-3xl lg:text-5xl font-bold mt-3">
+      <h2 className="text-[28px] leading-tight min-[390px]:text-3xl md:text-4xl lg:text-5xl font-bold mt-2 lg:mt-3">
         Certified. <span className="text-red-600">Trusted.</span> Committed.
       </h2>
 
-      <p className="text-gray-500 mt-4 font-bold max-w-2xl mx-auto text-sm">
+      <p className="text-gray-500 mt-3 md:mt-4 font-bold max-w-2xl mx-auto text-sm md:text-base">
         Our internationally recognized certifications reflect our commitment to
         quality management, safety standards, operational excellence, and
         continuous improvement.

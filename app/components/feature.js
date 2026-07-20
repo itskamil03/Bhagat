@@ -24,9 +24,9 @@ const data = [
 
 export default function Feature() {
   return (
-    <div className="grid md:grid-cols-3 w-full h-auto md:h-[500px]">
+    <div className="grid md:grid-cols-3 [@media(width:800px)]:grid-cols-1 w-full h-auto md:h-[500px] [@media(width:800px)]:h-auto">
       {data.map((item, i) => (
-        <div key={i} className="relative group h-[300px] md:h-full">
+        <div key={i} className="relative group h-[300px] md:h-full [@media(width:800px)]:h-[300px]">
           {/* Background Image */}
           <Image src={item.img} alt="bg" fill className="object-cover" />
 
@@ -35,7 +35,7 @@ export default function Feature() {
 
           {/* Red Divider Line */}
           {i !== 0 && (
-            <div className="absolute left-0 top-0 h-[2px] md:h-full w-full md:w-[2px] bg-red-600 z-10"></div>
+            <div className="absolute left-0 top-0 h-[2px] md:h-full [@media(width:800px)]:h-[2px] w-full md:w-[2px] [@media(width:800px)]:w-full bg-red-600 z-10"></div>
           )}
 
           {/* Content */}

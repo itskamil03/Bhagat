@@ -65,19 +65,19 @@ export default function Abouthero() {
   }, [slideshowImages.length]);
 
   return (
-    <section className="w-full min-h-screen bg-white">
-      <div className="max-w-[1400px] mx-auto grid md:grid-cols-2 gap-10 px-6 pt-16 mb-0 items-center">
+    <section className="w-full lg:min-h-screen bg-white">
+      <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 px-6 sm:px-10 lg:px-6 pt-16 pb-16 lg:pb-24 items-center">
         {/* LEFT CONTENT */}
-        <div className="md:-ml-[29px]">
-          <p className="text-red-500 font-bold text-xl mb-1">ABOUT US</p>
+        <div className="xl:-ml-[29px]">
+          <p className="text-red-500 font-bold text-base sm:text-lg lg:text-xl mb-2 lg:mb-1">ABOUT US</p>
 
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight text-gray-800">
+          <h1 className="text-[32px] leading-[1.2] min-[390px]:text-4xl lg:text-5xl font-bold lg:leading-tight text-gray-800">
             Engineering Excellence.
             <br />
             <span className="text-red-500">Built on Trust.</span>
           </h1>
 
-          <p className="mt-6 text-gray-600 leading-relaxed">
+          <p className="mt-4 lg:mt-6 text-sm sm:text-base text-gray-600 leading-relaxed">
             For nearly five decades, Bhagat Engineering Works has delivered
             integrated electrical, mechanical, and infrastructure engineering
             solutions with precision, reliability, and innovation. From power
@@ -119,7 +119,7 @@ export default function Abouthero() {
         </div>
 
         {/* RIGHT IMAGE SLIDESHOW */}
-        <div className="relative w-full h-[500px] rounded-xl overflow-hidden shadow-lg">
+        <div className="relative w-full h-[260px] min-[390px]:h-[300px] md:h-[400px] [@media(width:768px)]:h-[380px] [@media(width:834px)]:h-[400px] [@media(width:1024px)]:h-[450px] lg:h-[450px] xl:h-[500px] rounded-xl overflow-hidden shadow-lg">
           {slideshowImages.map((src, index) => (
             <div
               key={src}
@@ -137,7 +137,7 @@ export default function Abouthero() {
           ))}
 
           {/* LEFT FADE EFFECT */}
-          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/10 to-transparent pointer-events-none z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/10 to-transparent pointer-events-none z-10 hidden xl:block"></div>
         </div>
       </div>
     </section>
