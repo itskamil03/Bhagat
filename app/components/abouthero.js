@@ -54,7 +54,7 @@ function Counter({ target, duration = 1500, suffix = "" }) {
 }
 
 export default function Abouthero() {
-  const slideshowImages = ["/dw1.jpg", "/fi2.jpg", "/fi3.jpg", "/fi5.jpg"];
+  const slideshowImages = ["/dw1.jpg", "/fi2.jpg", "/fi3.jpg"];
   const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {

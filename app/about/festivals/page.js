@@ -22,7 +22,7 @@ const festivalEvents = [
     title: "Diwali & Corporate Milan",
     description:
       "Celebrating the festival of lights with sweets distribution, office lighting, and an annual milan ceremony that brings families of our employees together to honor our year-round accomplishments.",
-    image: "/fi5.jpg",
+    image: "/diwali.jpg",
     imageFirst: false,
   },
   {
@@ -62,7 +62,7 @@ export default function Festivals() {
         {/* Background Image Container */}
         <div className="relative w-full md:absolute md:right-0 md:top-0 md:w-1/2 h-[260px] md:h-full z-10 pointer-events-none select-none overflow-hidden">
           <Image
-            src="/fhi1.png"
+            src="/fhero.jpg"
             alt="Team celebrations and culture background"
             fill
             className="object-cover object-center md:object-right"
@@ -160,9 +160,8 @@ export default function Festivals() {
                 <div className="w-full max-w-[1134px] md:h-[246px] grid md:grid-cols-2 bg-white rounded-[7px] shadow-[4px_4px_13px_rgba(0,0,0,0.13)] overflow-hidden border border-gray-100">
                   {/* Card Image */}
                   <div
-                    className={`relative h-48 md:h-[246px] overflow-hidden ${
-                      item.imageFirst ? "md:order-1" : "md:order-2"
-                    }`}
+                    className={`relative h-48 md:h-[246px] overflow-hidden ${item.imageFirst ? "md:order-1" : "md:order-2"
+                      }`}
                   >
                     <img
                       src={item.image}
@@ -173,9 +172,8 @@ export default function Festivals() {
 
                   {/* Card Content */}
                   <div
-                    className={`p-6 md:px-8 md:py-5 flex flex-col justify-center md:h-full ${
-                      item.imageFirst ? "md:order-2" : "md:order-1"
-                    }`}
+                    className={`p-6 md:px-8 md:py-5 flex flex-col justify-center md:h-full ${item.imageFirst ? "md:order-2" : "md:order-1"
+                      }`}
                   >
                     {/* Mobile Category Tag */}
                     <span className="text-red-500 font-bold text-[10px] md:hidden uppercase tracking-wider mb-1.5 block">

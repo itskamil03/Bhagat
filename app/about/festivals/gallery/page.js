@@ -29,14 +29,14 @@ const festivalGalleries = {
     description:
       "Celebrating the festival of lights with sweets distribution, office lighting, and an annual milan ceremony that brings families of our employees together to honor our year-round accomplishments.",
     date: "October/November, Annual",
-    mainImage: "/fi2.jpg",
+    mainImage: "/diwali.jpg",
     images: [
-      "/fi2.jpg",
-      "/fi2.jpg",
-      "/fi2.jpg",
-      "/fi2.jpg",
-      "/fi2.jpg",
-      "/fi2.jpg",
+      "/diwali.jpg",
+      "/diwali.jpg",
+      "/diwali.jpg",
+      "/diwali.jpg",
+      "/diwali.jpg",
+      "/diwali.jpg",
     ],
   },
   patriot: {
@@ -74,9 +74,9 @@ const festivalGalleries = {
     description:
       "Welcoming the spring season with vibrant colors, organic gulal, traditional music, and special festive delicacies. Our offices and sites come together for a special pre-Holi milan, reinforcing our team bonds.",
     date: "March, Annual",
-    mainImage: "/fi5.jpg",
+    mainImage: "/diwali.jpg",
     images: [
-      "/fi5.jpg",
+      "/diwali.jpg",
       "/fi5.jpg",
       "/fi5.jpg",
       "/fi5.jpg",
