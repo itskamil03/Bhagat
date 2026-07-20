@@ -68,10 +68,10 @@ export default function Abouthero() {
     <section className="w-full lg:min-h-screen bg-white">
       <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 px-6 sm:px-10 lg:px-6 pt-16 pb-16 lg:pb-24 items-center">
         {/* LEFT CONTENT */}
-        <div className="xl:-ml-[29px]">
+        <div className="w-full">
           <p className="text-red-500 font-bold text-base sm:text-lg lg:text-xl mb-2 lg:mb-1">ABOUT US</p>
 
-          <h1 className="text-[32px] leading-[1.2] min-[390px]:text-4xl lg:text-5xl font-bold lg:leading-tight text-gray-800">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-gray-800">
             Engineering Excellence.
             <br />
             <span className="text-red-500">Built on Trust.</span>
@@ -87,7 +87,7 @@ export default function Abouthero() {
           </p>
 
           {/* STATS */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 mt-8 lg:mt-10">
             <div className="bg-white shadow-md rounded-lg p-4 text-center">
               <h2 className="text-red-500 text-xl font-bold">
                 <Counter target={50} suffix="+" />
@@ -119,7 +119,7 @@ export default function Abouthero() {
         </div>
 
         {/* RIGHT IMAGE SLIDESHOW */}
-        <div className="relative w-full h-[260px] min-[390px]:h-[300px] md:h-[400px] [@media(width:768px)]:h-[380px] [@media(width:834px)]:h-[400px] [@media(width:1024px)]:h-[450px] lg:h-[450px] xl:h-[500px] rounded-xl overflow-hidden shadow-lg">
+        <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[450px] xl:h-[500px] rounded-xl overflow-hidden shadow-lg mt-8 lg:mt-0">
           {slideshowImages.map((src, index) => (
             <div
               key={src}

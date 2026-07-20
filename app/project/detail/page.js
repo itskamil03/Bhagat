@@ -216,14 +216,7 @@ function DetailContent() {
         <main className="max-w-[1000px] mx-auto px-6 py-12">
           <div className="bg-white rounded-2xl p-6 md:p-10 border border-gray-200 shadow-sm">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-6 mb-8">
-              <div>
-                <span className="text-gray-400 font-bold text-xs uppercase">
-                  Project ID
-                </span>
-                <span className="font-extrabold text-gray-900 text-lg md:text-xl block mt-1">
-                  #{project.id}
-                </span>
-              </div>
+
               <div>
                 <span className="text-gray-400 font-bold text-xs uppercase">
                   Current Status
@@ -252,7 +245,7 @@ function DetailContent() {
             </div>
 
             {/* Info Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-gray-50 border border-gray-200/50 rounded-xl p-6 mb-8 text-sm">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 bg-gray-50 border border-gray-200/50 rounded-xl p-6 mb-8 text-sm">
               <div>
                 <span className="text-gray-400 font-bold text-xs block uppercase">
                   Division
@@ -277,15 +270,6 @@ function DetailContent() {
                 <span className="font-bold text-gray-800 mt-1 flex items-center gap-1.5 text-base">
                   <FaCalendarAlt className="text-gray-400 text-sm" />
                   <span>{project.date}</span>
-                </span>
-              </div>
-              <div>
-                <span className="text-gray-400 font-bold text-xs block uppercase">
-                  Contract Type
-                </span>
-                <span className="font-bold text-gray-800 mt-1 flex items-center gap-1.5 text-base">
-                  <FaWrench className="text-gray-400 text-sm" />
-                  <span>{project.type}</span>
                 </span>
               </div>
             </div>
@@ -327,30 +311,7 @@ function DetailContent() {
                 </ul>
               </div>
 
-              <div>
-                <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider mb-3">
-                  On-site Execution Team
-                </h3>
-                <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-150">
-                  <div className="flex -space-x-3">
-                    {project.team.map((img, i) => (
-                      <div
-                        key={i}
-                        className="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-gray-200"
-                      >
-                        <img
-                          src={img}
-                          alt="Team Member"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <span className="text-sm text-gray-500 font-semibold">
-                    Authorized execution specialists assigned to this grid.
-                  </span>
-                </div>
-              </div>
+
             </div>
 
             <div className="mt-10 pt-6 border-t border-gray-100 flex justify-end">

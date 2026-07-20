@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Contact from "../../components/contact";
 import Link from "next/link";
+import ExecutionMap from "../../components/ExecutionMap";
 import {
   FaSearch,
   FaFilter,
@@ -85,9 +86,11 @@ export default function OngoingProjects() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [selectedProjectDetails, setSelectedProjectDetails] = useState(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef(null);
   const cardRefs = useRef([]);
+  const scrollTimeout = useRef(null);
 
   // Filter project lists
   const filteredProjects = projects.filter((proj) => {
@@ -104,25 +107,37 @@ export default function OngoingProjects() {
     return matchesSearch && matchesDivision && matchesLocation;
   });
 
-  // Auto Scrolling Project List
+  // Continuous Smooth Auto Scrolling
   useEffect(() => {
     if (isPaused || filteredProjects.length <= 1) return;
 
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => {
-        const nextIndex = (prev + 1) % filteredProjects.length;
-        // Scroll card into view
-        if (cardRefs.current[nextIndex]) {
-          cardRefs.current[nextIndex].scrollIntoView({
-            behavior: "smooth",
-            block: "nearest",
-          });
-        }
-        return nextIndex;
-      });
-    }, 2000);
+    let animationFrameId;
+    const container = containerRef.current;
+    if (!container) return;
 
-    return () => clearInterval(interval);
+    let currentScroll = container.scrollTop;
+
+    const scrollStep = () => {
+      if (container) {
+        currentScroll += 0.5; // smooth slow scroll speed
+        container.scrollTop = currentScroll;
+
+        // Sync accumulator if user scrolled manually
+        if (Math.abs(currentScroll - container.scrollTop) > 2) {
+          currentScroll = container.scrollTop;
+        }
+
+        // Loop seamlessly to top if we hit bottom
+        if (container.scrollTop >= container.scrollHeight - container.clientHeight - 1) {
+          currentScroll = 0;
+          container.scrollTop = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(scrollStep);
+    };
+
+    animationFrameId = requestAnimationFrame(scrollStep);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [isPaused, filteredProjects.length]);
 
   // Hover pauses auto scroll
@@ -140,37 +155,53 @@ export default function OngoingProjects() {
     if (cardRefs.current[index]) {
       cardRefs.current[index].scrollIntoView({
         behavior: "smooth",
-        block: "nearest",
+        block: "center",
       });
     }
   };
 
   const handleScroll = () => {
-    const container = containerRef.current;
-    if (!container) return;
+    if (scrollTimeout.current) return;
 
-    const containerRect = container.getBoundingClientRect();
-    const containerCenter = containerRect.top + containerRect.height / 2;
-
-    let closestIndex = activeIndex;
-    let minDistance = Infinity;
-
-    filteredProjects.forEach((_, index) => {
-      const card = cardRefs.current[index];
-      if (!card) return;
-      const cardRect = card.getBoundingClientRect();
-      const cardCenter = cardRect.top + cardRect.height / 2;
-      const distance = Math.abs(cardCenter - containerCenter);
-
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = index;
+    scrollTimeout.current = setTimeout(() => {
+      const container = containerRef.current;
+      if (!container) {
+        scrollTimeout.current = null;
+        return;
       }
-    });
 
-    if (closestIndex !== activeIndex) {
-      setActiveIndex(closestIndex);
-    }
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.top + containerRect.height / 2;
+
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      if (maxScroll > 0) {
+        setScrollProgress(container.scrollTop / maxScroll);
+      } else {
+        setScrollProgress(0);
+      }
+
+      let closestIndex = activeIndex;
+      let minDistance = Infinity;
+
+      filteredProjects.forEach((_, index) => {
+        const card = cardRefs.current[index];
+        if (!card) return;
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.top + cardRect.height / 2;
+        const distance = Math.abs(cardCenter - containerCenter);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      if (closestIndex !== activeIndex) {
+        setActiveIndex(closestIndex);
+      }
+
+      scrollTimeout.current = null;
+    }, 50);
   };
 
   return (
@@ -296,21 +327,29 @@ export default function OngoingProjects() {
               {/* TIMELINE COLUMN */}
               <div className="relative flex flex-col justify-between items-center py-6 w-10 shrink-0 select-none">
                 {/* Vertical Line */}
-                <div className="absolute top-6 bottom-6 w-[2px] bg-gray-200 -z-10"></div>
+                <div className="absolute top-[2.5rem] bottom-[2.5rem] w-[2px] bg-gray-200 z-0"></div>
 
-                {/* Dots */}
+                {/* Moving Active Dot */}
+                {filteredProjects.length > 0 && (
+                  <div className="absolute top-[2.5rem] bottom-[2.5rem] left-1/2 -translate-x-1/2 w-8 pointer-events-none z-20">
+                    <div
+                      className="absolute left-0 w-8 h-8 -mt-4 flex items-center justify-center transition-all duration-75 ease-linear"
+                      style={{ top: `${filteredProjects.length > 1 ? scrollProgress * 100 : 0}%` }}
+                    >
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-100 opacity-75"></span>
+                      <span className="w-3.5 h-3.5 rounded-full bg-[#E61B23] ring-4 ring-red-100 shadow-sm relative z-10"></span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Static Dots */}
                 {filteredProjects.map((_, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleDotClick(idx)}
-                    className="relative w-8 h-8 rounded-full flex items-center justify-center bg-white transition duration-300 focus:outline-none"
+                    className="relative w-8 h-8 rounded-full flex items-center justify-center bg-white transition duration-300 focus:outline-none z-10"
                   >
-                    {idx === activeIndex
-                      ? <>
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-100 opacity-75"></span>
-                          <span className="w-3.5 h-3.5 rounded-full bg-[#E61B23] ring-4 ring-red-100 z-10 transition"></span>
-                        </>
-                      : <span className="w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-red-300 transition"></span>}
+                    <span className="w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-red-300 transition"></span>
                   </button>
                 ))}
               </div>
@@ -318,117 +357,83 @@ export default function OngoingProjects() {
               <div
                 ref={containerRef}
                 onScroll={handleScroll}
-                className="flex-1 space-y-6 max-h-[600px] overflow-y-auto pr-3 scroll-smooth scrollbar-thin"
+                className="flex-1 space-y-6 max-h-[600px] overflow-y-auto pr-3 scrollbar-thin"
               >
                 {filteredProjects.length === 0
                   ? <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
-                      <p className="text-gray-500">
-                        No ongoing projects matching your criteria.
-                      </p>
-                    </div>
+                    <p className="text-gray-500">
+                      No ongoing projects matching your criteria.
+                    </p>
+                  </div>
                   : filteredProjects.map((project, index) => (
-                      <div
-                        key={project.id}
-                        ref={(el) => (cardRefs.current[index] = el)}
-                        onMouseEnter={() => handleMouseEnterCard(index)}
-                        onMouseLeave={handleMouseLeaveCard}
-                        className={`bg-white rounded-xl p-6 border transition duration-300 shadow-sm cursor-pointer relative overflow-hidden ${
-                          index === activeIndex
-                            ? "border-[#E61B23] shadow-md ring-1 ring-red-500/10"
-                            : "border-gray-200 hover:border-gray-300 hover:shadow"
+                    <div
+                      key={project.id}
+                      ref={(el) => (cardRefs.current[index] = el)}
+                      onMouseEnter={() => handleMouseEnterCard(index)}
+                      onMouseLeave={handleMouseLeaveCard}
+                      className={`bg-white rounded-xl p-6 border transition-all duration-500 ease-out shadow-sm cursor-pointer relative overflow-hidden transform ${index === activeIndex
+                        ? "border-[#E61B23] shadow-lg ring-1 ring-red-500/10 scale-[1.02] z-10"
+                        : "border-gray-200 hover:border-gray-300 hover:shadow scale-100 z-0 opacity-70 hover:opacity-100"
                         }`}
-                      >
-                        {/* Left color bar for active card */}
-                        {index === activeIndex && (
-                          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#E61B23]"></div>
-                        )}
+                    >
+                      {/* Left color bar for active card */}
+                      <div className={`absolute left-0 top-0 bottom-0 w-1.5 bg-[#E61B23] transition-all duration-500 ease-out origin-top ${index === activeIndex ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"}`}></div>
 
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                          <div>
-                            <span className="text-gray-400 text-xs font-semibold">
-                              Project #{project.id}
-                            </span>
-                            <h3 className="text-lg md:text-xl font-bold text-gray-900 mt-1 leading-snug">
-                              {project.title}
-                            </h3>
-                          </div>
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                        <div>
 
-                          <span className="bg-red-50 text-red-700 text-xs font-bold px-3 py-1 rounded-full shrink-0 h-fit self-start sm:self-center">
-                            {project.status}
-                          </span>
+                          <h3 className="text-lg md:text-xl font-bold text-gray-900 mt-1 leading-snug">
+                            {project.title}
+                          </h3>
                         </div>
 
-                        {/* Detail Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 my-2 border-y border-gray-100">
-                          <div>
-                            <p className="text-xs text-gray-400 font-semibold uppercase">
-                              Division
-                            </p>
-                            <p className="text-xs md:text-sm font-bold text-gray-800 mt-1">
-                              {project.division}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-400 font-semibold uppercase">
-                              Location
-                            </p>
-                            <p className="text-xs md:text-sm font-bold text-gray-800 mt-1 flex items-center gap-1">
-                              <FaMapMarkerAlt className="text-[#E61B23] text-xs" />
-                              <span>{project.location}</span>
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-400 font-semibold uppercase">
-                              Date Start
-                            </p>
-                            <p className="text-xs md:text-sm font-bold text-gray-800 mt-1 flex items-center gap-1">
-                              <FaCalendarAlt className="text-gray-400 text-xs" />
-                              <span>{project.date}</span>
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-400 font-semibold uppercase">
-                              Type
-                            </p>
-                            <p className="text-xs md:text-sm font-bold text-gray-800 mt-1 flex items-center gap-1">
-                              <FaWrench className="text-gray-400 text-xs" />
-                              <span>{project.type}</span>
-                            </p>
-                          </div>
+                        <span className="bg-red-50 text-red-700 text-xs font-bold px-3 py-1 rounded-full shrink-0 h-fit self-start sm:self-center">
+                          {project.status}
+                        </span>
+                      </div>
+
+                      {/* Detail Grid */}
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 py-4 my-2 border-y border-gray-100">
+                        <div>
+                          <p className="text-xs text-gray-400 font-semibold uppercase">
+                            Division
+                          </p>
+                          <p className="text-xs md:text-sm font-bold text-gray-800 mt-1">
+                            {project.division}
+                          </p>
                         </div>
-
-                        {/* Team & Button row */}
-                        <div className="flex items-center justify-between mt-4">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-gray-500 font-semibold">
-                              On-site Team:
-                            </span>
-                            <div className="flex -space-x-2">
-                              {project.team.map((img, i) => (
-                                <div
-                                  key={i}
-                                  className="w-7 h-7 rounded-full border-2 border-white overflow-hidden bg-gray-200"
-                                >
-                                  <img
-                                    src={img}
-                                    alt="Team"
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
+                        <div>
+                          <p className="text-xs text-gray-400 font-semibold uppercase">
+                            Location
+                          </p>
+                          <p className="text-xs md:text-sm font-bold text-gray-800 mt-1 flex items-center gap-1">
+                            <FaMapMarkerAlt className="text-[#E61B23] text-xs" />
+                            <span>{project.location}</span>
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-400 font-semibold uppercase">
+                            Date Start
+                          </p>
+                          <p className="text-xs md:text-sm font-bold text-gray-800 mt-1 flex items-center gap-1">
+                            <FaCalendarAlt className="text-gray-400 text-xs" />
+                            <span>{project.date}</span>
+                          </p>
+                        </div>
+                        <div className="flex items-center sm:justify-start md:justify-end">
                           <Link
                             href={`/project/detail?id=${project.id}`}
-                            className="text-[#E61B23] font-bold text-xs hover:text-red-700 inline-flex items-center gap-1.5 active:translate-x-1 transition"
+                            className="text-[#E61B23] font-bold text-xs hover:text-red-700 inline-flex items-center gap-1.5 active:translate-x-1 transition mt-2 md:mt-0"
                           >
                             <span>View Details</span>
                             <span>&rarr;</span>
                           </Link>
                         </div>
                       </div>
-                    ))}
+
+
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
@@ -436,41 +441,41 @@ export default function OngoingProjects() {
           {/* RIGHT: Live Statistics & Map */}
           <div className="space-y-6">
             {/* Live Statistics Card */}
-            <div className="bg-[#17162b] text-white rounded-2xl p-6 shadow-lg relative overflow-hidden">
-              <h3 className="text-lg font-bold border-b border-white/10 pb-4 mb-6 flex items-center gap-2">
-                <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
-                <span>Live Statistics</span>
+            <div className="bg-red-50 text-gray-900 rounded-2xl p-6 shadow-sm border border-red-100 relative overflow-hidden">
+              <h3 className="text-lg font-bold border-b border-red-200 pb-4 mb-6 flex items-center gap-2">
+                <span className="w-2.5 h-2.5 bg-[#E61B23] rounded-full animate-pulse"></span>
+                <span className="text-red-950">Live Statistics</span>
               </h3>
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <p className="text-3xl font-extrabold text-white">06</p>
-                  <p className="text-xs text-gray-400 mt-1 font-semibold">
+                  <p className="text-3xl font-extrabold text-[#E61B23]">06</p>
+                  <p className="text-xs text-red-800/80 mt-1 font-semibold">
                     Live Projects
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-white">05</p>
-                  <p className="text-xs text-gray-400 mt-1 font-semibold">
+                  <p className="text-3xl font-extrabold text-[#E61B23]">05</p>
+                  <p className="text-xs text-red-800/80 mt-1 font-semibold">
                     States Active
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-white">04</p>
-                  <p className="text-xs text-gray-400 mt-1 font-semibold">
+                  <p className="text-3xl font-extrabold text-[#E61B23]">04</p>
+                  <p className="text-xs text-red-800/80 mt-1 font-semibold">
                     Divisions
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-extrabold text-white">100%</p>
-                  <p className="text-xs text-gray-400 mt-1 font-semibold">
+                  <p className="text-3xl font-extrabold text-[#E61B23]">100%</p>
+                  <p className="text-xs text-red-800/80 mt-1 font-semibold">
                     On-Time Delivery
                   </p>
                 </div>
               </div>
 
               {/* Decorative radial overlay */}
-              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-red-600/10 rounded-full blur-xl pointer-events-none"></div>
+              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-[#E61B23]/5 rounded-full blur-xl pointer-events-none"></div>
             </div>
 
             {/* Execution Footprint Map Card */}
@@ -479,18 +484,8 @@ export default function OngoingProjects() {
                 <FaMap className="text-[#E61B23]" />
                 <span>Execution Footprint</span>
               </h3>
-              <div className="bg-gray-100 rounded-xl aspect-[4/3] flex items-center justify-center overflow-hidden border border-gray-200 relative group cursor-pointer">
-                <img
-                  src="/india_execution_map.jpg"
-                  alt="Execution Map"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                  <span className="bg-white text-gray-900 text-xs font-bold px-3.5 py-2 rounded-lg shadow-lg flex items-center gap-1.5">
-                    <span>Open Interactive Map</span>
-                    <span>&rarr;</span>
-                  </span>
-                </div>
+              <div className="bg-gray-100 rounded-xl w-full h-[400px] flex items-center justify-center overflow-hidden border border-gray-200 relative group">
+                <ExecutionMap />
               </div>
               <p className="text-xs text-gray-500 mt-3 text-center leading-relaxed">
                 Key representations showing active execution across the Indian
