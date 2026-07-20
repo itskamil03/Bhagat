@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import Contact from "../components/contact";
 
 const timelineData = [
@@ -13,6 +14,7 @@ const timelineData = [
       "The beginning of our journey in electrical contracting and power infrastructure. Built on integrity, technical expertise, and customer trust, we established the foundation that continues to power our growth today.",
     image: "/a8.jpg",
     imageFirst: true,
+    link: "/gallery/foundation",
   },
   {
     year: "1986",
@@ -212,10 +214,17 @@ export default function LegacyPage() {
                     <p className="text-gray-600 mt-2 text-xs md:text-[13px] leading-relaxed">
                       {item.description}
                     </p>
-                    <button className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5">
-                      <span>Explore Services</span>
-                      <span>→</span>
-                    </button>
+                    {item.link ? (
+                      <Link href={item.link} className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5">
+                        <span>Explore gallery</span>
+                        <span>→</span>
+                      </Link>
+                    ) : (
+                      <button className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5">
+                        <span>Explore gallery</span>
+                        <span>→</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
