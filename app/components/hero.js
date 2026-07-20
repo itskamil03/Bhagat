@@ -154,7 +154,7 @@ export default function Hero() {
           }}
         >
           {/* LEFT COLUMN (DOWN - MOVING DOWNWARD) */}
-          <div className="flex-1 lg:flex-none lg:w-[220px] [@media(width:1024px)]:flex-1 [@media(width:1024px)]:w-full xl:w-[298px] flex flex-col gap-3 [@media(width:800px)]:gap-6 [@media(width:1024px)]:gap-6 xl:gap-5 animate-downSlow">
+          <div className="flex-1 lg:flex-none lg:w-[220px] [@media(width:1024px)]:flex-1 [@media(width:1024px)]:w-full xl:w-[298px] flex flex-col gap-3 [@media(width:800px)]:gap-6 [@media(width:1024px)]:gap-6 xl:gap-5 animate-downSlow h-max pb-3 [@media(width:800px)]:pb-6 [@media(width:1024px)]:pb-6 xl:pb-5">
             {[...colLeft, ...colLeft].map((img, i) => (
               <div
                 key={i}
@@ -175,7 +175,7 @@ export default function Hero() {
           </div>
 
           {/* RIGHT COLUMN (UP - MOVING UPWARD) */}
-          <div className="flex-1 lg:flex-none lg:w-[220px] [@media(width:1024px)]:flex-1 [@media(width:1024px)]:w-full xl:w-[298px] flex flex-col gap-3 [@media(width:800px)]:gap-6 [@media(width:1024px)]:gap-6 xl:gap-5 animate-upFast lg:mt-6 xl:mt-12 [@media(width:800px)]:mt-12 [@media(width:1024px)]:mt-12">
+          <div className="flex-1 lg:flex-none lg:w-[220px] [@media(width:1024px)]:flex-1 [@media(width:1024px)]:w-full xl:w-[298px] flex flex-col gap-3 [@media(width:800px)]:gap-6 [@media(width:1024px)]:gap-6 xl:gap-5 animate-upFast lg:mt-6 xl:mt-12 [@media(width:800px)]:mt-12 [@media(width:1024px)]:mt-12 h-max pb-3 [@media(width:800px)]:pb-6 [@media(width:1024px)]:pb-6 xl:pb-5">
             {[...colRight, ...colRight].map((img, i) => (
               <div
                 key={i}

@@ -50,11 +50,11 @@
 
 /* CLASSES */
 .animate-upFast {
-  animation: up 3s linear infinite;
+  animation: up 10s linear infinite;
 }
 
 .animate-downSlow {
-  animation: down 4s linear infinite;
+  animation: down 10s linear infinite;
 }
 @keyframes marquee {
   0% {
