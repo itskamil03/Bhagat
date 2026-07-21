@@ -66,18 +66,18 @@ export default function Abouthero() {
 
   return (
     <section className="w-full lg:min-h-screen bg-white">
-      <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 px-6 sm:px-10 lg:px-6 pt-16 pb-16 lg:pb-24 items-center">
+      <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 px-6 sm:px-10 lg:px-6 pt-16 pb-16 lg:pb-24 items-center [@media(width:1680px)]:max-w-[1550px] [@media(width:1680px)]:pt-28">
         {/* LEFT CONTENT */}
         <div className="w-full">
-          <p className="text-red-500 font-bold text-base sm:text-lg lg:text-xl mb-2 lg:mb-1">ABOUT US</p>
+          <p className="text-red-500 font-bold text-base sm:text-lg lg:text-xl mb-2 lg:mb-1 [@media(width:1680px)]:text-2xl [@media(width:1680px)]:mb-4">ABOUT US</p>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-gray-800">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-gray-800 [@media(width:1680px)]:text-[4.5rem]">
             Engineering Excellence.
             <br />
             <span className="text-red-500">Built on Trust.</span>
           </h1>
 
-          <p className="mt-4 lg:mt-6 text-sm sm:text-base text-gray-600 leading-relaxed">
+          <p className="mt-4 lg:mt-6 text-sm sm:text-base text-gray-600 leading-relaxed [@media(width:1680px)]:text-2xl [@media(width:1680px)]:mt-10 [@media(width:1680px)]:leading-relaxed">
             For nearly five decades, Bhagat Engineering Works has delivered
             integrated electrical, mechanical, and infrastructure engineering
             solutions with precision, reliability, and innovation. From power
@@ -87,39 +87,39 @@ export default function Abouthero() {
           </p>
 
           {/* STATS */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 mt-8 lg:mt-10">
-            <div className="bg-white shadow-md rounded-lg p-4 text-center">
-              <h2 className="text-red-500 text-xl font-bold">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 mt-8 lg:mt-10 [@media(width:1680px)]:mt-16 [@media(width:1680px)]:gap-8">
+            <div className="bg-white shadow-md rounded-lg p-4 text-center [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
+              <h2 className="text-red-500 text-xl font-bold [@media(width:1680px)]:text-4xl">
                 <Counter target={50} suffix="+" />
               </h2>
-              <p className="text-sm text-gray-600">Years of Legacy</p>
+              <p className="text-sm text-gray-600 [@media(width:1680px)]:text-lg [@media(width:1680px)]:mt-3">Years of Legacy</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-4 text-center">
-              <h2 className="text-red-500 text-xl font-bold">
+            <div className="bg-white shadow-md rounded-lg p-4 text-center [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
+              <h2 className="text-red-500 text-xl font-bold [@media(width:1680px)]:text-4xl">
                 <Counter target={100} suffix="+ Cr" />
               </h2>
-              <p className="text-sm text-gray-600">Annual Turnover</p>
+              <p className="text-sm text-gray-600 [@media(width:1680px)]:text-lg [@media(width:1680px)]:mt-3">Annual Turnover</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-4 text-center">
-              <h2 className="text-red-500 text-xl font-bold">
+            <div className="bg-white shadow-md rounded-lg p-4 text-center [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
+              <h2 className="text-red-500 text-xl font-bold [@media(width:1680px)]:text-4xl">
                 <Counter target={500} suffix="+" />
               </h2>
-              <p className="text-sm text-gray-600">Skilled Professionals</p>
+              <p className="text-sm text-gray-600 [@media(width:1680px)]:text-lg [@media(width:1680px)]:mt-3">Skilled Professionals</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-4 text-center">
-              <h2 className="text-red-500 text-xl font-bold">
+            <div className="bg-white shadow-md rounded-lg p-4 text-center [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
+              <h2 className="text-red-500 text-xl font-bold [@media(width:1680px)]:text-4xl">
                 <Counter target={250} suffix="+" />
               </h2>
-              <p className="text-sm text-gray-600">Satisfied Clients</p>
+              <p className="text-sm text-gray-600 [@media(width:1680px)]:text-lg [@media(width:1680px)]:mt-3">Satisfied Clients</p>
             </div>
           </div>
         </div>
 
         {/* RIGHT IMAGE SLIDESHOW */}
-        <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[450px] xl:h-[500px] rounded-xl overflow-hidden shadow-lg mt-8 lg:mt-0">
+        <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[450px] xl:h-[500px] rounded-xl overflow-hidden shadow-lg mt-8 lg:mt-0 [@media(width:1680px)]:h-[700px]">
           {slideshowImages.map((src, index) => (
             <div
               key={src}
