@@ -13,10 +13,10 @@ const servicesData = [
     category: "Electrical",
     desc: "Operating and maintaining high voltage systems requires experienced teams with specialist skills. Bhagat Engineering Works supports private HV networks, transformers, and substations up to 33kV, with capability for selected 132kV design-build projects. Our end-to-end solutions include civil foundation designs, steel structure gantry erection, busbar work, circuit breaker installation, and robust protective relay coordination to ensure uninterrupted grid connectivity.",
     images: [
-      "/Erection and commissioning of Power Sub-station 7.jpeg",
-      "/Erection and commissioning of Power Sub-station 8.jpeg",
-      "/Erection and commissioning of Power Sub-station 9.jpeg",
-      "/Erection and commissioning of Power Sub-station 11.jpeg",
+      "/PS 1.png",
+      "/PS 2.png",
+      "/PS 3.png",
+      "/PS 4.png",
     ],
     href: "/service/power-substation",
   },
@@ -37,10 +37,10 @@ const servicesData = [
     category: "Electrical",
     desc: "Our services cover underground HT/LT cable trenching, overhead GI cable tray installation, and professional professional heat-shrink cable jointing and termination services. We execute precise route mapping, design earth resistivity layouts, install heavy-duty armored cables, and conduct complete insulation testing to ensure high durability and compliance with strict safety regulations.",
     images: [
-      "/Cable Laying 4.jpeg",
-      "/Cable Laying 6.jpeg",
-      "/Cable Laying 7.jpeg",
-      "/Cable Laying 8.jpeg",
+      "/Cable Laying.png",
+      "/Cable Laying Underground.png",
+      "/Cable Trenching.png",
+      "/Underground Cable Laying.png",
     ],
     href: "/service/cable-laying",
   },
@@ -49,10 +49,11 @@ const servicesData = [
     category: "Turnkey",
     desc: "We deliver full-scale industrial electrical installation, commercial wiring, and residential quarter wiring solutions. Our scope covers distribution board installation, conduit laying, fire-retardant cabling, switchgear assembly, earthing pit construction, and load balance testing to ensure absolute safety and energy efficiency.",
     images: [
-      "/iq1.jpg",
-      "/iq2.jpg",
-      "/iq3.jpg",
-      "/Industrial and facade lighting 10.jpeg",
+      "/Industrial Wiring 1.png",
+      "/Industrial Wiring 2.png",
+      "/Industrial Wiring 3.png",
+      "/Industrial Wiring 4.png",
+      "/Industrial Wiring 5.png",
     ],
     href: "/service/domestic-wiring",
   },
@@ -61,10 +62,11 @@ const servicesData = [
     category: "Automation",
     desc: "We design and install creative architectural facade lighting, dynamic RGB automation control, high-mast fixtures, and energy-saving industrial LED systems. Our engineers build custom lighting solutions that highlight building features, optimize dynamic control systems, and save energy with intelligent scheduling. We create visually striking facade designs that elevate building aesthetics while meeting strict energy efficiency codes.",
     images: [
-      "/Industrial and facade lighting 2.jpeg",
-      "/Industrial and facade lighting 4.jpeg",
-      "/Industrial and facade lighting 9.jpeg",
-      "/Industrial and facade lighting 10.jpeg",
+      "/Facade Lighting 1.png",
+      "/Facade Lighting 2.png ",
+      "/Facade Lighting 3.png",
+      "/Facade Lighting 4.png",
+    
     ],
     href: "/service/facade-lighting",
   },
@@ -73,10 +75,11 @@ const servicesData = [
     category: "Turnkey",
     desc: "We handle the complete structural erection, foundation construction, cabling, and commissioning of high mast poles, transmission towers, street light poles, and area lighting masts. Our teams specialize in motorized winch alignment, luminaire carriage mounting, and automated control panel installation for reliable wide-area illumination.",
     images: [
-      "/ec1.jpg",
-      "/ec22.jpg",
-      "/ec33.jpg",
-      "/Erection and commissioning of Power Sub-station 5.jpeg",
+      "/High Mast Pole 1.png",
+      "/High Mast Pole 2.png",
+      "/High Mast Pole 3.png",
+      "/High Mast Pole 4.png",
+      "/High Mast Pole 5.png",
     ],
     href: "/service/servo-stabilizers",
   },
@@ -86,57 +89,24 @@ export default function Service() {
   const [activeServiceIndex, setActiveServiceIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  // Track layout width measurements for horizontal thumbnail auto-scrolling
-  const [trackWidth, setTrackWidth] = useState(0);
-  const [containerWidth, setContainerWidth] = useState(0);
-
-  const containerRef = useRef(null);
-  const trackRef = useRef(null);
-  const directionRef = useRef(1); // 1 = forward (left->right), -1 = backward (right->left)
-  const lastTranslateRef = useRef(0); // Track previous viewport scrolling offset
-
   // Active service based on index
   const activeService = servicesData[activeServiceIndex] || servicesData[0];
 
   // Derive active category from the selected service
   const activeCategory = activeService.category;
 
-  // Measure thumbnail scroll boundaries when active service changes and on resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (containerRef.current && trackRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
-        setTrackWidth(trackRef.current.scrollWidth);
-      }
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [activeService]);
-
-  // Reset image index and direction when switching active service
+  // Reset image index when switching active service
   useEffect(() => {
     setActiveImageIndex(0);
-    directionRef.current = 1;
-    lastTranslateRef.current = 0;
   }, [activeServiceIndex]);
 
-  // Auto-scrolling image loop timer with ping-pong effect
+  // Auto-scrolling image loop timer
   useEffect(() => {
     const imagesCount = activeService?.images?.length || 0;
     if (imagesCount <= 1) return;
 
     const timer = setTimeout(() => {
-      setActiveImageIndex((prev) => {
-        const nextIndex = prev + directionRef.current;
-        if (nextIndex >= imagesCount - 1) {
-          directionRef.current = -1;
-        } else if (nextIndex <= 0) {
-          directionRef.current = 1;
-        }
-        return Math.max(0, Math.min(imagesCount - 1, nextIndex));
-      });
+      setActiveImageIndex((prev) => (prev + 1) % imagesCount);
     }, 1500);
 
     return () => clearTimeout(timer);
@@ -145,12 +115,6 @@ export default function Service() {
   // Handle clicking a thumbnail
   const handleThumbnailClick = (index) => {
     setActiveImageIndex(index);
-    const imagesCount = activeService?.images?.length || 0;
-    if (index >= imagesCount - 1) {
-      directionRef.current = -1;
-    } else if (index <= 0) {
-      directionRef.current = 1;
-    }
   };
 
   // Handle clicking a category tab at top right
@@ -159,61 +123,28 @@ export default function Service() {
     if (targetIndex !== -1) {
       setActiveServiceIndex(targetIndex);
       setActiveImageIndex(0);
-      directionRef.current = 1;
-      lastTranslateRef.current = 0;
     }
   };
 
-  // Calculate translation offset for the thumbnail track
-  const getTranslateX = () => {
-    const padding = 16; // px-2 on left and right = 8px * 2 = 16px total padding
-    const innerWidth = Math.max(0, containerWidth - padding);
-
-    if (trackWidth <= innerWidth) {
-      lastTranslateRef.current = 0;
-      return 0;
-    }
-    const imagesCount = activeService?.images?.length || 0;
-    if (imagesCount <= 1) {
-      lastTranslateRef.current = 0;
-      return 0;
-    }
-
-    // Calculate translation using left alignment of the active thumbnail
-    let itemWidth = 144; // fallback for w-36
-    if (trackRef.current && trackRef.current.children.length > 0) {
-      itemWidth = trackRef.current.children[0].offsetWidth;
-    }
-    const gap = 10; // gap-2.5 = 10px
-    const slotWidth = itemWidth + gap;
-
-    // Left and right bounds of the active thumbnail relative to the track
-    const itemLeft = activeImageIndex * slotWidth;
-    const itemRight = itemLeft + itemWidth;
-
-    let currentT = lastTranslateRef.current;
-
-    // If active thumbnail is hidden on the left, align its left edge with the viewport left edge
-    if (currentT > itemLeft) {
-      currentT = itemLeft;
-    }
-    // If active thumbnail is hidden on the right, align its right edge with the viewport right edge
-    else if (currentT < itemRight - innerWidth) {
-      currentT = itemRight - innerWidth;
-    }
-
-    // Clamp between 0 and maxOffset
-    const maxOffset = trackWidth - innerWidth;
-    const clampedT = Math.max(0, Math.min(maxOffset, currentT));
-
-    // Save for the next render
-    lastTranslateRef.current = clampedT;
-
-    return -clampedT;
-  };
+  // Prepare images for infinite marquee (ensure enough width for seamless loop)
+  const originalImages = activeService?.images || [];
+  let marqueeImages = originalImages.map((img, i) => ({ img, originalIndex: i }));
+  // Duplicate until we have enough to fill the screen (at least 6-8 usually enough for max 470px width)
+  while (marqueeImages.length < 8) {
+    marqueeImages = [...marqueeImages, ...originalImages.map((img, i) => ({ img, originalIndex: i }))];
+  }
 
   return (
     <section className="w-full bg-[#fcf9f6] py-16 px-6 relative z-10">
+      <style>{`
+        @keyframes custom-marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-100%); }
+        }
+        .animate-custom-marquee {
+          animation: custom-marquee 20s linear infinite;
+        }
+      `}</style>
       {/* HEADER SECTION (Desktop: Grid-aligned to Column 2; Mobile: Centered flex) */}
       <div className="max-w-[1308px] mx-auto w-full mb-8">
         {/* Desktop Grid Layout */}
@@ -286,8 +217,6 @@ export default function Service() {
                     onClick={() => {
                       setActiveServiceIndex(i);
                       setActiveImageIndex(0);
-                      directionRef.current = 1;
-                      lastTranslateRef.current = 0;
                     }}
                     className={`relative w-full text-left pl-7 pr-5 rounded-xl font-semibold transition-all duration-300 shadow-sm border text-xs lg:text-sm leading-snug flex items-center h-full cursor-pointer overflow-hidden ${
                       isActive
@@ -338,38 +267,50 @@ export default function Service() {
           })}
 
           {/* Floating Thumbnails centered at bottom */}
-          <div
-            ref={containerRef}
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-fit max-w-[90%] lg:max-w-[470px] overflow-hidden flex justify-start py-2 px-2"
-          >
-            <div
-              ref={trackRef}
-              style={{
-                transform: `translateX(${getTranslateX()}px)`,
-                transition: "transform 0.6s ease-in-out",
-              }}
-              className="flex gap-2.5"
-            >
-              {activeService?.images.map((img, i) => (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-fit max-w-[90%] lg:max-w-[470px] overflow-hidden flex py-2 px-2 group">
+            {/* We render two identical marquee tracks that animate together */}
+            <div className="flex animate-custom-marquee group-hover:[animation-play-state:paused] pr-2.5 shrink-0">
+              {marqueeImages.map((item, i) => (
                 <div
-                  key={i}
+                  key={`track1-${i}`}
                   role="button"
                   tabIndex={0}
-                  onClick={() => handleThumbnailClick(i)}
+                  onClick={() => handleThumbnailClick(item.originalIndex)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
-                      handleThumbnailClick(i);
+                      handleThumbnailClick(item.originalIndex);
                     }
                   }}
-                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
-                    i === activeImageIndex ? "scale-105" : ""
+                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${
+                    item.originalIndex === activeImageIndex ? "scale-105" : ""
                   }`}
                 >
-                  <Image src={img} fill className="object-cover" alt="" />
+                  <Image src={item.img} fill className="object-cover" alt="" />
                   <div
                     className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${
-                      i === activeImageIndex ? "border-red-600" : "border-white"
+                      item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
+                    }`}
+                  />
+                </div>
+              ))}
+            </div>
+            
+            <div className="flex animate-custom-marquee group-hover:[animation-play-state:paused] pr-2.5 shrink-0" aria-hidden="true">
+              {marqueeImages.map((item, i) => (
+                <div
+                  key={`track2-${i}`}
+                  role="button"
+                  tabIndex={-1}
+                  onClick={() => handleThumbnailClick(item.originalIndex)}
+                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${
+                    item.originalIndex === activeImageIndex ? "scale-105" : ""
+                  }`}
+                >
+                  <Image src={item.img} fill className="object-cover" alt="" />
+                  <div
+                    className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${
+                      item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
                     }`}
                   />
                 </div>
@@ -424,8 +365,6 @@ export default function Service() {
                 onClick={() => {
                   setActiveServiceIndex(isOpen ? -1 : i);
                   setActiveImageIndex(0);
-                  directionRef.current = 1;
-                  lastTranslateRef.current = 0;
                 }}
                 className={`w-full flex items-center justify-between p-5 text-left font-semibold text-[15px] transition-all duration-300 ${
                   isOpen

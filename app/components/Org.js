@@ -25,10 +25,10 @@ const Org = () => {
 
       {/* MARQUEE */}
       <div className="relative w-full overflow-hidden">
-        <div className="flex w-max animate-marquee gap-16">
+        <div className="flex w-max animate-marquee gap-8 md:gap-16">
           {/* First Set */}
           {logos.map((logo, i) => (
-            <div key={i} className="w-[210px] h-[120px] relative">
+            <div key={i} className="w-[120px] h-[70px] md:w-[210px] md:h-[120px] relative">
               <Image src={logo} alt="logo" fill className="object-contain" />
             </div>
           ))}
@@ -36,7 +36,7 @@ const Org = () => {
           {/* Duplicate for infinite scroll */}
           {logos.map((logo, i) => {
             return (
-              <div key={`dup-${i}`} className="w-[210px] h-[120px] relative">
+              <div key={`dup-${i}`} className="w-[120px] h-[70px] md:w-[210px] md:h-[120px] relative">
                 <Image src={logo} alt="logo" fill className="object-contain" />
               </div>
             );
