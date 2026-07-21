@@ -66,7 +66,7 @@ const servicesData = [
     desc: "We design and install creative architectural facade lighting, dynamic RGB automation control, high-mast fixtures, and energy-saving industrial LED systems. Our engineers build custom lighting solutions that highlight building features, optimize dynamic control systems, and save energy with intelligent scheduling. We create visually striking facade designs that elevate building aesthetics while meeting strict energy efficiency codes.",
     images: [
       "/Facade Lighting 1.png",
-      "/Facade Lighting 2.png ",
+      "/Facade Lighting 2.png",
       "/Facade Lighting 3.png",
       "/Facade Lighting 4.jpeg",
       "/Facade Lighting 5.png",
