@@ -69,7 +69,7 @@ const servicesData = [
       "/Facade Lighting 2.png ",
       "/Facade Lighting 3.png",
       "/Facade Lighting 4.jpeg",
-      "/Facade Lighting 5.png"
+      "/Facade Lighting 5.png",
     
     ],
     href: "/service/facade-lighting",
