@@ -33,7 +33,7 @@ const initialProjects = [
     location: "Mumbai, MH",
     date: "05 Feb 2024",
     type: "Industrial Electrical",
-    team: ["/a3.png", "/a4.png", "/a5.png"],
+    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
     status: "Work In Progress",
   },
   {
@@ -43,7 +43,7 @@ const initialProjects = [
     location: "Ahmedabad, GJ",
     date: "10 Mar 2024",
     type: "Maintenance (AMC)",
-    team: ["/a4.png", "/a5.png", "/a6.png"],
+    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
     status: "Work In Progress",
   },
   {
@@ -63,7 +63,7 @@ const initialProjects = [
     location: "Barh, BR",
     date: "22 May 2024",
     type: "Industrial Turnkey",
-    team: ["/a3.png", "/a5.png", "/a6.png"],
+    team: ["/a3.png", "/ic1.jpg", "/a6.png"],
     status: "Work In Progress",
   },
   {

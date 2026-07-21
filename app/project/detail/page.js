@@ -33,7 +33,7 @@ const allProjects = [
     location: "Mumbai, MH",
     date: "05 Feb 2024",
     type: "Industrial Electrical",
-    team: ["/a3.png", "/a4.png", "/a5.png"],
+    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
     status: "Work In Progress",
     desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
   },
@@ -44,7 +44,7 @@ const allProjects = [
     location: "Ahmedabad, GJ",
     date: "10 Mar 2024",
     type: "Maintenance (AMC)",
-    team: ["/a4.png", "/a5.png", "/a6.png"],
+    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
     status: "Work In Progress",
     desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
   },
@@ -66,7 +66,7 @@ const allProjects = [
     location: "Barh, BR",
     date: "22 May 2024",
     type: "Industrial Turnkey",
-    team: ["/a3.png", "/a5.png", "/a6.png"],
+    team: ["/a3.png", "/ic1.jpg", "/a6.png"],
     status: "Work In Progress",
     desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
   },
@@ -100,7 +100,7 @@ const allProjects = [
     location: "Barauni, BR",
     date: "20 Oct 2023",
     type: "Industrial Turnkey",
-    team: ["/a3.png", "/a4.png", "/a5.png"],
+    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
     status: "Completed",
     desc: "Laid over 15km of high-tension cabling with state-of-the-art termination and safety matching systems in hazardous zones.",
   },
@@ -111,7 +111,7 @@ const allProjects = [
     location: "Patna, BR",
     date: "10 Aug 2023",
     type: "Commercial Install",
-    team: ["/a4.png", "/a5.png", "/a6.png"],
+    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
     status: "Completed",
     desc: "Complete power distribution panels, servo stabilizers, and backup grid coordination for commercial complex operations.",
   },
@@ -145,7 +145,7 @@ const allProjects = [
     location: "Katihar - Jogbani Link, BR",
     date: "Starts Q4 2024",
     type: "EPC Electrification",
-    team: ["/a3.png", "/a4.png", "/a5.png"],
+    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
     status: "Planned / Upcoming",
     desc: "Electrification, mast erection, and OHE cabling for a crucial border-link transport line expansion project.",
   },
@@ -156,7 +156,7 @@ const allProjects = [
     location: "Bhagalpur, BR",
     date: "Starts Q1 2025",
     type: "Grid Integration",
-    team: ["/a4.png", "/a5.png", "/a6.png"],
+    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
     status: "Planned / Upcoming",
     desc: "Integrating decentralized solar power arrays to local distribution grids, involving specialized cable laying and synchronization panels.",
   },
@@ -219,16 +219,10 @@ const ProjectGallery = ({ images }) => {
         translateX = offset > 0 ? 300 : -300;
       }
 
-      // Shadow interpolation
-      let shadowOpacity = 0.5 * (1 - Math.min(absOffset, 1));
-      let shadowBlur = 40 * (1 - Math.min(absOffset, 1));
-      let shadowY = 20 * (1 - Math.min(absOffset, 1));
-      const shadow = `0 ${shadowY}px ${shadowBlur}px -10px rgba(0, 0, 0, ${shadowOpacity})`;
-
       el.style.transform = `translateX(${translateX}%) scale(${scale})`;
       el.style.zIndex = zIndex;
       el.style.opacity = opacity;
-      el.style.boxShadow = shadow;
+      el.style.boxShadow = "none";
     });
   };
 
@@ -256,12 +250,12 @@ const ProjectGallery = ({ images }) => {
   const handlePrev = () => targetScrollRef.current -= 1;
 
   return (
-    <div className="mt-12 w-full max-w-[1300px] mx-auto mb-6 bg-red-50 rounded-3xl p-6 md:p-10 shadow-xl relative overflow-hidden">
-      <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-wider mb-6 text-center relative z-10">
+    <div className="mt-12 w-full max-w-[1300px] mx-auto mb-6 bg-red-50 rounded-3xl px-6 md:px-10 pt-6 md:pt-10 pb-2 md:pb-4 shadow-xl relative overflow-hidden">
+      <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-wider mb-2 text-center relative z-10">
         Project Gallery
       </h3>
       <div
-        className="relative w-full h-[270px] sm:h-[370px] md:h-[470px] flex items-center justify-center overflow-hidden"
+        className="relative w-full h-[220px] sm:h-[280px] md:h-[380px] flex items-center justify-center overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -345,7 +339,7 @@ function DetailContent() {
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans flex flex-col justify-between">
       <div>
         {/* Header Hero */}
-        <section className="bg-[#17162b] text-white py-16 md:py-[104px]">
+        <section className="bg-[#17162b] text-white py-4 md:py-5">
           <div className="max-w-[1300px] w-[95%] mx-auto px-4 sm:px-6">
             <nav className="text-sm text-gray-400 mb-4 flex items-center gap-2">
               <Link href="/" className="hover:text-red-500 transition">
@@ -370,19 +364,19 @@ function DetailContent() {
         {/* Content Container */}
         <main className="max-w-[1300px] w-[95%] mx-auto px-0 sm:px-6 py-8 sm:py-12">
           <div className="bg-white rounded-2xl p-5 sm:p-6 md:p-10 border border-gray-200 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-6 mb-8">
-              {/* Left Side: Project Name */}
-              <div className="flex flex-col items-start">
-                <span className="text-gray-400 font-bold text-xs uppercase">
-                  Project Name
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6 border-b border-gray-100 pb-6 mb-8">
+              {/* Left Side: Project Details */}
+              <div className="flex flex-col items-start max-w-3xl">
+                <span className="font-bold text-base text-gray-900 uppercase tracking-wider mb-2">
+                  Project Details
                 </span>
-                <span className="font-bold text-lg md:text-xl text-gray-900 mt-1">
-                  {project.title}
-                </span>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                  {project.desc}
+                </p>
               </div>
 
               {/* Right Side: Current Status */}
-              <div className="flex flex-col items-start sm:items-end">
+              <div className="flex flex-col items-end">
                 <span className="text-gray-400 font-bold text-xs uppercase">
                   Current Status
                 </span>
@@ -408,12 +402,12 @@ function DetailContent() {
             </div>
 
             {/* Info Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 bg-gray-50 border border-gray-200/50 rounded-xl p-4 sm:p-6 mb-8 text-sm">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gray-50 border border-gray-200/50 rounded-xl p-6 md:px-10 md:py-8 mb-8 text-sm mx-0 md:mx-12">
               <div>
                 <span className="text-gray-400 font-bold text-xs block uppercase">
                   Division
                 </span>
-                <span className="font-bold text-gray-800 mt-1 block text-base">
+                <span className="font-bold text-gray-800 mt-2 block text-base">
                   {project.division}
                 </span>
               </div>
@@ -421,7 +415,7 @@ function DetailContent() {
                 <span className="text-gray-400 font-bold text-xs block uppercase">
                   Location
                 </span>
-                <span className="font-bold text-gray-800 mt-1 flex items-center gap-1.5 text-base">
+                <span className="font-bold text-gray-800 mt-2 flex items-center gap-1.5 text-base">
                   <FaMapMarkerAlt className="text-[#E61B23] text-sm" />
                   <span>{project.location}</span>
                 </span>
@@ -430,28 +424,18 @@ function DetailContent() {
                 <span className="text-gray-400 font-bold text-xs block uppercase">
                   {isCompleted ? "Closure Date" : "Start Date"}
                 </span>
-                <span className="font-bold text-gray-800 mt-1 flex items-center gap-1.5 text-base">
+                <span className="font-bold text-gray-800 mt-2 flex items-center gap-1.5 text-base">
                   <FaCalendarAlt className="text-gray-400 text-sm" />
                   <span>{project.date}</span>
                 </span>
               </div>
             </div>
 
-            {/* Description and Scope */}
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider mb-2">
-                  Project Details
-                </h3>
-                <p className="text-gray-600 text-base leading-relaxed">
-                  {project.desc}
-                </p>
-              </div>
-            </div>
+
 
             <ProjectGallery images={project.team} />
 
-            <div className="mt-10 pt-6 border-t border-gray-100 flex justify-end">
+            <div className="mt-6 flex justify-end">
               <button
                 onClick={() => window.history.back()}
                 className="bg-[#E61B23] hover:bg-red-700 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition shadow-sm"
