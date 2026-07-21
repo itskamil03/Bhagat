@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -8,6 +8,8 @@ import {
   FaMapMarkerAlt,
   FaCalendarAlt,
   FaWrench,
+  FaChevronLeft,
+  FaChevronRight
 } from "react-icons/fa";
 import Contact from "../../components/contact";
 
@@ -160,6 +162,159 @@ const allProjects = [
   },
 ];
 
+const ProjectGallery = ({ images }) => {
+  const [isPaused, setIsPaused] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  const scrollRef = useRef(0);
+  const targetScrollRef = useRef(0);
+  const requestRef = useRef();
+  const itemRefs = useRef([]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  let displayImages = [...(images || [])];
+  if (displayImages.length === 0) {
+    displayImages = ["/d1.png", "/d2.png", "/d3.png"];
+  }
+
+  // Need at least 5 for continuous horizontal layout
+  while (displayImages.length < 5) {
+    displayImages = [...displayImages, ...displayImages];
+  }
+  const total = displayImages.length;
+
+  const updateDOM = () => {
+    const scrollProgress = scrollRef.current;
+
+    itemRefs.current.forEach((el, i) => {
+      if (!el) return;
+
+      let offset = (i - scrollProgress) % total;
+      // wrap offset to -total/2 to +total/2
+      if (offset > total / 2) offset -= total;
+      if (offset < -total / 2) offset += total;
+
+      const absOffset = Math.abs(offset);
+
+      // Keep all images at the exact same size so height never decreases
+      let scale = 1;
+
+      let zIndex = 20 - Math.round(absOffset * 10);
+
+      // Opacity: 1 at 0, 0.75 at 1
+      let opacity = 1 - Math.min(absOffset, 1) * 0.25;
+      if (absOffset > 2) opacity -= (absOffset - 2) * 0.5;
+      opacity = Math.max(0, opacity);
+
+      // translateX: flat horizontal spacing, no overlap. 
+      // 110 ensures they sit side by side with gap when scaled.
+      let translateX = offset * 110;
+
+      // Hide completely if out of window
+      if (absOffset > 2.5) {
+        opacity = 0;
+        translateX = offset > 0 ? 300 : -300;
+      }
+
+      // Shadow interpolation
+      let shadowOpacity = 0.5 * (1 - Math.min(absOffset, 1));
+      let shadowBlur = 40 * (1 - Math.min(absOffset, 1));
+      let shadowY = 20 * (1 - Math.min(absOffset, 1));
+      const shadow = `0 ${shadowY}px ${shadowBlur}px -10px rgba(0, 0, 0, ${shadowOpacity})`;
+
+      el.style.transform = `translateX(${translateX}%) scale(${scale})`;
+      el.style.zIndex = zIndex;
+      el.style.opacity = opacity;
+      el.style.boxShadow = shadow;
+    });
+  };
+
+  const animate = () => {
+    if (!isPaused) {
+      targetScrollRef.current += 0.0035; // Continuous autoplay speed
+    }
+    // Smooth easing interpolation for manual jumps + autoplay
+    scrollRef.current += (targetScrollRef.current - scrollRef.current) * 0.08;
+
+    updateDOM();
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
+  useEffect(() => {
+    if (isMounted) {
+      requestRef.current = requestAnimationFrame(animate);
+    }
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [isMounted, isPaused]);
+
+  if (!isMounted) return null;
+
+  const handleNext = () => targetScrollRef.current += 1;
+  const handlePrev = () => targetScrollRef.current -= 1;
+
+  return (
+    <div className="mt-12 w-full max-w-[1300px] mx-auto mb-6 bg-red-50 rounded-3xl p-6 md:p-10 shadow-xl relative overflow-hidden">
+      <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-wider mb-6 text-center relative z-10">
+        Project Gallery
+      </h3>
+      <div
+        className="relative w-full h-[270px] sm:h-[370px] md:h-[470px] flex items-center justify-center overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <div className="relative w-full max-w-[1200px] h-full flex items-center justify-center">
+          {displayImages.map((src, i) => (
+            <div
+              key={i}
+              ref={(el) => (itemRefs.current[i] = el)}
+              className="absolute w-[85%] sm:w-[65%] md:w-[50%] aspect-video overflow-hidden cursor-pointer rounded-2xl"
+              style={{ willChange: "transform, opacity" }}
+              onClick={() => {
+                let offset = (i - targetScrollRef.current) % total;
+                if (offset > total / 2) offset -= total;
+                if (offset < -total / 2) offset += total;
+                targetScrollRef.current += offset;
+              }}
+              onMouseEnter={() => {
+                // Ignore hovers while actively sliding to prevent tug-of-war flicker
+                if (Math.abs(targetScrollRef.current - scrollRef.current) > 0.05) return;
+
+                let offset = (i - targetScrollRef.current) % total;
+                if (offset > total / 2) offset -= total;
+                if (offset < -total / 2) offset += total;
+                targetScrollRef.current += offset;
+              }}
+            >
+              <img
+                src={src}
+                alt="Gallery"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Navigation Arrows */}
+        <button
+          onClick={handlePrev}
+          className="absolute left-2 sm:left-4 z-30 p-2 sm:p-3 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110"
+        >
+          <FaChevronLeft className="text-base sm:text-xl" />
+        </button>
+        <button
+          onClick={handleNext}
+          className="absolute right-2 sm:right-4 z-30 p-2 sm:p-3 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110"
+        >
+          <FaChevronRight className="text-base sm:text-xl" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 function DetailContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -190,8 +345,8 @@ function DetailContent() {
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans flex flex-col justify-between">
       <div>
         {/* Header Hero */}
-        <section className="bg-[#17162b] text-white py-16">
-          <div className="max-w-[1000px] mx-auto px-6">
+        <section className="bg-[#17162b] text-white py-16 md:py-[104px]">
+          <div className="max-w-[1300px] w-[95%] mx-auto px-4 sm:px-6">
             <nav className="text-sm text-gray-400 mb-4 flex items-center gap-2">
               <Link href="/" className="hover:text-red-500 transition">
                 Home
@@ -213,31 +368,39 @@ function DetailContent() {
         </section>
 
         {/* Content Container */}
-        <main className="max-w-[1000px] mx-auto px-6 py-12">
-          <div className="bg-white rounded-2xl p-6 md:p-10 border border-gray-200 shadow-sm">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-6 mb-8">
+        <main className="max-w-[1300px] w-[95%] mx-auto px-0 sm:px-6 py-8 sm:py-12">
+          <div className="bg-white rounded-2xl p-5 sm:p-6 md:p-10 border border-gray-200 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-6 mb-8">
+              {/* Left Side: Project Name */}
+              <div className="flex flex-col items-start">
+                <span className="text-gray-400 font-bold text-xs uppercase">
+                  Project Name
+                </span>
+                <span className="font-bold text-lg md:text-xl text-gray-900 mt-1">
+                  {project.title}
+                </span>
+              </div>
 
-              <div>
+              {/* Right Side: Current Status */}
+              <div className="flex flex-col items-start sm:items-end">
                 <span className="text-gray-400 font-bold text-xs uppercase">
                   Current Status
                 </span>
                 <span
-                  className={`font-bold text-sm md:text-base px-3 py-1 rounded-full mt-1.5 flex items-center gap-1.5 ${
-                    isCompleted
-                      ? "bg-green-50 text-green-700"
-                      : isUpcoming
-                        ? "bg-yellow-50 text-yellow-800"
-                        : "bg-red-50 text-red-700"
-                  }`}
+                  className={`font-bold text-sm md:text-base px-3 py-1 rounded-full mt-1.5 flex items-center gap-1.5 ${isCompleted
+                    ? "bg-green-50 text-green-700"
+                    : isUpcoming
+                      ? "bg-yellow-50 text-yellow-800"
+                      : "bg-red-50 text-red-700"
+                    }`}
                 >
                   <span
-                    className={`w-2 h-2 rounded-full ${
-                      isCompleted
-                        ? "bg-green-500"
-                        : isUpcoming
-                          ? "bg-yellow-500"
-                          : "bg-red-500 animate-pulse"
-                    }`}
+                    className={`w-2 h-2 rounded-full ${isCompleted
+                      ? "bg-green-500"
+                      : isUpcoming
+                        ? "bg-yellow-500"
+                        : "bg-red-500 animate-pulse"
+                      }`}
                   ></span>
                   <span>{project.status}</span>
                 </span>
@@ -245,7 +408,7 @@ function DetailContent() {
             </div>
 
             {/* Info Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 bg-gray-50 border border-gray-200/50 rounded-xl p-6 mb-8 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 bg-gray-50 border border-gray-200/50 rounded-xl p-4 sm:p-6 mb-8 text-sm">
               <div>
                 <span className="text-gray-400 font-bold text-xs block uppercase">
                   Division
@@ -265,7 +428,7 @@ function DetailContent() {
               </div>
               <div>
                 <span className="text-gray-400 font-bold text-xs block uppercase">
-                  Timeline
+                  {isCompleted ? "Closure Date" : "Start Date"}
                 </span>
                 <span className="font-bold text-gray-800 mt-1 flex items-center gap-1.5 text-base">
                   <FaCalendarAlt className="text-gray-400 text-sm" />
@@ -278,41 +441,15 @@ function DetailContent() {
             <div className="space-y-8">
               <div>
                 <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider mb-2">
-                  Project Overview
+                  Project Details
                 </h3>
                 <p className="text-gray-600 text-base leading-relaxed">
                   {project.desc}
                 </p>
               </div>
-
-              <div>
-                <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider mb-3">
-                  Scope of Work & Deliverables
-                </h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
-                  <li className="flex items-center gap-3 font-medium bg-gray-50 p-3 rounded-lg border border-gray-150">
-                    <FaCheckCircle className="text-green-500 text-base shrink-0" />
-                    <span>Comprehensive engineering design & layout</span>
-                  </li>
-                  <li className="flex items-center gap-3 font-medium bg-gray-50 p-3 rounded-lg border border-gray-150">
-                    <FaCheckCircle className="text-green-500 text-base shrink-0" />
-                    <span>Rigorous safety clearances & validation checks</span>
-                  </li>
-                  <li className="flex items-center gap-3 font-medium bg-gray-50 p-3 rounded-lg border border-gray-150">
-                    <FaCheckCircle className="text-green-500 text-base shrink-0" />
-                    <span>Equipment commissioning & grid integration</span>
-                  </li>
-                  <li className="flex items-center gap-3 font-medium bg-gray-50 p-3 rounded-lg border border-gray-150">
-                    <FaCheckCircle className="text-green-500 text-base shrink-0" />
-                    <span>
-                      Continuous telemetry monitoring & safety reviews
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-
             </div>
+
+            <ProjectGallery images={project.team} />
 
             <div className="mt-10 pt-6 border-t border-gray-100 flex justify-end">
               <button

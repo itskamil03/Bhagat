@@ -25,10 +25,11 @@ const servicesData = [
     category: "Electrical",
     desc: "We offer end-to-end installation, testing, and commissioning of compact substations (CSS) and package substations. Our services cover foundation checks, HT/LT cable terminations, transformer integration, ring main unit (RMU) routing, and protection system calibration to deliver safe, weather-resistant, and space-saving power distribution.",
     images: [
-      "/ic1.jpg",
-      "/ic2.jpg",
-      "/ic3.jpg",
-      "/ic4.jpg",
+      "/Compact Substation 1.jpeg",
+      "/Compact Substation 2.jpeg",
+      "/Compact Substation 3.jpeg",
+      "/Compact Substation 4.jpeg",
+      "/Compact Substation 5.jpeg"
     ],
     href: "/service/transformer-services",
   },
@@ -41,6 +42,8 @@ const servicesData = [
       "/Cable Laying Underground.png",
       "/Cable Trenching.png",
       "/Underground Cable Laying.png",
+      "/Cable Laying 4.jpeg",
+      "/Cable Laying 6.jpeg"
     ],
     href: "/service/cable-laying",
   },
@@ -65,7 +68,8 @@ const servicesData = [
       "/Facade Lighting 1.png",
       "/Facade Lighting 2.png ",
       "/Facade Lighting 3.png",
-      "/Facade Lighting 4.png",
+      "/Facade Lighting 4.jpeg",
+      "/Facade Lighting 5.png"
     
     ],
     href: "/service/facade-lighting",
