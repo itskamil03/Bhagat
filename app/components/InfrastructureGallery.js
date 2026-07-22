@@ -38,14 +38,17 @@ const allImages = [
   { src: imgIng10, alt: 'Engineering setup 10' },
 ];
 
-export default function InfrastructureGallery() {
+export default function InfrastructureGallery({ adminImages = null }) {
+  // Use admin provided images if available, otherwise fallback to our highly-curated static images
+  const displayImages = adminImages && adminImages.length > 0 ? adminImages : allImages;
+
   const [visibleCount, setVisibleCount] = useState(12);
 
   const loadMore = () => {
-    setVisibleCount(prev => Math.min(prev + 6, allImages.length));
+    setVisibleCount(prev => Math.min(prev + 6, displayImages.length));
   };
 
-  const visibleImages = allImages.slice(0, visibleCount);
+  const visibleImages = displayImages.slice(0, visibleCount);
 
   return (
     <section className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-[80px] lg:pt-[100px] pb-[100px]">
@@ -60,34 +63,38 @@ export default function InfrastructureGallery() {
 
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-3 md:gap-4">
         <AnimatePresence>
-          {visibleImages.map((image, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index >= 12 ? (index - 12) * 0.1 : 0 }}
-              className="break-inside-avoid mb-3 md:mb-4 relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-gray-100"
-            >
+          {visibleImages.map((image, index) => {
+            const isStatic = typeof image.src === 'object';
+
+            return (
               <motion.div
-                whileHover={{ scale: 1.05, filter: 'brightness(1.05)' }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-                className="relative w-full h-auto"
+                key={isStatic ? index : image.src} // Use stable string URL for dynamic, index for static
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index >= 12 ? (index - 12) * 0.1 : 0 }}
+                className="break-inside-avoid mb-3 md:mb-4 relative group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-gray-100"
               >
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  placeholder="blur"
-                  className="w-full h-auto object-cover rounded-2xl"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading="lazy"
-                />
+                <motion.div
+                  whileHover={{ scale: 1.05, filter: 'brightness(1.05)' }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
+                  className="relative w-full h-auto"
+                >
+                  <Image
+                    src={image.src}
+                    alt={image.alt || "Infrastructure Photo"}
+                    {...(isStatic ? { placeholder: "blur" } : { width: 800, height: 800 })}
+                    className="w-full h-auto object-cover rounded-2xl"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    loading="lazy"
+                  />
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            );
+          })}
         </AnimatePresence>
       </div>
 
-      {visibleCount < allImages.length ? (
+      {visibleCount < displayImages.length ? (
         <div className="mt-12 flex justify-center">
           <button
             onClick={loadMore}

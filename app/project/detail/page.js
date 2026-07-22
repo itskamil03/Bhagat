@@ -3,13 +3,15 @@
 import React, { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   FaCheckCircle,
   FaMapMarkerAlt,
   FaCalendarAlt,
   FaWrench,
   FaChevronLeft,
-  FaChevronRight
+  FaChevronRight,
+  FaArrowRight
 } from "react-icons/fa";
 import Contact from "../../components/contact";
 
@@ -162,148 +164,114 @@ const allProjects = [
   },
 ];
 
-const ProjectGallery = ({ images }) => {
-  const [isPaused, setIsPaused] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+const galleryProjects = [
+  { src: "/infra1.jpg", title: "Power Substation", location: "Mumbai, MH", category: "Industrial Electrical" },
+  { src: "/in2.png", title: "Facade Lighting", location: "Patna, BR", category: "Commercial Install" },
+  { src: "/ic1.jpg", title: "Transformer Install", location: "Secunderabad, TS", category: "Railway" },
+  { src: "/ing2.jpg", title: "Cable Laying", location: "Barauni, BR", category: "Turnkey" },
+  { src: "/infra3.jpg", title: "Control Panel", location: "Ahmedabad, GJ", category: "Maintenance" },
+  { src: "/ing6.jpg", title: "OHE Electrification", location: "Kolkata, WB", category: "EPC Turnkey" },
+  { src: "/ing7.jpg", title: "Civil Construction", location: "Patna, BR", category: "Infrastructure" },
+];
 
-  const scrollRef = useRef(0);
-  const targetScrollRef = useRef(0);
-  const requestRef = useRef();
-  const itemRefs = useRef([]);
+const GalleryCard = ({ item, className }) => (
+  <motion.div
+    variants={{ hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1 } }}
+    className={`relative group rounded-none overflow-hidden shadow-sm border border-white/70 cursor-pointer transition-shadow duration-300 ${className}`}
+  >
+    <img src={item.src} alt={item.title} className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105" />
+  </motion.div>
+);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  let displayImages = [...(images || [])];
-  if (displayImages.length === 0) {
-    displayImages = ["/d1.png", "/d2.png", "/d3.png"];
-  }
-
-  // Need at least 5 for continuous horizontal layout
-  while (displayImages.length < 5) {
-    displayImages = [...displayImages, ...displayImages];
-  }
-  const total = displayImages.length;
-
-  const updateDOM = () => {
-    const scrollProgress = scrollRef.current;
-
-    itemRefs.current.forEach((el, i) => {
-      if (!el) return;
-
-      let offset = (i - scrollProgress) % total;
-      // wrap offset to -total/2 to +total/2
-      if (offset > total / 2) offset -= total;
-      if (offset < -total / 2) offset += total;
-
-      const absOffset = Math.abs(offset);
-
-      // Keep all images at the exact same size so height never decreases
-      let scale = 1;
-
-      let zIndex = 20 - Math.round(absOffset * 10);
-
-      // Opacity: 1 at 0, 0.75 at 1
-      let opacity = 1 - Math.min(absOffset, 1) * 0.25;
-      if (absOffset > 2) opacity -= (absOffset - 2) * 0.5;
-      opacity = Math.max(0, opacity);
-
-      // translateX: flat horizontal spacing, no overlap. 
-      // 110 ensures they sit side by side with gap when scaled.
-      let translateX = offset * 110;
-
-      // Hide completely if out of window
-      if (absOffset > 2.5) {
-        opacity = 0;
-        translateX = offset > 0 ? 300 : -300;
-      }
-
-      el.style.transform = `translateX(${translateX}%) scale(${scale})`;
-      el.style.zIndex = zIndex;
-      el.style.opacity = opacity;
-      el.style.boxShadow = "none";
-    });
-  };
-
-  const animate = () => {
-    if (!isPaused) {
-      targetScrollRef.current += 0.0035; // Continuous autoplay speed
-    }
-    // Smooth easing interpolation for manual jumps + autoplay
-    scrollRef.current += (targetScrollRef.current - scrollRef.current) * 0.08;
-
-    updateDOM();
-    requestRef.current = requestAnimationFrame(animate);
-  };
-
-  useEffect(() => {
-    if (isMounted) {
-      requestRef.current = requestAnimationFrame(animate);
-    }
-    return () => cancelAnimationFrame(requestRef.current);
-  }, [isMounted, isPaused]);
-
-  if (!isMounted) return null;
-
-  const handleNext = () => targetScrollRef.current += 1;
-  const handlePrev = () => targetScrollRef.current -= 1;
+const ProjectGallery = ({ galleryData }) => {
+  // Use dynamic data from admin panel if provided, otherwise use fallback
+  const displayProjects = galleryData && galleryData.length > 0 ? galleryData : galleryProjects;
 
   return (
-    <div className="mt-12 w-full max-w-[1300px] mx-auto mb-6 bg-red-50 rounded-3xl px-6 md:px-10 pt-6 md:pt-10 pb-2 md:pb-4 shadow-xl relative overflow-hidden">
-      <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-wider mb-2 text-center relative z-10">
-        Project Gallery
-      </h3>
-      <div
-        className="relative w-full h-[220px] sm:h-[280px] md:h-[380px] flex items-center justify-center overflow-hidden"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-      >
-        <div className="relative w-full max-w-[1200px] h-full flex items-center justify-center">
-          {displayImages.map((src, i) => (
-            <div
-              key={i}
-              ref={(el) => (itemRefs.current[i] = el)}
-              className="absolute w-[85%] sm:w-[65%] md:w-[50%] aspect-video overflow-hidden cursor-pointer rounded-2xl"
-              style={{ willChange: "transform, opacity" }}
-              onClick={() => {
-                let offset = (i - targetScrollRef.current) % total;
-                if (offset > total / 2) offset -= total;
-                if (offset < -total / 2) offset += total;
-                targetScrollRef.current += offset;
-              }}
-              onMouseEnter={() => {
-                // Ignore hovers while actively sliding to prevent tug-of-war flicker
-                if (Math.abs(targetScrollRef.current - scrollRef.current) > 0.05) return;
+    <div className="mt-8 md:mt-11 w-full mb-16 overflow-hidden">
 
-                let offset = (i - targetScrollRef.current) % total;
-                if (offset > total / 2) offset -= total;
-                if (offset < -total / 2) offset += total;
-                targetScrollRef.current += offset;
-              }}
-            >
-              <img
-                src={src}
-                alt="Gallery"
-                className="w-full h-full object-cover"
-              />
+      {/* Left Aligned Heading and Text */}
+      <div className="text-left mb-12 max-w-3xl">
+        <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold text-[#111928] leading-[1.15] tracking-tight mb-4">
+          Project Gallery
+        </h2>
+        <p className="text-gray-600 text-sm md:text-base leading-relaxed font-medium">
+          Explore a visual showcase of our engineering excellence. From high-voltage power substations and intricate industrial wiring to sprawling infrastructure developments, every project reflects our unwavering commitment to precision, safety, and sustainable execution.
+        </p>
+      </div>
+
+      <div className="w-full">
+
+        {/* Desktop 4-Column Collage (Hidden on Mobile/Tablet) */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
+          className="hidden lg:flex flex-row gap-4 w-full h-[700px] xl:h-[800px]"
+        >
+          {/* Column 1 */}
+          <div className="flex flex-col justify-end w-1/4 h-full pb-10">
+            <GalleryCard item={galleryProjects[0]} className="h-[75%]" />
+          </div>
+
+          {/* Column 2 */}
+          <div className="flex flex-col gap-4 w-1/4 h-full pt-8 pb-8">
+            <GalleryCard item={galleryProjects[1]} className="h-[55%]" />
+            <GalleryCard item={galleryProjects[2]} className="h-[45%]" />
+          </div>
+
+          {/* Column 3 & 4 Combined */}
+          <div className="flex flex-col gap-4 w-2/4 h-full">
+            {/* Top Row */}
+            <div className="flex flex-row gap-4 h-[65%]">
+              <div className="w-1/2 h-full">
+                <GalleryCard item={galleryProjects[3]} className="h-full" />
+              </div>
+              <div className="w-1/2 flex flex-col gap-4 h-full">
+                <GalleryCard item={galleryProjects[4]} className="h-[60%]" />
+                <GalleryCard item={galleryProjects[6]} className="h-[40%]" />
+              </div>
             </div>
-          ))}
-        </div>
+            {/* Bottom Row */}
+            <div className="w-full h-[35%]">
+              <GalleryCard item={galleryProjects[5]} className="h-full" />
+            </div>
+          </div>
+        </motion.div>
 
-        {/* Navigation Arrows */}
-        <button
-          onClick={handlePrev}
-          className="absolute left-2 sm:left-4 z-30 p-2 sm:p-3 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110"
+        {/* Tablet 2-Column Masonry (Hidden on Mobile and Desktop) */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+          className="hidden sm:flex lg:hidden flex-row gap-4 w-full h-[700px]"
         >
-          <FaChevronLeft className="text-base sm:text-xl" />
-        </button>
-        <button
-          onClick={handleNext}
-          className="absolute right-2 sm:right-4 z-30 p-2 sm:p-3 bg-white/90 hover:bg-white text-gray-800 rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-110"
+          <div className="flex flex-col gap-4 w-1/2 h-full">
+            <GalleryCard item={galleryProjects[0]} className="h-[30%]" />
+            <GalleryCard item={galleryProjects[1]} className="h-[40%]" />
+            <GalleryCard item={galleryProjects[2]} className="h-[30%]" />
+          </div>
+          <div className="flex flex-col gap-4 w-1/2 h-full">
+            <GalleryCard item={galleryProjects[3]} className="h-[40%]" />
+            <GalleryCard item={galleryProjects[4]} className="h-[30%]" />
+            <GalleryCard item={galleryProjects[5]} className="h-[30%]" />
+          </div>
+        </motion.div>
+
+        {/* Mobile 1-Column Stack (Hidden on Tablet/Desktop) */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+          className="flex sm:hidden flex-col gap-4 w-full"
         >
-          <FaChevronRight className="text-base sm:text-xl" />
-        </button>
+          {displayProjects.map((item, index) => (
+             <GalleryCard key={index} item={item} className="aspect-square w-full" />
+          ))}
+        </motion.div>
       </div>
     </div>
   );

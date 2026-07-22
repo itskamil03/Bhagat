@@ -341,6 +341,8 @@ export default function CompletedProjects() {
               <div
                 ref={containerRef}
                 onScroll={handleScroll}
+                onTouchStart={() => setIsPaused(true)}
+                onTouchEnd={() => setTimeout(() => setIsPaused(false), 1500)}
                 className="flex-1 space-y-6 max-h-[600px] overflow-y-auto pr-3 scrollbar-thin"
               >
                 {filteredProjects.length === 0

@@ -15,13 +15,10 @@ const festivalGalleries = {
       "As engineers and creators, Vishwakarma Puja holds special significance at Bhagat Engineering Works. We clean and worship our machines, tools, and heavy erection gears, followed by community feasts with our site workers, engineers, and executive teams.",
     date: "September 17, Annual",
     mainImage: "/fi1.jpg",
-    images: [
-      "/fi1.jpg",
-      "/fi1.jpg",
-      "/fi1.jpg",
-      "/fi1.jpg",
-      "/fi1.jpg",
-      "/fi1.jpg",
+    timeline: [
+      { year: 2024, image: "/fi1.jpg" },
+      { year: 2025, image: "/fi1.jpg" },
+      { year: 2026, image: "/fi1.jpg" },
     ],
   },
   diwali: {
@@ -30,13 +27,10 @@ const festivalGalleries = {
       "Celebrating the festival of lights with sweets distribution, office lighting, and an annual milan ceremony that brings families of our employees together to honor our year-round accomplishments.",
     date: "October/November, Annual",
     mainImage: "/diwali.jpg",
-    images: [
-      "/diwali.jpg",
-      "/diwali.jpg",
-      "/diwali.jpg",
-      "/diwali.jpg",
-      "/diwali.jpg",
-      "/diwali.jpg",
+    timeline: [
+      { year: 2024, image: "/diwali.jpg" },
+      { year: 2025, image: "/diwali.jpg" },
+      { year: 2026, image: "/diwali.jpg" },
     ],
   },
   patriot: {
@@ -45,13 +39,10 @@ const festivalGalleries = {
       "Flag hoisting ceremonies at our corporate head office in Patna and major railway site substations across India, commemorating our pride in building the country's utility infrastructure.",
     date: "National Festivals",
     mainImage: "/fi3.jpg",
-    images: [
-      "/fi3.jpg",
-      "/fi3.jpg",
-      "/fi3.jpg",
-      "/fi3.jpg",
-      "/fi3.jpg",
-      "/fi3.jpg",
+    timeline: [
+      { year: 2024, image: "/fi3.jpg" },
+      { year: 2025, image: "/fi3.jpg" },
+      { year: 2026, image: "/fi3.jpg" },
     ],
   },
   chhath: {
@@ -60,13 +51,10 @@ const festivalGalleries = {
       "Deeply rooted in the cultural fabric of Bihar, we celebrate Chhath Puja with spiritual devotion. We support our team members with festive breaks, distribute traditional offerings (Thekua), and organize community support camps at the Ganga ghats in Patna.",
     date: "October/November, Annual",
     mainImage: "/fi4.jpg",
-    images: [
-      "/fi4.jpg",
-      "/fi4.jpg",
-      "/fi4.jpg",
-      "/fi4.jpg",
-      "/fi4.jpg",
-      "/fi4.jpg",
+    timeline: [
+      { year: 2024, image: "/fi4.jpg" },
+      { year: 2025, image: "/fi4.jpg" },
+      { year: 2026, image: "/fi4.jpg" },
     ],
   },
   holi: {
@@ -75,13 +63,10 @@ const festivalGalleries = {
       "Welcoming the spring season with vibrant colors, organic gulal, traditional music, and special festive delicacies. Our offices and sites come together for a special pre-Holi milan, reinforcing our team bonds.",
     date: "March, Annual",
     mainImage: "/diwali.jpg",
-    images: [
-      "/diwali.jpg",
-      "/fi5.jpg",
-      "/fi5.jpg",
-      "/fi5.jpg",
-      "/fi5.jpg",
-      "/fi5.jpg",
+    timeline: [
+      { year: 2024, image: "/diwali.jpg" },
+      { year: 2025, image: "/fi5.jpg" },
+      { year: 2026, image: "/fi5.jpg" },
     ],
   },
 };
@@ -102,13 +87,10 @@ function GalleryContent() {
       description: queryDesc || "",
       date: "Event Gallery",
       mainImage: queryImage,
-      images: [
-        queryImage,
-        queryImage,
-        queryImage,
-        queryImage,
-        queryImage,
-        queryImage,
+      timeline: [
+        { year: 2024, image: queryImage },
+        { year: 2025, image: queryImage },
+        { year: 2026, image: queryImage },
       ],
     };
   } else if (!gallery) {
@@ -207,28 +189,76 @@ function GalleryContent() {
         </div>
       </section>
 
-      {/* Grid Images Section */}
-      <section className="max-w-[1240px] mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-          {gallery.images.map((src, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05, duration: 0.5 }}
-              onClick={() => setActiveImageIndex(index)}
-              className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-gray-200 cursor-zoom-in transition-all duration-300 relative aspect-[4/3]"
-            >
-              <Image
-                src={src}
-                alt={`${gallery.title} moment ${index + 1}`}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-103"
-              />
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
-            </motion.div>
-          ))}
+      {/* Timeline Section Heading */}
+      <section className="max-w-6xl mx-auto pt-16 pb-10 px-4">
+        <div className="flex items-center justify-center gap-6">
+          <span className="hidden sm:block flex-1 border-t border-dashed border-red-300" />
+          <h2 className="text-red-600 font-semibold tracking-wide text-sm md:text-base whitespace-nowrap uppercase">
+            {gallery.title} THROUGH THE YEARS
+          </h2>
+          <span className="hidden sm:block flex-1 border-t border-dashed border-red-300" />
+        </div>
+      </section>
+
+      {/* Timeline Images Section */}
+      <section className="max-w-[1240px] mx-auto pb-24 px-4">
+        <div className="relative">
+          {/* Vertical line on the left */}
+          <div className="hidden md:block absolute left-6 top-4 bottom-4 w-[2px] bg-red-200" />
+
+          <div className="space-y-8">
+            {gallery.timeline.map((item, index) => {
+              const year = item.year;
+              const src = item.image;
+              const imageFirst = index % 2 === 0;
+              return (
+                <div key={index} className="relative flex items-center gap-6">
+                  {/* Year label + dot column */}
+                  <div className="hidden md:flex flex-col items-center w-12 flex-shrink-0">
+                    <span className="text-xs font-semibold text-gray-400 mb-2">
+                      {year}
+                    </span>
+                    <span className="w-3 h-3 rounded-full bg-red-600 ring-4 ring-red-100 z-10" />
+                  </div>
+
+                  {/* Card Block */}
+                  <div className="w-full max-w-[1134px] md:h-[246px] grid md:grid-cols-2 bg-white rounded-[7px] shadow-[4px_4px_13px_rgba(0,0,0,0.13)] overflow-hidden border border-gray-100">
+                    {/* Image */}
+                    <div
+                      className={`relative h-48 md:h-[246px] overflow-hidden cursor-zoom-in group ${
+                        imageFirst ? "md:order-1" : "md:order-2"
+                      }`}
+                      onClick={() => setActiveImageIndex(index)}
+                    >
+                      <img
+                        src={src}
+                        alt={`${gallery.title} ${year}`}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                    </div>
+
+                    {/* Content */}
+                    <div
+                      className={`p-6 md:px-8 md:py-5 flex flex-col justify-center h-full ${
+                        imageFirst ? "md:order-2" : "md:order-1"
+                      }`}
+                    >
+                      <h3 className="text-[#E61B23] font-bold text-sm md:text-base">
+                        {year} CELEBRATION
+                      </h3>
+                      <h4 className="text-lg md:text-xl font-bold text-gray-900 mt-1">
+                        {gallery.title} {year}
+                      </h4>
+                      <p className="text-gray-600 mt-2 text-xs md:text-[13px] leading-relaxed">
+                        A memorable celebration of {gallery.title} in the year {year}. We honored our traditions, gathered as a family, and recognized the continued hard work of our dedicated team at Bhagat Engineering.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -260,7 +290,7 @@ function GalleryContent() {
               className="relative max-w-5xl w-full h-[70vh] md:h-[80vh] flex items-center justify-center select-none"
             >
               <Image
-                src={gallery.images[activeImageIndex]}
+                src={gallery.timeline[activeImageIndex].image}
                 alt={`${gallery.title} full view`}
                 fill
                 sizes="100vw"
@@ -276,7 +306,7 @@ function GalleryContent() {
                 onClick={(e) => {
                   e.stopPropagation();
                   setActiveImageIndex((prev) =>
-                    prev === 0 ? gallery.images.length - 1 : prev - 1,
+                    prev === 0 ? gallery.timeline.length - 1 : prev - 1,
                   );
                 }}
                 className="hover:text-red-500 transition-colors font-bold cursor-pointer px-2"
@@ -284,14 +314,14 @@ function GalleryContent() {
                 Prev
               </button>
               <span className="text-gray-400">
-                {activeImageIndex + 1} / {gallery.images.length}
+                {activeImageIndex + 1} / {gallery.timeline.length}
               </span>
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setActiveImageIndex((prev) =>
-                    prev === gallery.images.length - 1 ? 0 : prev + 1,
+                    prev === gallery.timeline.length - 1 ? 0 : prev + 1,
                   );
                 }}
                 className="hover:text-red-500 transition-colors font-bold cursor-pointer px-2"
