@@ -62,24 +62,22 @@ export default function OurInfrastructure() {
                     { opacity: 0, rotateY: -90, transformPerspective: 2000, originX: 0, filter: "brightness(0.1)", transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] } }
               }
               transition={
-                currentImageIndex === 0 ? { opacity: { duration: 0.2 } } :
-                  currentImageIndex === 1 ? { opacity: { duration: 1.4 }, x: { duration: 2, ease: "easeOut" }, y: { duration: 2, ease: "easeOut" }, scale: { duration: 2, ease: "easeOut" }, filter: { duration: 2 } } :
-                    { opacity: { duration: 1.4 }, rotateY: { duration: 2.5, ease: "easeOut" }, filter: { duration: 2 } }
+                currentImageIndex === 0 ? { opacity: { duration: 0.5, ease: "easeInOut" } } :
+                  { duration: 1.8, ease: [0.33, 1, 0.68, 1] }
               }
               className="absolute inset-0 w-full h-full origin-center"
             >
               {/* Inner container for heavy continuous majestic panning/zooming */}
               <motion.div
                 animate={
-                  currentImageIndex === 0 ? { x: ["0%", "-5%"], rotateZ: 0.01 } : // Smooth pan left after box reveal
-                  currentImageIndex === 1 ? { x: ["0%", "5%"], y: ["0%", "5%"], rotateZ: 0.01 } : // Pan bottom-right
-                  { scale: [1, 1.15], x: ["0%", "-3%"], rotateZ: 0.01 } // Page turn continuous zoom
+                  currentImageIndex === 0 ? { x: ["0%", "-4%"], scale: [1, 1.05], rotateZ: 0.01 } : 
+                  currentImageIndex === 1 ? { x: ["0%", "3%"], y: ["0%", "3%"], scale: [1, 1.05], rotateZ: 0.01 } : 
+                  { scale: [1, 1.1], x: ["0%", "-3%"], rotateZ: 0.01 } 
                 }
-                transition={
-                  currentImageIndex === 0 ? { duration: 6.5, ease: "easeInOut", delay: 1.5 } : // Wait 1.5s for boxes, then pan left for 6.5s (8s total)
-                  currentImageIndex === 1 ? { duration: 7, ease: "linear" } : // Linear pan for 7s
-                  { duration: 15, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" }
-                }
+                transition={{
+                  duration: currentImageIndex === 0 ? 8 : 7,
+                  ease: "easeOut",
+                }}
                 className="absolute inset-[-5%] w-[110%] h-[110%]"
                 style={{ 
                   willChange: "transform, filter", 

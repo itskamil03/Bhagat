@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense, useState } from "react";
-import { FaCamera, FaChevronLeft, FaTimes } from "react-icons/fa";
+import { FaCamera, FaChevronLeft, FaChevronDown, FaTimes } from "react-icons/fa";
 import Contact from "../../../components/contact";
 
 const festivalGalleries = {
@@ -15,10 +15,13 @@ const festivalGalleries = {
       "As engineers and creators, Vishwakarma Puja holds special significance at Bhagat Engineering Works. We clean and worship our machines, tools, and heavy erection gears, followed by community feasts with our site workers, engineers, and executive teams.",
     date: "September 17, Annual",
     mainImage: "/fi1.jpg",
-    timeline: [
-      { year: 2024, image: "/fi1.jpg" },
-      { year: 2025, image: "/fi1.jpg" },
-      { year: 2026, image: "/fi1.jpg" },
+    images: [
+      { src: "/fi1.jpg", year: "2026" },
+      { src: "/fi1.jpg", year: "2026" },
+      { src: "/fi1.jpg", year: "2025" },
+      { src: "/fi1.jpg", year: "2025" },
+      { src: "/fi1.jpg", year: "2024" },
+      { src: "/fi1.jpg", year: "2024" },
     ],
   },
   diwali: {
@@ -27,10 +30,14 @@ const festivalGalleries = {
       "Celebrating the festival of lights with sweets distribution, office lighting, and an annual milan ceremony that brings families of our employees together to honor our year-round accomplishments.",
     date: "October/November, Annual",
     mainImage: "/diwali.jpg",
-    timeline: [
-      { year: 2024, image: "/diwali.jpg" },
-      { year: 2025, image: "/diwali.jpg" },
-      { year: 2026, image: "/diwali.jpg" },
+    images: [
+      { src: "/diwali.jpg", year: "2026" },
+      { src: "/d2.jpg", year: "2026" },
+      { src: "/d3.jpg", year: "2026" },
+      { src: "/d4.jpg", year: "2025" },
+      { src: "/d5.jpg", year: "2025" },
+      { src: "/d6.jpg", year: "2024" },
+
     ],
   },
   patriot: {
@@ -39,10 +46,13 @@ const festivalGalleries = {
       "Flag hoisting ceremonies at our corporate head office in Patna and major railway site substations across India, commemorating our pride in building the country's utility infrastructure.",
     date: "National Festivals",
     mainImage: "/fi3.jpg",
-    timeline: [
-      { year: 2024, image: "/fi3.jpg" },
-      { year: 2025, image: "/fi3.jpg" },
-      { year: 2026, image: "/fi3.jpg" },
+    images: [
+      { src: "/fi3.jpg", year: "2026" },
+      { src: "/fi3.jpg", year: "2026" },
+      { src: "/fi3.jpg", year: "2025" },
+      { src: "/fi3.jpg", year: "2025" },
+      { src: "/fi3.jpg", year: "2024" },
+      { src: "/fi3.jpg", year: "2024" },
     ],
   },
   chhath: {
@@ -51,10 +61,13 @@ const festivalGalleries = {
       "Deeply rooted in the cultural fabric of Bihar, we celebrate Chhath Puja with spiritual devotion. We support our team members with festive breaks, distribute traditional offerings (Thekua), and organize community support camps at the Ganga ghats in Patna.",
     date: "October/November, Annual",
     mainImage: "/fi4.jpg",
-    timeline: [
-      { year: 2024, image: "/fi4.jpg" },
-      { year: 2025, image: "/fi4.jpg" },
-      { year: 2026, image: "/fi4.jpg" },
+    images: [
+      { src: "/fi4.jpg", year: "2026" },
+      { src: "/fi4.jpg", year: "2026" },
+      { src: "/fi4.jpg", year: "2025" },
+      { src: "/fi4.jpg", year: "2025" },
+      { src: "/fi4.jpg", year: "2024" },
+      { src: "/fi4.jpg", year: "2024" },
     ],
   },
   holi: {
@@ -63,10 +76,13 @@ const festivalGalleries = {
       "Welcoming the spring season with vibrant colors, organic gulal, traditional music, and special festive delicacies. Our offices and sites come together for a special pre-Holi milan, reinforcing our team bonds.",
     date: "March, Annual",
     mainImage: "/diwali.jpg",
-    timeline: [
-      { year: 2024, image: "/diwali.jpg" },
-      { year: 2025, image: "/fi5.jpg" },
-      { year: 2026, image: "/fi5.jpg" },
+    images: [
+      { src: "/diwali.jpg", year: "2026" },
+      { src: "/fi5.jpg", year: "2026" },
+      { src: "/fi5.jpg", year: "2025" },
+      { src: "/fi5.jpg", year: "2025" },
+      { src: "/fi5.jpg", year: "2024" },
+      { src: "/fi5.jpg", year: "2024" },
     ],
   },
 };
@@ -84,13 +100,17 @@ function GalleryContent() {
   if (queryTitle && queryImage) {
     gallery = {
       title: queryTitle,
-      description: queryDesc || "",
+      description: queryDesc || (gallery ? gallery.description : ""),
       date: "Event Gallery",
       mainImage: queryImage,
-      timeline: [
-        { year: 2024, image: queryImage },
-        { year: 2025, image: queryImage },
-        { year: 2026, image: queryImage },
+      // Use specific images if defined in the dictionary, otherwise use placeholders
+      images: gallery && gallery.images ? gallery.images : [
+        { src: queryImage, year: "2026" },
+        { src: queryImage, year: "2026" },
+        { src: queryImage, year: "2025" },
+        { src: queryImage, year: "2025" },
+        { src: queryImage, year: "2024" },
+        { src: queryImage, year: "2024" },
       ],
     };
   } else if (!gallery) {
@@ -98,9 +118,37 @@ function GalleryContent() {
   }
 
   const [activeImageIndex, setActiveImageIndex] = useState(null);
+  const [selectedYear, setSelectedYear] = useState("All");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const filterOptions = ["All", "2026", "2025", "2024"];
+  const filteredImages = gallery.images.filter(
+    (img) => selectedYear === "All" || img.year === selectedYear
+  );
 
   return (
-    <main className="min-h-screen bg-gray-100 font-sans">
+    <main className="min-h-screen bg-[#FDFDFD] font-sans relative overflow-hidden">
+      {/* ================= PROFESSIONAL UI BACKGROUND ================= */}
+      {/* Soft Base Gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#ffffff_0%,_#f4f5f7_100%)] pointer-events-none z-0" />
+      
+      {/* Premium Corporate Glows */}
+      <div className="absolute top-[30%] right-[-10%] w-[800px] h-[800px] bg-[#E61B23]/[0.02] rounded-full blur-[120px] pointer-events-none z-0 mix-blend-multiply" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[900px] h-[900px] bg-[#17162b]/[0.03] rounded-full blur-[140px] pointer-events-none z-0 mix-blend-multiply" />
+      
+      {/* Micro-dot Texture for Professional Structural Feel */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-0 opacity-[0.15]"
+        style={{
+          backgroundImage: `radial-gradient(#17162b 1.5px, transparent 1.5px)`,
+          backgroundSize: '32px 32px'
+        }}
+      />
+      
+      {/* Minimalist Intersecting Tech Lines */}
+      <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-[#17162b]/10 to-transparent pointer-events-none z-0 hidden lg:block" />
+      <div className="absolute top-[60%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#E61B23]/10 to-transparent pointer-events-none z-0 hidden lg:block" />
+
       {/* ================= HERO SECTION (MATCHING MAIN FESTIVAL HERO DESIGN) ================= */}
       <section className="bg-[#17162b] text-white relative overflow-hidden w-full min-h-[473px] flex flex-col md:block">
         {/* Background Image Container on the Right (Uses selected festival's mainImage) */}
@@ -189,77 +237,90 @@ function GalleryContent() {
         </div>
       </section>
 
-      {/* Timeline Section Heading */}
-      <section className="max-w-6xl mx-auto pt-16 pb-10 px-4">
-        <div className="flex items-center justify-center gap-6">
-          <span className="hidden sm:block flex-1 border-t border-dashed border-red-300" />
-          <h2 className="text-red-600 font-semibold tracking-wide text-sm md:text-base whitespace-nowrap uppercase">
-            {gallery.title} THROUGH THE YEARS
-          </h2>
-          <span className="hidden sm:block flex-1 border-t border-dashed border-red-300" />
-        </div>
-      </section>
+      {/* Grid Images Section */}
+      <section className="max-w-[1240px] mx-auto px-6 py-10 md:py-16">
 
-      {/* Timeline Images Section */}
-      <section className="max-w-[1240px] mx-auto pb-24 px-4">
-        <div className="relative">
-          {/* Vertical line on the left */}
-          <div className="hidden md:block absolute left-6 top-4 bottom-4 w-[2px] bg-red-200" />
+        {/* Filters - Professional Dropdown */}
+        <div className="mb-10 md:mb-14 flex justify-center md:justify-start relative z-30">
+          <div 
+            className="relative w-full max-w-[240px] md:w-auto md:min-w-[200px]"
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full flex items-center justify-between gap-4 px-5 py-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-gray-800 font-semibold text-[15px] md:text-[16px] group"
+            >
+              <span>{selectedYear === "All" ? "All Years" : `Year ${selectedYear}`}</span>
+              <FaChevronDown className={`text-[#E61B23] transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : 'group-hover:translate-y-0.5'}`} />
+            </button>
 
-          <div className="space-y-8">
-            {gallery.timeline.map((item, index) => {
-              const year = item.year;
-              const src = item.image;
-              const imageFirst = index % 2 === 0;
-              return (
-                <div key={index} className="relative flex items-center gap-6">
-                  {/* Year label + dot column */}
-                  <div className="hidden md:flex flex-col items-center w-12 flex-shrink-0">
-                    <span className="text-xs font-semibold text-gray-400 mb-2">
-                      {year}
-                    </span>
-                    <span className="w-3 h-3 rounded-full bg-red-600 ring-4 ring-red-100 z-10" />
-                  </div>
-
-                  {/* Card Block */}
-                  <div className="w-full max-w-[1134px] md:h-[246px] grid md:grid-cols-2 bg-white rounded-[7px] shadow-[4px_4px_13px_rgba(0,0,0,0.13)] overflow-hidden border border-gray-100">
-                    {/* Image */}
-                    <div
-                      className={`relative h-48 md:h-[246px] overflow-hidden cursor-zoom-in group ${
-                        imageFirst ? "md:order-1" : "md:order-2"
-                      }`}
-                      onClick={() => setActiveImageIndex(index)}
-                    >
-                      <img
-                        src={src}
-                        alt={`${gallery.title} ${year}`}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
-                    </div>
-
-                    {/* Content */}
-                    <div
-                      className={`p-6 md:px-8 md:py-5 flex flex-col justify-center h-full ${
-                        imageFirst ? "md:order-2" : "md:order-1"
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-lg shadow-xl overflow-hidden z-40 origin-top"
+                >
+                  {filterOptions.map((year) => (
+                    <button
+                      key={year}
+                      onClick={() => {
+                        setSelectedYear(year);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-5 py-3.5 font-medium text-[15px] transition-all duration-200 hover:pl-7 ${
+                        selectedYear === year 
+                          ? "text-[#E61B23] bg-red-50/50 border-l-[3px] border-[#E61B23]" 
+                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-l-[3px] border-transparent"
                       }`}
                     >
-                      <h3 className="text-[#E61B23] font-bold text-sm md:text-base">
-                        {year} CELEBRATION
-                      </h3>
-                      <h4 className="text-lg md:text-xl font-bold text-gray-900 mt-1">
-                        {gallery.title} {year}
-                      </h4>
-                      <p className="text-gray-600 mt-2 text-xs md:text-[13px] leading-relaxed">
-                        A memorable celebration of {gallery.title} in the year {year}. We honored our traditions, gathered as a family, and recognized the continued hard work of our dedicated team at Bhagat Engineering.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                      {year === "All" ? "All Years" : `Year ${year}`}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
+
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+          <AnimatePresence>
+            {filteredImages.length > 0 ? (
+              filteredImages.map((img, index) => (
+                <motion.div
+                  layout
+                  key={`${img.src}-${index}`}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={() => setActiveImageIndex(index)}
+                  className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md border border-gray-200 cursor-zoom-in transition-all duration-300 relative aspect-[4/3]"
+                >
+                  <Image
+                    src={img.src}
+                    alt={`${gallery.title} ${img.year}`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-103"
+                  />
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300" />
+                  <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs font-bold shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                    {img.year}
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center text-gray-500 font-medium">
+                No images found for {selectedYear}.
+              </div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </section>
 
       {/* Lightbox Viewer */}
@@ -290,7 +351,7 @@ function GalleryContent() {
               className="relative max-w-5xl w-full h-[70vh] md:h-[80vh] flex items-center justify-center select-none"
             >
               <Image
-                src={gallery.timeline[activeImageIndex].image}
+                src={filteredImages[activeImageIndex].src}
                 alt={`${gallery.title} full view`}
                 fill
                 sizes="100vw"
@@ -306,7 +367,7 @@ function GalleryContent() {
                 onClick={(e) => {
                   e.stopPropagation();
                   setActiveImageIndex((prev) =>
-                    prev === 0 ? gallery.timeline.length - 1 : prev - 1,
+                    prev === 0 ? filteredImages.length - 1 : prev - 1,
                   );
                 }}
                 className="hover:text-red-500 transition-colors font-bold cursor-pointer px-2"
@@ -314,14 +375,14 @@ function GalleryContent() {
                 Prev
               </button>
               <span className="text-gray-400">
-                {activeImageIndex + 1} / {gallery.timeline.length}
+                {activeImageIndex + 1} / {filteredImages.length}
               </span>
               <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setActiveImageIndex((prev) =>
-                    prev === gallery.timeline.length - 1 ? 0 : prev + 1,
+                    prev === filteredImages.length - 1 ? 0 : prev + 1,
                   );
                 }}
                 className="hover:text-red-500 transition-colors font-bold cursor-pointer px-2"

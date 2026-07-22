@@ -8,21 +8,21 @@ import Contact from "../../components/contact";
 
 const festivalEvents = [
   {
-    year: "Puja",
-    date: "September 17, Annual",
-    title: "Vishwakarma Puja Celebration",
-    description:
-      "As engineers and creators, Vishwakarma Puja holds special significance at Bhagat Engineering Works. We clean and worship our machines, tools, and heavy erection gears, followed by community feasts with our site workers, engineers, and executive teams.",
-    image: "/fi4.jpg",
-    imageFirst: true,
-  },
-  {
     year: "Diwali",
     date: "October/November, Annual",
     title: "Diwali & Corporate Milan",
     description:
       "Celebrating the festival of lights with sweets distribution, office lighting, and an annual milan ceremony that brings families of our employees together to honor our year-round accomplishments.",
     image: "/diwali.jpg",
+    imageFirst: true,
+  },
+  {
+    year: "Puja",
+    date: "September 17, Annual",
+    title: "Vishwakarma Puja Celebration",
+    description:
+      "As engineers and creators, Vishwakarma Puja holds special significance at Bhagat Engineering Works. We clean and worship our machines, tools, and heavy erection gears, followed by community feasts with our site workers, engineers, and executive teams.",
+    image: "/fi4.jpg",
     imageFirst: false,
   },
   {

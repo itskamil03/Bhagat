@@ -1,17 +1,15 @@
-"use client";
+﻿"use client";
 
 import React, { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   FaCheckCircle,
   FaMapMarkerAlt,
   FaCalendarAlt,
   FaWrench,
   FaChevronLeft,
-  FaChevronRight,
-  FaArrowRight
+  FaChevronRight
 } from "react-icons/fa";
 import Contact from "../../components/contact";
 
@@ -221,7 +219,7 @@ const ProjectGallery = ({ images }) => {
         translateX = offset > 0 ? 300 : -300;
       }
 
-      el.style.transform = `translate3d(${translateX}%, 0, 0) scale(${scale})`;
+      el.style.transform = `translateX(${translateX}%) scale(${scale})`;
       el.style.zIndex = zIndex;
       el.style.opacity = opacity;
       el.style.boxShadow = "none";
@@ -230,10 +228,10 @@ const ProjectGallery = ({ images }) => {
 
   const animate = () => {
     if (!isPaused) {
-      targetScrollRef.current += 0.0025; // Slightly slower, ultra-smooth continuous speed
+      targetScrollRef.current += 0.0035; // Continuous autoplay speed
     }
-    // Softer interpolation for buttery smooth movement
-    scrollRef.current += (targetScrollRef.current - scrollRef.current) * 0.06;
+    // Smooth easing interpolation for manual jumps + autoplay
+    scrollRef.current += (targetScrollRef.current - scrollRef.current) * 0.08;
 
     updateDOM();
     requestRef.current = requestAnimationFrame(animate);
@@ -252,42 +250,10 @@ const ProjectGallery = ({ images }) => {
   const handlePrev = () => targetScrollRef.current -= 1;
 
   return (
-    <div className="mt-10 w-full max-w-[1300px] mx-auto mb-8 bg-white rounded-[32px] px-6 md:px-10 pt-8 md:pt-10 pb-6 md:pb-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-gray-100 relative overflow-hidden group">
-      
-      {/* Dynamic Background Gradients */}
-      <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-[radial-gradient(ellipse_at_top_right,_rgba(230,27,35,0.08)_0%,_transparent_60%)] pointer-events-none z-0 mix-blend-multiply" />
-      <div className="absolute bottom-0 left-0 w-[60%] h-[60%] bg-[radial-gradient(ellipse_at_bottom_left,_rgba(230,27,35,0.06)_0%,_transparent_70%)] pointer-events-none z-0 mix-blend-multiply" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-white/90 pointer-events-none z-0" />
-
-      {/* Abstract Modern Geometric Shapes */}
-      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-red-50 blur-3xl pointer-events-none z-0 opacity-80 group-hover:scale-110 transition-transform duration-1000" />
-      <div className="absolute top-20 right-[-100px] w-64 h-[500px] bg-red-600/5 rotate-45 blur-2xl pointer-events-none z-0 group-hover:rotate-[50deg] transition-transform duration-1000" />
-
-      {/* Fine Dotted Grid Texture for Structure */}
-      <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.15]" 
-           style={{ backgroundImage: 'radial-gradient(#E61B23 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-
-      {/* --- TYPOGRAPHY AREA --- */}
-      <div className="relative z-10 flex flex-col items-center justify-center mb-6 md:mb-8 px-4">
-        {/* Subtle Category Pill */}
-        <span className="px-4 py-1 rounded-full bg-red-50 text-[#E61B23] text-xs font-bold tracking-widest uppercase mb-3 shadow-sm border border-red-100/50">
-          Our Excellence
-        </span>
-
-        {/* Heading */}
-        <h3 className="text-2xl md:text-[38px] font-black text-gray-900 uppercase tracking-tight text-center leading-tight">
-          Project <span className="text-transparent bg-clip-text bg-gradient-to-br from-[#E61B23] to-red-600">Gallery</span>
-        </h3>
-        
-        {/* Elegant Minimalist Divider */}
-        <div className="flex items-center gap-2 mt-4">
-          <div className="w-8 h-[3px] bg-gray-200 rounded-full" />
-          <div className="w-16 h-[3px] bg-[#E61B23] rounded-full" />
-          <div className="w-8 h-[3px] bg-gray-200 rounded-full" />
-        </div>
-      </div>
-
-
+    <div className="mt-12 w-full max-w-[1300px] mx-auto mb-6 bg-red-50 rounded-3xl px-6 md:px-10 pt-6 md:pt-10 pb-2 md:pb-4 shadow-xl relative overflow-hidden">
+      <h3 className="text-2xl font-bold text-gray-900 uppercase tracking-wider mb-2 text-center relative z-10">
+        Project Gallery
+      </h3>
       <div
         className="relative w-full h-[220px] sm:h-[280px] md:h-[380px] flex items-center justify-center overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
