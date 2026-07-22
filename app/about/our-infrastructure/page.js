@@ -48,32 +48,32 @@ export default function OurInfrastructure() {
               key={currentImageIndex}
               initial={
                 currentImageIndex === 0 ? { opacity: 1, scale: 1 } : // Instant opacity, small boxes will hide it
-                currentImageIndex === 1 ? { opacity: 0, scale: 1.15, x: "-10%", y: "-10%", filter: "contrast(150%) brightness(0.2) blur(10px)" } :
-                { opacity: 0, rotateY: 90, transformPerspective: 2000, originX: 0, filter: "brightness(0.1)" }
+                  currentImageIndex === 1 ? { opacity: 0, scale: 1.15, x: "-10%", y: "-10%", filter: "contrast(150%) brightness(0.2) blur(10px)" } :
+                    { opacity: 0, rotateY: 90, transformPerspective: 2000, originX: 0, filter: "brightness(0.1)" }
               }
               animate={
                 currentImageIndex === 0 ? { opacity: 1, scale: 1 } :
-                currentImageIndex === 1 ? { opacity: 1, scale: 1, x: "0%", y: "0%", filter: "contrast(100%) brightness(1) blur(0px)" } :
-                { opacity: 1, rotateY: 0, transformPerspective: 2000, originX: 0, filter: "brightness(1)" }
+                  currentImageIndex === 1 ? { opacity: 1, scale: 1, x: "0%", y: "0%", filter: "contrast(100%) brightness(1) blur(0px)" } :
+                    { opacity: 1, rotateY: 0, transformPerspective: 2000, originX: 0, filter: "brightness(1)" }
               }
               exit={
                 currentImageIndex === 0 ? { opacity: 0, scale: 1.05, filter: "blur(10px) brightness(0.3)", transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] } } :
-                currentImageIndex === 1 ? { opacity: 0, scale: 1.05, x: "5%", y: "5%", filter: "contrast(150%) brightness(0.2) blur(15px)", transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] } } :
-                { opacity: 0, rotateY: -90, transformPerspective: 2000, originX: 0, filter: "brightness(0.1)", transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] } }
+                  currentImageIndex === 1 ? { opacity: 0, scale: 1.05, x: "5%", y: "5%", filter: "contrast(150%) brightness(0.2) blur(15px)", transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] } } :
+                    { opacity: 0, rotateY: -90, transformPerspective: 2000, originX: 0, filter: "brightness(0.1)", transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] } }
               }
               transition={
                 currentImageIndex === 0 ? { opacity: { duration: 0.2 } } :
-                currentImageIndex === 1 ? { opacity: { duration: 1.4 }, x: { duration: 2, ease: "easeOut" }, y: { duration: 2, ease: "easeOut" }, scale: { duration: 2, ease: "easeOut" }, filter: { duration: 2 } } :
-                { opacity: { duration: 1.4 }, rotateY: { duration: 2.5, ease: "easeOut" }, filter: { duration: 2 } }
+                  currentImageIndex === 1 ? { opacity: { duration: 1.4 }, x: { duration: 2, ease: "easeOut" }, y: { duration: 2, ease: "easeOut" }, scale: { duration: 2, ease: "easeOut" }, filter: { duration: 2 } } :
+                    { opacity: { duration: 1.4 }, rotateY: { duration: 2.5, ease: "easeOut" }, filter: { duration: 2 } }
               }
               className="absolute inset-0 w-full h-full origin-center"
             >
               {/* Inner container for heavy continuous majestic panning/zooming */}
               <motion.div
                 animate={
-                  currentImageIndex === 0 ? { x: ["0%", "-5%"] } : // Smooth pan left after box reveal
-                  currentImageIndex === 1 ? { x: ["0%", "5%"], y: ["0%", "5%"] } : // Pan bottom-right
-                  { scale: [1, 1.15], x: ["0%", "-3%"] } // Page turn continuous zoom
+                  currentImageIndex === 0 ? { x: ["0%", "-5%"], rotateZ: 0.01 } : // Smooth pan left after box reveal
+                  currentImageIndex === 1 ? { x: ["0%", "5%"], y: ["0%", "5%"], rotateZ: 0.01 } : // Pan bottom-right
+                  { scale: [1, 1.15], x: ["0%", "-3%"], rotateZ: 0.01 } // Page turn continuous zoom
                 }
                 transition={
                   currentImageIndex === 0 ? { duration: 6.5, ease: "easeInOut", delay: 1.5 } : // Wait 1.5s for boxes, then pan left for 6.5s (8s total)
@@ -81,6 +81,13 @@ export default function OurInfrastructure() {
                   { duration: 15, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" }
                 }
                 className="absolute inset-[-5%] w-[110%] h-[110%]"
+                style={{ 
+                  willChange: "transform, filter", 
+                  backfaceVisibility: "hidden", 
+                  WebkitBackfaceVisibility: "hidden", 
+                  transform: "translateZ(0)",
+                  transformStyle: "preserve-3d" 
+                }}
               >
                 <Image
                   src={heroImages[currentImageIndex]}
@@ -88,6 +95,7 @@ export default function OurInfrastructure() {
                   fill
                   priority
                   className="object-cover"
+                  style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
                 />
               </motion.div>
 
@@ -149,8 +157,8 @@ export default function OurInfrastructure() {
                 onClick={() => setCurrentImageIndex(idx)}
                 aria-label={`Select infrastructure image ${idx + 1}`}
                 className={`transition-all duration-700 ease-out rounded-full overflow-hidden relative ${idx === currentImageIndex
-                    ? "w-20 h-1.5 bg-white/20 shadow-[0_0_20px_rgba(255,255,255,0.4)]"
-                    : "w-3 h-1.5 bg-white/30 hover:bg-white/60"
+                  ? "w-20 h-1.5 bg-white/20 shadow-[0_0_20px_rgba(255,255,255,0.4)]"
+                  : "w-3 h-1.5 bg-white/30 hover:bg-white/60"
                   }`}
               >
                 {/* Expanding Progress bar inside the active indicator */}
