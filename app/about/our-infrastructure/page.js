@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Contact from "../../components/contact";
+import InfrastructureGallery from "../../components/InfrastructureGallery";
 
 const heroImages = ["/in1.png", "/in2.png", "/in3.png"];
 
@@ -166,6 +167,11 @@ export default function OurInfrastructure() {
           </div>
         </div>
       </motion.section>
+
+      {/* Infrastructure Gallery Section */}
+      <div className="relative z-20 bg-white">
+        <InfrastructureGallery />
+      </div>
 
       {/* Contact Section */}
       <div className="bg-gray-100 relative z-30 shadow-[0_-20px_50px_rgba(0,0,0,0.3)]">

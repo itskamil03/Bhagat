@@ -34,7 +34,7 @@ const fadeInUp = {
 };
 
 export default function OurCoreTeam() {
-  const isUnderConstruction = true;
+  const isUnderConstruction = false;
   
   if (isUnderConstruction) {
     return (
