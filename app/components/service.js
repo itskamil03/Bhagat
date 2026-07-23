@@ -5,9 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-const categories = ["Electrical", "Automation", "Turnkey"];
-
-const servicesData = [
+const defaultServicesData = [
   {
     title: "Erection and Maintenance of Power Substation",
     category: "Electrical",
@@ -90,6 +88,32 @@ const servicesData = [
 ];
 
 export default function Service() {
+  const [servicesData, setServicesData] = useState(defaultServicesData);
+
+  useEffect(() => {
+    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
+
+    async function fetchServices() {
+      if (!API_ENDPOINT) return;
+      try {
+        const res = await fetch(API_ENDPOINT);
+        if (res.ok) {
+          const apiData = await res.json();
+          if (Array.isArray(apiData)) {
+            setServicesData(apiData);
+          } else if (apiData.services && Array.isArray(apiData.services)) {
+            setServicesData(apiData.services);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch dynamic services:", error);
+      }
+    }
+    fetchServices();
+  }, []);
+
+  const categories = Array.from(new Set(servicesData.map(s => s.category)));
+
   const [activeServiceIndex, setActiveServiceIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 

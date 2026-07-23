@@ -48,7 +48,7 @@ function CountUp({ end, suffix = "", duration = 1.5 }) {
   );
 }
 
-const colLeft = [
+const defaultColLeft = [
   "/lr1.png",
   "/lr2.png",
   "/lr3.png",
@@ -56,7 +56,7 @@ const colLeft = [
   "/lr4.png",
   "/lr5.png",
 ];
-const colRight = [
+const defaultColRight = [
   "/rr1.png",
   "/rr2.png",
   "/rr3.png",
@@ -83,6 +83,32 @@ const itemVariants = {
 };
 
 export default function Hero() {
+  const [colLeft, setColLeft] = useState(defaultColLeft);
+  const [colRight, setColRight] = useState(defaultColRight);
+
+  useEffect(() => {
+    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
+
+    async function fetchImages() {
+      if (!API_ENDPOINT) return;
+      try {
+        const res = await fetch(API_ENDPOINT);
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data.leftImages)) {
+            setColLeft(data.leftImages);
+          }
+          if (Array.isArray(data.rightImages)) {
+            setColRight(data.rightImages);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch dynamic hero images:", error);
+      }
+    }
+    fetchImages();
+  }, []);
+
   return (
     <section className="w-full h-auto lg:h-[110vh] lg:min-h-[800px] [@media(width:1024px)]:h-[calc(110vh-106px)] text-white relative overflow-hidden bg-[#530503] pb-12 lg:pb-0">
       {/* Static Background Image */}

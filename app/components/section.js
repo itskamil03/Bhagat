@@ -8,7 +8,7 @@ export default function Section() {
   const [activeCardIndex, setActiveCardIndex] = useState(null);
   const sectionRef = useRef(null);
 
-  const data = [
+  const defaultData = [
     {
       img: "/im2.jpeg",
       title: "ISO 9001:2015 certified process protect everyone",
@@ -30,6 +30,30 @@ export default function Section() {
       desc: "Precision and Innovation: Our engineers solve complex problems with proven methods and modern techniques",
     },
   ];
+
+  const [data, setData] = useState(defaultData);
+
+  useEffect(() => {
+    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
+
+    async function fetchCards() {
+      if (!API_ENDPOINT) return;
+      try {
+        const res = await fetch(API_ENDPOINT);
+        if (res.ok) {
+          const apiData = await res.json();
+          if (Array.isArray(apiData)) {
+            setData(apiData);
+          } else if (apiData.cards && Array.isArray(apiData.cards)) {
+            setData(apiData.cards);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch dynamic foundation cards:", error);
+      }
+    }
+    fetchCards();
+  }, []);
 
   // Click outside to reset active card on mobile
   useEffect(() => {

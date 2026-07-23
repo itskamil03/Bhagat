@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FaAward, FaCalendarAlt, FaTrophy, FaUser } from "react-icons/fa";
+import { FiUsers, FiAward, FiZap, FiCrosshair, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Contact from "../../components/contact";
 
 const initialAwards = [
@@ -66,6 +67,39 @@ const initialAwards = [
   },
 ];
 
+const galleryImages = [
+  {
+    id: 1,
+    src: "/amm1.png",
+    title: "Annual Milan 2024",
+    desc: "Celebrating a year of extraordinary engineering milestones and growth."
+  },
+  {
+    id: 2,
+    src: "/aw2.png",
+    title: "Leadership Recognition",
+    desc: "Honoring our exceptional site engineers and foremen."
+  },
+  {
+    id: 3,
+    src: "/aw3.png",
+    title: "Lifetime Dedication",
+    desc: "Honoring decades of continuous service and dedication to the grid."
+  },
+  {
+    id: 4,
+    src: "/aw4.png",
+    title: "Innovation Awards",
+    desc: "Rewarding custom automation layouts and problem solving."
+  },
+  {
+    id: 5,
+    src: "/aw5.png",
+    title: "Project Delivery",
+    desc: "100% on-time delivery across multiple complex state projects."
+  }
+];
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -93,6 +127,76 @@ export default function EmployeeAwards() {
   const [selectedAward, setSelectedAward] = useState(null);
   const [awardsList, setAwardsList] = useState(initialAwards);
 
+  // --- 3D Gallery State & Logic ---
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
+  const [isGalleryHovered, setIsGalleryHovered] = useState(false);
+  const [touchStart, setTouchStart] = useState(0);
+
+  const handleGalleryNext = () => setActiveGalleryIndex((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1));
+  const handleGalleryPrev = () => setActiveGalleryIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+
+  // Keyboard Navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowLeft") handleGalleryPrev();
+      if (e.key === "ArrowRight") handleGalleryNext();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Autoplay
+  useEffect(() => {
+    if (isGalleryHovered) return;
+    const interval = setInterval(() => {
+      handleGalleryNext();
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isGalleryHovered]);
+
+  // Touch Swipe
+  const handleTouchStart = (e) => setTouchStart(e.touches[0].clientX);
+  const handleTouchEnd = (e) => {
+    const touchEnd = e.changedTouches[0].clientX;
+    if (touchStart - touchEnd > 50) handleGalleryNext();
+    if (touchStart - touchEnd < -50) handleGalleryPrev();
+  };
+
+  // 3D Transform Logic
+  const getCardStyle = (index) => {
+    const length = galleryImages.length;
+    let diff = index - activeGalleryIndex;
+    
+    // Circular array shortest distance mapping
+    if (diff > Math.floor(length / 2)) diff -= length;
+    if (diff < -Math.floor(length / 2)) diff += length;
+
+    let xOffset = 0;
+    let rotateY = 0;
+    let scale = 0.5;
+    let opacity = 0;
+    let zIndex = 0;
+
+    if (diff === 0) {
+      xOffset = 0; rotateY = 0; scale = 1.2; opacity = 1; zIndex = 50;
+    } else if (diff === -1) {
+      xOffset = -65; rotateY = 45; scale = 0.8; opacity = 0.55; zIndex = 40;
+    } else if (diff === 1) {
+      xOffset = 65; rotateY = -45; scale = 0.8; opacity = 0.55; zIndex = 40;
+    } else if (diff === -2) {
+      xOffset = -120; rotateY = 45; scale = 0.6; opacity = 0.3; zIndex = 30;
+    } else if (diff === 2) {
+      xOffset = 120; rotateY = -45; scale = 0.6; opacity = 0.3; zIndex = 30;
+    }
+
+    return {
+      transform: `translateX(${xOffset}%) rotateY(${rotateY}deg) scale(${scale})`,
+      opacity: opacity,
+      zIndex: zIndex,
+    };
+  };
+  // --------------------------------
+
   // Load from local storage on client mount (populated by admin panel)
   useEffect(() => {
     const saved = localStorage.getItem("employee_awards");
@@ -108,118 +212,182 @@ export default function EmployeeAwards() {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-800">
       {/* Hero Section */}
-      <section className="bg-[#0b0e1a] text-white relative overflow-hidden flex flex-col md:block">
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-          .awards-hero-gradient {
-            background: linear-gradient(180deg, rgba(11, 14, 26, 0.94) 0%, rgba(11, 14, 26, 0.8) 50%, rgba(11, 14, 26, 0.94) 100%);
-          }
-          @media (min-width: 768px) {
-            .awards-hero-gradient {
-              background: linear-gradient(90deg, #0b0e1a 0%, #0b0e1a 35%, rgba(11, 14, 26, 0.85) 55%, rgba(11, 14, 26, 0.3) 75%, transparent 100%);
-            }
-          }
-        `,
-          }}
-        />
+      <section className="bg-[#070B18] text-white relative w-full flex flex-col md:block md:h-[490px] overflow-hidden">
+        
+        {/* Slanted Red Border (Desktop only) */}
+        {/* 60.4% width with the clip-path creates a perfect 3px red border tracking the slant */}
+        <div 
+          className="hidden md:block absolute top-0 left-0 bottom-0 w-[60.4%] z-20 bg-[#E61B23]"
+          style={{ clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0% 100%)' }}
+        ></div>
 
-        {/* Red Accent Decors matching Figma (z-20 to prevent hiding) */}
+        {/* Slanted Navy Background (Desktop only) */}
+        {/* Starts at 60% width at top, slants inward to 45% width at bottom */}
+        <div 
+          className="hidden md:block absolute top-0 left-0 bottom-0 w-[60%] z-30 bg-[#070B18]"
+          style={{ clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0% 100%)' }}
+        ></div>
+
+        {/* Left Content */}
         <div
-          className="absolute top-0 right-[12%] w-[150px] h-[24px] bg-[#E61B23] z-20 hidden md:block"
-          style={{ clipPath: "polygon(15px 0%, 100% 0%, 100% 100%, 0% 100%)" }}
-        />
-        <div
-          className="absolute bottom-0 left-[6%] w-[200px] h-[28px] bg-[#E61B23] z-20 hidden md:block"
-          style={{
-            clipPath:
-              "polygon(0% 0%, calc(100% - 15px) 0%, 100% 100%, 0% 100%)",
-          }}
-        />
-
-        {/* Text Container Wrapper */}
-        <div className="max-w-[1440px] mx-auto w-full md:h-[480px] relative overflow-hidden flex items-center px-6 md:px-16 z-20">
-          {/* Left Text */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative w-full md:w-[50%] flex flex-col justify-center select-none py-12 md:py-0"
-          >
-            <nav className="text-xs md:text-sm text-gray-400 mb-4 flex items-center gap-2">
-              <Link href="/" className="hover:text-red-500 transition">
-                Home
-              </Link>
-              <span>&gt;</span>
-              <Link href="/gallery" className="hover:text-red-500 transition">
-                Gallery
-              </Link>
-              <span>&gt;</span>
-              <span className="text-white">Employee Awards</span>
-            </nav>
-
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-[2px] bg-[#E61B23]"></div>
-              <p className="text-[#E61B23] uppercase tracking-widest text-[11px] md:text-[13px] font-semibold">
-                OUR ACHIEVEMENTS
-              </p>
-            </div>
-
-            <h1 className="text-3xl xs:text-4xl md:text-5xl lg:text-[54px] font-extrabold leading-none tracking-tight">
-              AWARDS &
-              <span className="block text-[#E61B23] mt-1.5">RECOGNITION</span>
-            </h1>
-
-            {/* Red Horizontal Divider Line */}
-            <div className="w-16 h-[2px] bg-[#E61B23] my-6"></div>
-
-            <p className="text-gray-300 max-w-xl text-[13px] sm:text-sm md:text-[14px] leading-relaxed">
-              Our commitment to quality, innovation, and excellence has been
-              recognized by industry leaders and organizations. These awards
-              inspire us to continue delivering the best.
+          className="relative w-full md:absolute md:top-0 md:left-0 md:bottom-0 md:w-[60%] z-40 flex flex-col justify-start px-6 sm:px-12 lg:pl-20 xl:pl-24 py-10 md:pt-14 lg:pt-16 bg-[#070B18] md:bg-transparent"
+        >
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-[2px] bg-[#E61B23]"></div>
+            <p className="text-[#E61B23] uppercase tracking-widest text-[12px] md:text-[13px] font-bold">
+              OUR ANNUAL MEET
             </p>
-          </motion.div>
+          </div>
+
+          <h1 className="text-5xl md:text-6xl lg:text-[75px] xl:text-[85px] font-extrabold leading-[0.85] tracking-tighter mb-5">
+            ANNUAL<br />
+            <span className="text-[#E61B23]">MEET</span>
+          </h1>
+
+          <div className="w-14 h-[2px] bg-[#E61B23] mb-6"></div>
+
+          <p className="text-gray-300 w-full md:w-[75%] lg:w-[68%] text-[14px] md:text-[15px] leading-[1.7] mb-8">
+            Uniting as one team to reflect on our journey, celebrate our achievements, and align for the future. Together, we share ideas, strengthen connections, and renew our commitment to building a stronger tomorrow.
+          </p>
+
+          {/* 4 Feature Items */}
+          <div className="grid grid-cols-2 md:flex md:items-center mt-0 w-full md:w-[95%] lg:w-[85%] gap-y-6">
+            {/* Feature 1 */}
+            <div className="flex flex-col items-start relative w-full md:w-1/4 md:pr-4">
+              <FiUsers className="text-[#E61B23] text-3xl lg:text-[38px] mb-3" strokeWidth={1.2} />
+              <h4 className="text-white font-bold text-[12px] lg:text-sm tracking-widest uppercase mb-1">TOGETHER</h4>
+              <p className="text-gray-400 text-[11px] lg:text-[12px]">as One Team</p>
+            </div>
+            {/* Feature 2 */}
+            <div className="flex flex-col items-start relative w-full md:w-1/4 md:border-l md:border-white/20 md:pl-6">
+              <FiAward className="text-[#E61B23] text-3xl lg:text-[38px] mb-3" strokeWidth={1.2} />
+              <h4 className="text-white font-bold text-[12px] lg:text-sm tracking-widest uppercase mb-1">CELEBRATE</h4>
+              <p className="text-gray-400 text-[11px] lg:text-[12px]">Our Achievements</p>
+            </div>
+            {/* Feature 3 */}
+            <div className="flex flex-col items-start relative w-full md:w-1/4 md:border-l md:border-white/20 md:pl-6">
+              <FiZap className="text-[#E61B23] text-3xl lg:text-[38px] mb-3" strokeWidth={1.2} />
+              <h4 className="text-white font-bold text-[12px] lg:text-sm tracking-widest uppercase mb-1">SHARE</h4>
+              <p className="text-gray-400 text-[11px] lg:text-[12px]">Ideas & Insights</p>
+            </div>
+            {/* Feature 4 */}
+            <div className="flex flex-col items-start relative w-full md:w-1/4 md:border-l md:border-white/20 md:pl-6">
+              <FiCrosshair className="text-[#E61B23] text-3xl lg:text-[38px] mb-3" strokeWidth={1.2} />
+              <h4 className="text-white font-bold text-[12px] lg:text-sm tracking-widest uppercase mb-1">ALIGN</h4>
+              <p className="text-gray-400 text-[11px] lg:text-[12px]">for the Future</p>
+            </div>
+          </div>
         </div>
 
-        {/* Absolute Image Column on the Right (w-[50%], object-contain keeps trophy size perfect) */}
-        <div className="relative w-full md:absolute md:right-0 md:top-0 md:w-[50%] h-[260px] md:h-full z-10 overflow-hidden select-none">
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `
-            .awards-mask-container {
-              mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.15) 15%, black 45%);
-              -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.15) 15%, black 45%);
-            }
-            @media (max-width: 767px) {
-              .awards-mask-container {
-                mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.15) 20%, black 55%);
-                -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.15) 20%, black 55%);
-              }
-            }
-          `,
-            }}
-          />
-          <motion.img
-            src="/awards.png"
-            alt="Awards & Recognition"
-            initial={{ opacity: 0, scale: 1.02 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full h-full object-contain object-center md:object-right awards-mask-container"
+        {/* Right Content (Image area) */}
+        {/* Sits underneath the left background z-index, allowing the left clip-path to slice seamlessly over it */}
+        <div className="relative w-full h-[400px] md:absolute md:top-0 md:right-0 md:bottom-0 md:w-[55%] md:h-full z-10 overflow-hidden">
+          <Image
+            src="/amm1.png" 
+            alt="Annual Meet Event"
+            fill
+            className="object-cover object-center"
           />
         </div>
+      </section>
 
-        {/* Linear Gradient Overlay for seamless blending (dark to transparent) */}
-        <div className="awards-hero-gradient absolute inset-0 z-10 pointer-events-none hidden md:block" />
+      {/* 3D Coverflow Gallery Section */}
+      <section 
+        className="w-full relative bg-[#070B18] overflow-hidden py-16 md:py-24"
+        onMouseEnter={() => setIsGalleryHovered(true)}
+        onMouseLeave={() => setIsGalleryHovered(false)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Blurred Backdrop Overlay */}
+        <div className="absolute inset-0 bg-[#070B18]/70 backdrop-blur-xl z-0 pointer-events-none"></div>
+
+        {/* Gallery Container with 3D Perspective */}
+        <div 
+          className="relative w-full h-[280px] sm:h-[350px] md:h-[450px] lg:h-[500px] flex items-center justify-center z-10 mx-auto max-w-[1440px]" 
+          style={{ perspective: "1800px" }}
+        >
+          {/* Cards */}
+          {galleryImages.map((item, index) => {
+            const style = getCardStyle(index);
+            const isActive = index === activeGalleryIndex;
+
+            return (
+              <div
+                key={item.id}
+                onClick={() => setActiveGalleryIndex(index)}
+                className="absolute w-[240px] sm:w-[300px] md:w-[350px] lg:w-[420px] h-[170px] sm:h-[210px] md:h-[260px] lg:h-[320px] rounded-[20px] shadow-2xl transition-all duration-700 ease-out cursor-pointer group"
+                style={{
+                  transform: style.transform,
+                  opacity: style.opacity,
+                  zIndex: style.zIndex,
+                  transformStyle: "preserve-3d",
+                }}
+              >
+                {isActive ? (
+                  <motion.div
+                    animate={{ y: [-6, 6, -6] }}
+                    transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                    className="w-full h-full rounded-[20px] overflow-hidden relative"
+                  >
+                    <Image src={item.src} alt={item.title} fill className="object-cover" />
+                    <div className="absolute inset-0 border border-white/10 rounded-[20px] pointer-events-none"></div>
+                  </motion.div>
+                ) : (
+                  <div className="w-full h-full rounded-[20px] overflow-hidden relative">
+                    <Image src={item.src} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 rounded-[20px] pointer-events-none"></div>
+                    <div className="absolute inset-0 border border-white/10 rounded-[20px] pointer-events-none"></div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Navigation Arrows */}
+        <div className="absolute top-[40%] md:top-[45%] -translate-y-1/2 left-3 md:left-12 lg:left-24 z-50">
+          <button 
+            onClick={handleGalleryPrev}
+            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/5 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all border border-white/10 shadow-lg"
+          >
+            <FiChevronLeft className="text-xl md:text-3xl" />
+          </button>
+        </div>
+        <div className="absolute top-[40%] md:top-[45%] -translate-y-1/2 right-3 md:right-12 lg:right-24 z-50">
+          <button 
+            onClick={handleGalleryNext}
+            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/5 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all border border-white/10 shadow-lg"
+          >
+            <FiChevronRight className="text-xl md:text-3xl" />
+          </button>
+        </div>
+
+        {/* Text Overlay for Active Card */}
+        <div className="relative z-50 flex justify-center mt-6 md:mt-10 h-[80px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeGalleryIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="text-center px-6"
+            >
+              <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2">{galleryImages[activeGalleryIndex].title}</h3>
+              <p className="text-gray-400 text-xs md:text-sm lg:text-base max-w-md mx-auto">{galleryImages[activeGalleryIndex].desc}</p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </section>
 
       {/* Grid List Section */}
       <section className="max-w-[1240px] mx-auto px-6 py-16">
         {/* Section Header */}
         <div className="mb-12 text-center md:text-left">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 flex items-center justify-center md:justify-start gap-2">
-            <FaAward className="text-[#E61B23]" />
-            <span>Honoring Our Achievers</span>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 flex items-center justify-center md:justify-start gap-3">
+            <FaAward className="text-[#E61B23] text-3xl" />
+            <span>AWARDS & RECOGNITION</span>
           </h2>
           <p className="text-gray-500 text-sm mt-2 max-w-xl">
             A celebration of milestones, dedication, and the core engineering

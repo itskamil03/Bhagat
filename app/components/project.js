@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
-const data = [
+const defaultData = [
   {
     title: "Power Infrastructure",
     desc: "Substation erection, transformer support and high-voltage electrical networks for industrial and commercial sites.",
@@ -26,10 +26,54 @@ const data = [
 ];
 
 export default function Project() {
+  const [data, setData] = useState(defaultData);
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) setItemsPerPage(1);
+      else if (window.innerWidth < 1024) setItemsPerPage(2);
+      else setItemsPerPage(3);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const maxIndex = Math.max(0, data.length - itemsPerPage);
+
+  const slidePrev = () => {
+    setActiveIndex((prev) => Math.max(0, prev - 1));
+  };
+  const slideNext = () => {
+    setActiveIndex((prev) => Math.min(maxIndex, prev + 1));
+  };
+
+  useEffect(() => {
+    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
+
+    async function fetchProjects() {
+      if (!API_ENDPOINT) return;
+      try {
+        const res = await fetch(API_ENDPOINT);
+        if (res.ok) {
+          const apiData = await res.json();
+          if (Array.isArray(apiData)) {
+            setData(apiData);
+          } else if (apiData.projects && Array.isArray(apiData.projects)) {
+            setData(apiData.projects);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch dynamic projects:", error);
+      }
+    }
+    fetchProjects();
+  }, []);
 
   // Minimum swipe distance in pixels to trigger a slide change
   const minSwipeDistance = 50;
@@ -48,7 +92,7 @@ export default function Project() {
     let finalOffset = deltaX;
     if (activeIndex === 0 && deltaX > 0) {
       finalOffset = deltaX * 0.3;
-    } else if (activeIndex === data.length - 1 && deltaX < 0) {
+    } else if (activeIndex === maxIndex && deltaX < 0) {
       finalOffset = deltaX * 0.3;
     }
 
@@ -68,7 +112,7 @@ export default function Project() {
     const isRightSwipe = distance > minSwipeDistance;
 
     let nextIndex = activeIndex;
-    if (isLeftSwipe && activeIndex < data.length - 1) {
+    if (isLeftSwipe && activeIndex < maxIndex) {
       nextIndex = activeIndex + 1;
     } else if (isRightSwipe && activeIndex > 0) {
       nextIndex = activeIndex - 1;
@@ -90,12 +134,12 @@ export default function Project() {
         }
         @media (min-width: 640px) and (max-width: 1023px) {
           .project-slider-track {
-            transform: translateX(calc(-1 * min(var(--active-index), 2) * (50% + 12px))) !important;
+            transform: translateX(calc(-1 * min(var(--active-index), var(--max-index-tablet)) * (50% + 12px))) !important;
           }
         }
         @media (min-width: 1024px) {
           .project-slider-track {
-            transform: translateX(calc(-1 * min(var(--active-index), 1) * (33.333% + 8px))) !important;
+            transform: translateX(calc(-1 * min(var(--active-index), var(--max-index-desktop)) * (33.333% + 8px))) !important;
           }
         }
       `,
@@ -120,53 +164,84 @@ export default function Project() {
       </div>
 
       {/* SLIDER VIEWPORT with touch swipe gesture support for mobile */}
-      <div
-        className="max-w-[1308px] mx-auto w-full overflow-hidden"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        {/* Track */}
-        <div
-          className={`project-slider-track flex gap-6 ${
-            isDragging
-              ? "transition-none"
-              : "transition-transform duration-500 ease-out"
+      <div className="max-w-[1308px] mx-auto w-full relative group">
+        
+        {/* LEFT ARROW (Positioned in the empty padding space) */}
+        <button
+          onClick={slidePrev}
+          className={`absolute -left-[60px] md:-left-[68px] top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg border border-gray-200 hidden md:flex items-center justify-center text-gray-800 hover:bg-[#c00000] hover:text-white transition-all ${
+            activeIndex === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
-          style={{
-            "--active-index": activeIndex,
-            "--slider-transform": isDragging
-              ? `translateX(calc(-1 * ${activeIndex} * (100% + 24px) + ${dragOffset}px))`
-              : `translateX(calc(-1 * ${activeIndex} * (100% + 24px)))`,
-          }}
+          aria-label="Previous Project"
         >
-          {data.map((item, i) => (
-            <div
-              key={i}
-              className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0 bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition"
-            >
-              {/* IMAGE */}
-              <div className="relative w-full h-[220px]">
-                <Image
-                  src={item.img}
-                  alt={item.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
 
-              {/* CONTENT */}
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">
-                  {item.title}
-                </h3>
+        {/* RIGHT ARROW (Positioned in the empty padding space) */}
+        <button
+          onClick={slideNext}
+          className={`absolute -right-[60px] md:-right-[68px] top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg border border-gray-200 hidden md:flex items-center justify-center text-gray-800 hover:bg-[#c00000] hover:text-white transition-all ${
+            activeIndex >= maxIndex ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+          aria-label="Next Project"
+        >
+          <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
 
-                <p className="text-gray-600 text-sm leading-relaxed min-h-[60px]">
-                  {item.desc}
-                </p>
+        <div
+          className="w-full overflow-hidden"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          {/* Track */}
+          <div
+            className={`project-slider-track flex gap-6 ${
+              isDragging
+                ? "transition-none"
+                : "transition-transform duration-500 ease-out"
+            }`}
+            style={{
+              "--active-index": activeIndex,
+              "--max-index-tablet": maxIndex,
+              "--max-index-desktop": maxIndex,
+              "--slider-transform": isDragging
+                ? `translateX(calc(-1 * ${activeIndex} * (100% + 24px) + ${dragOffset}px))`
+                : `translateX(calc(-1 * ${activeIndex} * (100% + 24px)))`,
+            }}
+          >
+            {data.map((item, i) => (
+              <div
+                key={i}
+                className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0 bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition"
+              >
+                {/* IMAGE */}
+                <div className="relative w-full h-[220px]">
+                  <Image
+                    src={item.img}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* CONTENT */}
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-gray-600 text-sm leading-relaxed min-h-[60px]">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
