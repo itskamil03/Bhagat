@@ -222,7 +222,7 @@ export default function EmployeeAwards() {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-800">
       {/* Hero Section */}
-      <section className="bg-[#070B18] text-white relative w-full flex flex-col md:block md:h-[510px] overflow-hidden">
+      <section className="bg-[#070B18] text-white relative w-full flex flex-col md:flex-row md:min-h-[510px] overflow-hidden">
         
         {/* Slanted Red Border (Desktop only) */}
         {/* 60.4% width with the clip-path creates a perfect 3px red border tracking the slant */}
@@ -240,7 +240,7 @@ export default function EmployeeAwards() {
 
         {/* Left Content */}
         <div
-          className="relative w-full md:absolute md:top-0 md:left-0 md:bottom-0 md:w-[60%] z-40 flex flex-col justify-start px-6 sm:px-12 lg:pl-20 xl:pl-24 pt-10 pb-16 md:pt-14 lg:pt-16 md:pb-0 bg-[#070B18] md:bg-transparent"
+          className="relative w-full md:w-[60%] z-40 flex flex-col justify-start px-6 sm:px-12 lg:pl-20 xl:pl-24 pt-10 pb-16 md:py-14 lg:py-16 bg-[#070B18] md:bg-transparent"
         >
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-[2px] bg-[#E61B23]"></div>
@@ -261,27 +261,27 @@ export default function EmployeeAwards() {
           </p>
 
           {/* 4 Feature Items */}
-          <div className="grid grid-cols-2 md:flex md:items-center mt-0 w-full md:w-[95%] lg:w-[85%] gap-y-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 mt-2 w-full md:w-[95%] lg:w-[85%] gap-y-8 gap-x-2 md:gap-y-10 lg:gap-y-6">
             {/* Feature 1 */}
-            <div className="flex flex-col items-start relative w-full md:w-1/4 md:pr-4">
+            <div className="flex flex-col items-start relative w-full lg:pr-4">
               <FiUsers className="text-[#E61B23] text-3xl lg:text-[38px] mb-3" strokeWidth={1.2} />
               <h4 className="text-white font-bold text-[12px] lg:text-sm tracking-widest uppercase mb-1">TOGETHER</h4>
               <p className="text-gray-400 text-[11px] lg:text-[12px]">as One Team</p>
             </div>
             {/* Feature 2 */}
-            <div className="flex flex-col items-start relative w-full md:w-1/4 md:border-l md:border-white/20 md:pl-6">
+            <div className="flex flex-col items-start relative w-full lg:border-l lg:border-white/20 lg:pl-6">
               <FiAward className="text-[#E61B23] text-3xl lg:text-[38px] mb-3" strokeWidth={1.2} />
               <h4 className="text-white font-bold text-[12px] lg:text-sm tracking-widest uppercase mb-1">CELEBRATE</h4>
               <p className="text-gray-400 text-[11px] lg:text-[12px]">Our Achievements</p>
             </div>
             {/* Feature 3 */}
-            <div className="flex flex-col items-start relative w-full md:w-1/4 md:border-l md:border-white/20 md:pl-6">
+            <div className="flex flex-col items-start relative w-full lg:border-l lg:border-white/20 lg:pl-6">
               <FiZap className="text-[#E61B23] text-3xl lg:text-[38px] mb-3" strokeWidth={1.2} />
               <h4 className="text-white font-bold text-[12px] lg:text-sm tracking-widest uppercase mb-1">SHARE</h4>
               <p className="text-gray-400 text-[11px] lg:text-[12px]">Ideas & Insights</p>
             </div>
             {/* Feature 4 */}
-            <div className="flex flex-col items-start relative w-full md:w-1/4 md:border-l md:border-white/20 md:pl-6">
+            <div className="flex flex-col items-start relative w-full lg:border-l lg:border-white/20 lg:pl-6">
               <FiCrosshair className="text-[#E61B23] text-3xl lg:text-[38px] mb-3" strokeWidth={1.2} />
               <h4 className="text-white font-bold text-[12px] lg:text-sm tracking-widest uppercase mb-1">ALIGN</h4>
               <p className="text-gray-400 text-[11px] lg:text-[12px]">for the Future</p>
@@ -291,7 +291,7 @@ export default function EmployeeAwards() {
 
         {/* Right Content (Image area) */}
         {/* Sits underneath the left background z-index, allowing the left clip-path to slice seamlessly over it */}
-        <div className="relative w-full h-[400px] md:absolute md:top-0 md:right-0 md:bottom-0 md:w-[55%] md:h-full z-10 overflow-hidden">
+        <div className="relative w-full h-[400px] md:absolute md:top-0 md:right-0 md:bottom-0 md:w-[55%] md:h-auto z-10 overflow-hidden">
           <Image
             src="/amm1.png" 
             alt="Annual Meet Event"
