@@ -126,14 +126,15 @@ const cardVariants = {
 export default function EmployeeAwards() {
   const [selectedAward, setSelectedAward] = useState(null);
   const [awardsList, setAwardsList] = useState(initialAwards);
+  const [galleryList, setGalleryList] = useState(galleryImages);
 
   // --- 3D Gallery State & Logic ---
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
   const [isGalleryHovered, setIsGalleryHovered] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
 
-  const handleGalleryNext = () => setActiveGalleryIndex((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1));
-  const handleGalleryPrev = () => setActiveGalleryIndex((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1));
+  const handleGalleryNext = () => setActiveGalleryIndex((prev) => (prev === galleryList.length - 1 ? 0 : prev + 1));
+  const handleGalleryPrev = () => setActiveGalleryIndex((prev) => (prev === 0 ? galleryList.length - 1 : prev - 1));
 
   // Keyboard Navigation
   useEffect(() => {
@@ -143,16 +144,16 @@ export default function EmployeeAwards() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [galleryList.length]); // Re-bind if list length changes
 
   // Autoplay
   useEffect(() => {
-    if (isGalleryHovered) return;
+    if (isGalleryHovered || galleryList.length === 0) return;
     const interval = setInterval(() => {
       handleGalleryNext();
     }, 4000);
     return () => clearInterval(interval);
-  }, [isGalleryHovered]);
+  }, [isGalleryHovered, galleryList.length]);
 
   // Touch Swipe
   const handleTouchStart = (e) => setTouchStart(e.touches[0].clientX);
@@ -164,7 +165,7 @@ export default function EmployeeAwards() {
 
   // 3D Transform Logic
   const getCardStyle = (index) => {
-    const length = galleryImages.length;
+    const length = galleryList.length;
     let diff = index - activeGalleryIndex;
     
     // Circular array shortest distance mapping
@@ -199,12 +200,21 @@ export default function EmployeeAwards() {
 
   // Load from local storage on client mount (populated by admin panel)
   useEffect(() => {
-    const saved = localStorage.getItem("employee_awards");
-    if (saved) {
+    const savedAwards = localStorage.getItem("employee_awards");
+    if (savedAwards) {
       try {
-        setAwardsList(JSON.parse(saved));
+        setAwardsList(JSON.parse(savedAwards));
       } catch (e) {
         console.error("Error parsing saved awards", e);
+      }
+    }
+    
+    const savedGallery = localStorage.getItem("gallery_images");
+    if (savedGallery) {
+      try {
+        setGalleryList(JSON.parse(savedGallery));
+      } catch (e) {
+        console.error("Error parsing saved gallery images", e);
       }
     }
   }, []);
@@ -212,7 +222,7 @@ export default function EmployeeAwards() {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-800">
       {/* Hero Section */}
-      <section className="bg-[#070B18] text-white relative w-full flex flex-col md:block md:h-[490px] overflow-hidden">
+      <section className="bg-[#070B18] text-white relative w-full flex flex-col md:block md:h-[510px] overflow-hidden">
         
         {/* Slanted Red Border (Desktop only) */}
         {/* 60.4% width with the clip-path creates a perfect 3px red border tracking the slant */}
@@ -230,7 +240,7 @@ export default function EmployeeAwards() {
 
         {/* Left Content */}
         <div
-          className="relative w-full md:absolute md:top-0 md:left-0 md:bottom-0 md:w-[60%] z-40 flex flex-col justify-start px-6 sm:px-12 lg:pl-20 xl:pl-24 py-10 md:pt-14 lg:pt-16 bg-[#070B18] md:bg-transparent"
+          className="relative w-full md:absolute md:top-0 md:left-0 md:bottom-0 md:w-[60%] z-40 flex flex-col justify-start px-6 sm:px-12 lg:pl-20 xl:pl-24 pt-10 pb-16 md:pt-14 lg:pt-16 md:pb-0 bg-[#070B18] md:bg-transparent"
         >
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-[2px] bg-[#E61B23]"></div>
@@ -293,14 +303,14 @@ export default function EmployeeAwards() {
 
       {/* 3D Coverflow Gallery Section */}
       <section 
-        className="w-full relative bg-[#070B18] overflow-hidden py-16 md:py-24"
+        className="w-full relative bg-white overflow-hidden pb-8 pt-6 md:pb-16 md:pt-14"
         onMouseEnter={() => setIsGalleryHovered(true)}
         onMouseLeave={() => setIsGalleryHovered(false)}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         {/* Blurred Backdrop Overlay */}
-        <div className="absolute inset-0 bg-[#070B18]/70 backdrop-blur-xl z-0 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-white/70 backdrop-blur-xl z-0 pointer-events-none"></div>
 
         {/* Gallery Container with 3D Perspective */}
         <div 
@@ -308,7 +318,7 @@ export default function EmployeeAwards() {
           style={{ perspective: "1800px" }}
         >
           {/* Cards */}
-          {galleryImages.map((item, index) => {
+          {galleryList.length > 0 && galleryList.map((item, index) => {
             const style = getCardStyle(index);
             const isActive = index === activeGalleryIndex;
 
@@ -349,7 +359,7 @@ export default function EmployeeAwards() {
         <div className="absolute top-[40%] md:top-[45%] -translate-y-1/2 left-3 md:left-12 lg:left-24 z-50">
           <button 
             onClick={handleGalleryPrev}
-            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/5 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all border border-white/10 shadow-lg"
+            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-black/5 backdrop-blur-md flex items-center justify-center text-gray-900 hover:bg-black/10 hover:scale-110 transition-all border border-gray-200 shadow-lg"
           >
             <FiChevronLeft className="text-xl md:text-3xl" />
           </button>
@@ -357,14 +367,14 @@ export default function EmployeeAwards() {
         <div className="absolute top-[40%] md:top-[45%] -translate-y-1/2 right-3 md:right-12 lg:right-24 z-50">
           <button 
             onClick={handleGalleryNext}
-            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/5 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all border border-white/10 shadow-lg"
+            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-black/5 backdrop-blur-md flex items-center justify-center text-gray-900 hover:bg-black/10 hover:scale-110 transition-all border border-gray-200 shadow-lg"
           >
             <FiChevronRight className="text-xl md:text-3xl" />
           </button>
         </div>
 
         {/* Text Overlay for Active Card */}
-        <div className="relative z-50 flex justify-center mt-6 md:mt-10 h-[80px]">
+        <div className="relative z-50 flex justify-center mt-3 md:mt-7 h-[80px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeGalleryIndex}
@@ -374,8 +384,8 @@ export default function EmployeeAwards() {
               transition={{ duration: 0.3 }}
               className="text-center px-6"
             >
-              <h3 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2">{galleryImages[activeGalleryIndex].title}</h3>
-              <p className="text-gray-400 text-xs md:text-sm lg:text-base max-w-md mx-auto">{galleryImages[activeGalleryIndex].desc}</p>
+              <h3 className="text-lg md:text-2xl font-bold text-gray-900 mb-1 md:mb-2">{galleryList[activeGalleryIndex]?.title}</h3>
+              <p className="text-gray-600 text-xs md:text-sm lg:text-base max-w-md mx-auto">{galleryList[activeGalleryIndex]?.desc}</p>
             </motion.div>
           </AnimatePresence>
         </div>
