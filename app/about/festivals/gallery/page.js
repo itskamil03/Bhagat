@@ -60,14 +60,14 @@ const festivalGalleries = {
     description:
       "Deeply rooted in the cultural fabric of Bihar, we celebrate Chhath Puja with spiritual devotion. We support our team members with festive breaks, distribute traditional offerings (Thekua), and organize community support camps at the Ganga ghats in Patna.",
     date: "October/November, Annual",
-    mainImage: "/fi4.jpg",
+    mainImage: "/chhatim1.jpg",
     images: [
-      { src: "/fi4.jpg", year: "2026" },
-      { src: "/fi4.jpg", year: "2026" },
-      { src: "/fi4.jpg", year: "2025" },
-      { src: "/fi4.jpg", year: "2025" },
-      { src: "/fi4.jpg", year: "2024" },
-      { src: "/fi4.jpg", year: "2024" },
+      { src: "/ch1.jpg", year: "2026" },
+      { src: "/ch2.jpg", year: "2026" },
+
+      { src: "/ch4.jpg", year: "2025" },
+      { src: "/ch5.jpg", year: "2024" },
+      { src: "/ch6.jpg", year: "2024" },
     ],
   },
   holi: {
@@ -75,14 +75,16 @@ const festivalGalleries = {
     description:
       "Welcoming the spring season with vibrant colors, organic gulal, traditional music, and special festive delicacies. Our offices and sites come together for a special pre-Holi milan, reinforcing our team bonds.",
     date: "March, Annual",
-    mainImage: "/diwali.jpg",
+    mainImage: "/h1.jpg",
     images: [
-      { src: "/diwali.jpg", year: "2026" },
-      { src: "/fi5.jpg", year: "2026" },
-      { src: "/fi5.jpg", year: "2025" },
-      { src: "/fi5.jpg", year: "2025" },
-      { src: "/fi5.jpg", year: "2024" },
-      { src: "/fi5.jpg", year: "2024" },
+      { src: "/h1.jpg", year: "2026" },
+      { src: "/h2.jpg", year: "2026" },
+      { src: "/h3.jpg", year: "2026" },
+      { src: "/h4.jpg", year: "2025" },
+      { src: "/h5.jpg", year: "2025" },
+      { src: "/h6.jpg", year: "2024" },
+      { src: "/h7.jpg", year: "2024" },
+      { src: "/h8.jpg", year: "2024" },
     ],
   },
 };
@@ -131,20 +133,20 @@ function GalleryContent() {
       {/* ================= PROFESSIONAL UI BACKGROUND ================= */}
       {/* Soft Base Gradient */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_#ffffff_0%,_#f4f5f7_100%)] pointer-events-none z-0" />
-      
+
       {/* Premium Corporate Glows */}
       <div className="absolute top-[30%] right-[-10%] w-[800px] h-[800px] bg-[#E61B23]/[0.02] rounded-full blur-[120px] pointer-events-none z-0 mix-blend-multiply" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[900px] h-[900px] bg-[#17162b]/[0.03] rounded-full blur-[140px] pointer-events-none z-0 mix-blend-multiply" />
-      
+
       {/* Micro-dot Texture for Professional Structural Feel */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none z-0 opacity-[0.15]"
         style={{
           backgroundImage: `radial-gradient(#17162b 1.5px, transparent 1.5px)`,
           backgroundSize: '32px 32px'
         }}
       />
-      
+
       {/* Minimalist Intersecting Tech Lines */}
       <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-[#17162b]/10 to-transparent pointer-events-none z-0 hidden lg:block" />
       <div className="absolute top-[60%] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#E61B23]/10 to-transparent pointer-events-none z-0 hidden lg:block" />
@@ -242,7 +244,7 @@ function GalleryContent() {
 
         {/* Filters - Professional Dropdown */}
         <div className="mb-10 md:mb-14 flex justify-center md:justify-start relative z-30">
-          <div 
+          <div
             className="relative w-full max-w-[240px] md:w-auto md:min-w-[200px]"
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
@@ -272,11 +274,10 @@ function GalleryContent() {
                         setSelectedYear(year);
                         setIsDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-5 py-3.5 font-medium text-[15px] transition-all duration-200 hover:pl-7 ${
-                        selectedYear === year 
-                          ? "text-[#E61B23] bg-red-50/50 border-l-[3px] border-[#E61B23]" 
+                      className={`w-full text-left px-5 py-3.5 font-medium text-[15px] transition-all duration-200 hover:pl-7 ${selectedYear === year
+                          ? "text-[#E61B23] bg-red-50/50 border-l-[3px] border-[#E61B23]"
                           : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-l-[3px] border-transparent"
-                      }`}
+                        }`}
                     >
                       {year === "All" ? "All Years" : `Year ${year}`}
                     </button>

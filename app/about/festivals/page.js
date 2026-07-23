@@ -49,7 +49,7 @@ const festivalEvents = [
     title: "Holi & Spring Milan",
     description:
       "Welcoming the spring season with vibrant colors, organic gulal, traditional music, and special festive delicacies. Our offices and sites come together for a special pre-Holi milan, reinforcing our team bonds.",
-    image: "/holi1.jpg",
+    image: "/h1.jpg",
     imageFirst: true,
   },
 ];
