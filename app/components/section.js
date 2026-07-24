@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Card from "./card";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { getFoundations, foundationImageUrl } from "../../lib/api/foundation";
 
 export default function Section() {
   const [activeCardIndex, setActiveCardIndex] = useState(null);
@@ -34,19 +35,60 @@ export default function Section() {
   const [data, setData] = useState(defaultData);
 
   useEffect(() => {
-    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
-
     async function fetchCards() {
-      if (!API_ENDPOINT) return;
       try {
-        const res = await fetch(API_ENDPOINT);
-        if (res.ok) {
-          const apiData = await res.json();
-          if (Array.isArray(apiData)) {
-            setData(apiData);
-          } else if (apiData.cards && Array.isArray(apiData.cards)) {
-            setData(apiData.cards);
-          }
+        const apiData = await getFoundations();
+        console.log("Foundation API:", apiData);
+
+        if (apiData && Array.isArray(apiData)) {
+          const checkImageExists = (url) => new Promise((resolve) => {
+            const img = new window.Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = url;
+          });
+
+          const mergedData = await Promise.all(defaultData.map(async (card, index) => {
+            const apiCard = apiData[index];
+
+            if (!apiCard) return card;
+
+            const isValid = (val) => {
+              if (!val || typeof val !== 'string') return false;
+              const textOnly = val.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, '').trim();
+              return textOnly !== "" && textOnly !== "undefined" && textOnly !== "null";
+            };
+
+            let finalImg = card.img;
+            let finalTitle = card.title;
+            let finalDesc = card.desc;
+
+            // Only replace the card if ALL fields are valid and the image successfully loads
+            if (isValid(apiCard.image) && isValid(apiCard.title) && isValid(apiCard.description)) {
+              const url = foundationImageUrl(apiCard);
+              console.log("Image URL:", url);
+              const exists = await checkImageExists(url);
+              
+              if (exists) {
+                // Image is fully valid and loads successfully, so we use the complete API data for this card
+                finalImg = url;
+                // Strip HTML tags from title and description just in case the admin panel sends them
+                const stripHtml = (html) => html ? html.replace(/<[^>]*>?/gm, '').trim() : '';
+                finalTitle = stripHtml(apiCard.title) || apiCard.title;
+                finalDesc = stripHtml(apiCard.description) || apiCard.description;
+              }
+            }
+
+            return {
+              ...card,
+              img: finalImg,
+              title: finalTitle,
+              desc: finalDesc,
+            };
+          }));
+
+          console.log("Merged Card:", mergedData);
+          setData(mergedData);
         }
       } catch (error) {
         console.error("Failed to fetch dynamic foundation cards:", error);

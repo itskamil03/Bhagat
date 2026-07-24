@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
+import { getBanners, bannerImageUrl } from "@/lib/api/banner";
 
 function CountUp({ end, suffix = "", duration = 1.5 }) {
   const [count, setCount] = useState(0);
@@ -87,26 +88,39 @@ export default function Hero() {
   const [colRight, setColRight] = useState(defaultColRight);
 
   useEffect(() => {
-    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
-
+    // Dynamic image fetching temporarily disabled as requested to restore default images.
+    /*
+    let isMounted = true;
     async function fetchImages() {
-      if (!API_ENDPOINT) return;
       try {
-        const res = await fetch(API_ENDPOINT);
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data.leftImages)) {
-            setColLeft(data.leftImages);
-          }
-          if (Array.isArray(data.rightImages)) {
-            setColRight(data.rightImages);
+        const banners = await getBanners();
+        if (!isMounted) return;
+        
+        if (banners && banners.length > 0) {
+          const urls = banners.map(bannerImageUrl).filter(Boolean);
+          if (urls.length > 0) {
+            let left = urls.filter((_, i) => i % 2 === 0);
+            let right = urls.filter((_, i) => i % 2 !== 0);
+
+            if (left.length === 0) left = defaultColLeft;
+            if (right.length === 0) right = defaultColRight;
+
+            setColLeft(left);
+            setColRight(right);
           }
         }
       } catch (error) {
-        console.error("Failed to fetch dynamic hero images:", error);
+        if (isMounted) {
+          console.error("Failed to fetch dynamic hero images:", error);
+        }
       }
     }
     fetchImages();
+    
+    return () => {
+      isMounted = false;
+    };
+    */
   }, []);
 
   return (

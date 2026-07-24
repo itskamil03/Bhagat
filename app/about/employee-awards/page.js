@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { FaAward, FaCalendarAlt, FaTrophy, FaUser } from "react-icons/fa";
+import { FaAward, FaCalendarAlt, FaTrophy, FaUser, FaChevronDown } from "react-icons/fa";
 import { FiUsers, FiAward, FiZap, FiCrosshair, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Contact from "../../components/contact";
 
@@ -70,33 +70,150 @@ const initialAwards = [
 const galleryImages = [
   {
     id: 1,
-    src: "/amm1.png",
-    title: "Annual Milan 2024",
-    desc: "Celebrating a year of extraordinary engineering milestones and growth."
+    src: "/DSB08962.jpg",
+    title: "Annual Meet 2024",
+    desc: "Memories from our 2024 annual meet.",
+    year: "2024"
   },
   {
     id: 2,
-    src: "/aw2.png",
-    title: "Leadership Recognition",
-    desc: "Honoring our exceptional site engineers and foremen."
+    src: "/DSB08990.jpg",
+    title: "Annual Meet 2024",
+    desc: "Memories from our 2024 annual meet.",
+    year: "2024"
   },
   {
-    id: 3,
-    src: "/aw3.png",
-    title: "Lifetime Dedication",
-    desc: "Honoring decades of continuous service and dedication to the grid."
+    id: 13,
+    src: "/DSB09092.jpg",
+    title: "Annual Meet 2024",
+    desc: "Memories from our 2024 annual meet.",
+    year: "2024"
   },
   {
-    id: 4,
-    src: "/aw4.png",
-    title: "Innovation Awards",
-    desc: "Rewarding custom automation layouts and problem solving."
+    id: 14,
+    src: "/DSB09215.jpg",
+    title: "Annual Meet 2024",
+    desc: "Memories from our 2024 annual meet.",
+    year: "2024"
+  },
+  {
+    id: 15,
+    src: "/DSB09392.jpg",
+    title: "Annual Meet 2024",
+    desc: "Memories from our 2024 annual meet.",
+    year: "2024"
+  },
+  {
+    id: 16,
+    src: "/DSB09441.jpg",
+    title: "Annual Meet 2024",
+    desc: "Memories from our 2024 annual meet.",
+    year: "2024"
+  },
+  {
+    id: 17,
+    src: "/DSB09558.jpg",
+    title: "Annual Meet 2024",
+    desc: "Memories from our 2024 annual meet.",
+    year: "2024"
+  },
+  {
+    id: 18,
+    src: "/DSB09627.jpg",
+    title: "Annual Meet 2024",
+    desc: "Memories from our 2024 annual meet.",
+    year: "2024"
+  },
+  {
+    id: 19,
+    src: "/1.jpeg",
+    title: "Annual Meet 2025",
+    desc: "Memories from our 2025 annual meet.",
+    year: "2025"
+  },
+  {
+    id: 20,
+    src: "/3.jpeg",
+    title: "Annual Meet 2025",
+    desc: "Memories from our 2025 annual meet.",
+    year: "2025"
+  },
+  {
+    id: 21,
+    src: "/4.jpeg",
+    title: "Annual Meet 2025",
+    desc: "Memories from our 2025 annual meet.",
+    year: "2025"
+  },
+  {
+    id: 22,
+    src: "/5.jpeg",
+    title: "Annual Meet 2025",
+    desc: "Memories from our 2025 annual meet.",
+    year: "2025"
+  },
+  {
+    id: 23,
+    src: "/6.jpeg",
+    title: "Annual Meet 2025",
+    desc: "Memories from our 2025 annual meet.",
+    year: "2025"
   },
   {
     id: 5,
-    src: "/aw5.png",
-    title: "Project Delivery",
-    desc: "100% on-time delivery across multiple complex state projects."
+    src: "/1761220248_1.jpg",
+    title: "Annual Meet 2023",
+    desc: "Memories from our 2023 annual meet.",
+    year: "2023"
+  },
+  {
+    id: 6,
+    src: "/1761220248_2.jpg",
+    title: "Annual Meet 2023",
+    desc: "Memories from our 2023 annual meet.",
+    year: "2023"
+  },
+  {
+    id: 7,
+    src: "/1761220248_3.jpg",
+    title: "Annual Meet 2023",
+    desc: "Memories from our 2023 annual meet.",
+    year: "2023"
+  },
+  {
+    id: 8,
+    src: "/1761220248_4.jpg",
+    title: "Annual Meet 2023",
+    desc: "Memories from our 2023 annual meet.",
+    year: "2023"
+  },
+  {
+    id: 9,
+    src: "/1761220248_5.jpg",
+    title: "Annual Meet 2023",
+    desc: "Memories from our 2023 annual meet.",
+    year: "2023"
+  },
+  {
+    id: 10,
+    src: "/1761220248_6.jpg",
+    title: "Annual Meet 2023",
+    desc: "Memories from our 2023 annual meet.",
+    year: "2023"
+  },
+  {
+    id: 11,
+    src: "/1761220248_7.jpg",
+    title: "Annual Meet 2023",
+    desc: "Memories from our 2023 annual meet.",
+    year: "2023"
+  },
+  {
+    id: 12,
+    src: "/1761220248_8.jpg",
+    title: "Annual Meet 2023",
+    desc: "Memories from our 2023 annual meet.",
+    year: "2023"
   }
 ];
 
@@ -127,6 +244,18 @@ export default function EmployeeAwards() {
   const [selectedAward, setSelectedAward] = useState(null);
   const [awardsList, setAwardsList] = useState(initialAwards);
   const [galleryList, setGalleryList] = useState(galleryImages);
+  const [selectedYear, setSelectedYear] = useState("All years");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const filterOptions = ["All years", "2023", "2024", "2025"];
+
+  useEffect(() => {
+    if (selectedYear === "All years") {
+      setGalleryList(galleryImages);
+    } else {
+      setGalleryList(galleryImages.filter(img => img.year === selectedYear || (img.title && img.title.includes(selectedYear))));
+    }
+    setActiveGalleryIndex(0);
+  }, [selectedYear]);
 
   // --- 3D Gallery State & Logic ---
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
@@ -167,7 +296,7 @@ export default function EmployeeAwards() {
   const getCardStyle = (index) => {
     const length = galleryList.length;
     let diff = index - activeGalleryIndex;
-    
+
     // Circular array shortest distance mapping
     if (diff > Math.floor(length / 2)) diff -= length;
     if (diff < -Math.floor(length / 2)) diff += length;
@@ -208,7 +337,7 @@ export default function EmployeeAwards() {
         console.error("Error parsing saved awards", e);
       }
     }
-    
+
     const savedGallery = localStorage.getItem("gallery_images");
     if (savedGallery) {
       try {
@@ -223,17 +352,17 @@ export default function EmployeeAwards() {
     <main className="min-h-screen bg-gray-50 text-gray-800">
       {/* Hero Section */}
       <section className="bg-[#070B18] text-white relative w-full flex flex-col md:flex-row md:min-h-[510px] overflow-hidden">
-        
+
         {/* Slanted Red Border (Desktop only) */}
         {/* 60.4% width with the clip-path creates a perfect 3px red border tracking the slant */}
-        <div 
+        <div
           className="hidden md:block absolute top-0 left-0 bottom-0 w-[60.4%] z-20 bg-[#E61B23]"
           style={{ clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0% 100%)' }}
         ></div>
 
         {/* Slanted Navy Background (Desktop only) */}
         {/* Starts at 60% width at top, slants inward to 45% width at bottom */}
-        <div 
+        <div
           className="hidden md:block absolute top-0 left-0 bottom-0 w-[60%] z-30 bg-[#070B18]"
           style={{ clipPath: 'polygon(0 0, 100% 0, 75% 100%, 0% 100%)' }}
         ></div>
@@ -293,7 +422,7 @@ export default function EmployeeAwards() {
         {/* Sits underneath the left background z-index, allowing the left clip-path to slice seamlessly over it */}
         <div className="relative w-full h-[400px] md:absolute md:top-0 md:right-0 md:bottom-0 md:w-[55%] md:h-auto z-10 overflow-hidden">
           <Image
-            src="/amm1.png" 
+            src="/amm1.png"
             alt="Annual Meet Event"
             fill
             className="object-cover object-center"
@@ -302,8 +431,9 @@ export default function EmployeeAwards() {
       </section>
 
       {/* 3D Coverflow Gallery Section */}
-      <section 
-        className="w-full relative bg-white overflow-hidden pb-8 pt-6 md:pb-16 md:pt-14"
+      <section
+        className="w-full relative overflow-hidden pb-8 pt-6 md:pb-16 md:pt-14"
+        style={{ background: '#FEE2E2' }}
         onMouseEnter={() => setIsGalleryHovered(true)}
         onMouseLeave={() => setIsGalleryHovered(false)}
         onTouchStart={handleTouchStart}
@@ -312,9 +442,55 @@ export default function EmployeeAwards() {
         {/* Blurred Backdrop Overlay */}
         <div className="absolute inset-0 bg-white/70 backdrop-blur-xl z-0 pointer-events-none"></div>
 
+        {/* Year Filter Dropdown */}
+        <div className="relative z-30 max-w-[1440px] mx-auto flex justify-start px-6 md:px-12 pt-8 md:pt-4 pb-2 mb-6 md:mb-10">
+          <div
+            className="relative w-full max-w-[240px] md:w-auto md:min-w-[200px]"
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full flex items-center justify-between gap-4 px-5 py-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-gray-800 font-semibold text-[15px] md:text-[16px] group"
+            >
+              <span>{selectedYear}</span>
+              <FaChevronDown className={`text-[#E61B23] transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : 'group-hover:translate-y-0.5'}`} />
+            </button>
+
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-lg shadow-xl overflow-hidden z-40 origin-top"
+                >
+                  {filterOptions.map((year) => (
+                    <button
+                      key={year}
+                      onClick={() => {
+                        setSelectedYear(year);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-5 py-3.5 font-medium text-[15px] transition-all duration-200 hover:pl-7 ${selectedYear === year
+                        ? "text-[#E61B23] bg-red-50/50 border-l-[3px] border-[#E61B23]"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-l-[3px] border-transparent"
+                        }`}
+                    >
+                      {year}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+
         {/* Gallery Container with 3D Perspective */}
-        <div 
-          className="relative w-full h-[280px] sm:h-[350px] md:h-[450px] lg:h-[500px] flex items-center justify-center z-10 mx-auto max-w-[1440px]" 
+        <div
+          className="relative w-full h-[280px] sm:h-[350px] md:h-[450px] lg:h-[500px] flex items-center justify-center z-10 mx-auto max-w-[1440px]"
           style={{ perspective: "1800px" }}
         >
           {/* Cards */}
@@ -357,7 +533,7 @@ export default function EmployeeAwards() {
 
         {/* Navigation Arrows */}
         <div className="absolute top-[40%] md:top-[45%] -translate-y-1/2 left-3 md:left-12 lg:left-24 z-50">
-          <button 
+          <button
             onClick={handleGalleryPrev}
             className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-black/5 backdrop-blur-md flex items-center justify-center text-gray-900 hover:bg-black/10 hover:scale-110 transition-all border border-gray-200 shadow-lg"
           >
@@ -365,7 +541,7 @@ export default function EmployeeAwards() {
           </button>
         </div>
         <div className="absolute top-[40%] md:top-[45%] -translate-y-1/2 right-3 md:right-12 lg:right-24 z-50">
-          <button 
+          <button
             onClick={handleGalleryNext}
             className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-black/5 backdrop-blur-md flex items-center justify-center text-gray-900 hover:bg-black/10 hover:scale-110 transition-all border border-gray-200 shadow-lg"
           >

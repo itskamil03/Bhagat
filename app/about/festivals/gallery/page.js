@@ -16,12 +16,23 @@ const festivalGalleries = {
     date: "September 17, Annual",
     mainImage: "/fi1.jpg",
     images: [
-      { src: "/fi1.jpg", year: "2026" },
-      { src: "/fi1.jpg", year: "2026" },
-      { src: "/fi1.jpg", year: "2025" },
-      { src: "/fi1.jpg", year: "2025" },
-      { src: "/fi1.jpg", year: "2024" },
-      { src: "/fi1.jpg", year: "2024" },
+      { src: "/vish1.jpeg", year: "2023" },
+      { src: "/vish2.jpeg", year: "2023" },
+      { src: "/1761220624_1.jpg", year: "2023" },
+      { src: "/1761220624_2.jpg", year: "2023" },
+      { src: "/1761220624_3.jpg", year: "2023" },
+      { src: "/1761220624_5.jpg", year: "2023" },
+      { src: "/vish25_1.jpg", year: "2025" },
+      { src: "/vish25_2.jpg", year: "2025" },
+      { src: "/vish25_3.jpg", year: "2025" },
+      { src: "/vish25_4.jpg", year: "2025" },
+      { src: "/vish25_5.jpg", year: "2025" },
+      { src: "/vish25_6.jpg", year: "2025" },
+      { src: "/vish24_1.jpeg", year: "2024" },
+      { src: "/vish24_2.jpg", year: "2024" },
+      { src: "/vish24_3.jpg", year: "2024" },
+      { src: "/vish24_4.jpg", year: "2024" },
+      { src: "/vish24_5.jpeg", year: "2024" },
     ],
   },
   diwali: {
@@ -31,13 +42,25 @@ const festivalGalleries = {
     date: "October/November, Annual",
     mainImage: "/diwali.jpg",
     images: [
-      { src: "/diwali.jpg", year: "2026" },
-      { src: "/d2.jpg", year: "2026" },
-      { src: "/d3.jpg", year: "2026" },
-      { src: "/d4.jpg", year: "2025" },
-      { src: "/d5.jpg", year: "2025" },
-      { src: "/d6.jpg", year: "2024" },
-
+      
+      { src: "/diwa2025_1.png", year: "2025" },
+      { src: "/diwa2025_2.jpg", year: "2025" },
+      { src: "/diwa2025_3.jpg", year: "2025" },
+      { src: "/diwa2025_4.jpg", year: "2025" },
+      { src: "/diwa2025_5.png", year: "2025" },
+      { src: "/diwa2025_6.jpg", year: "2025" },
+      { src: "/diwa2024_1.jpg", year: "2024" },
+      { src: "/diwa2024_2.jpg", year: "2024" },
+      { src: "/diwa2024_3.jpg", year: "2024" },
+      { src: "/diwa2024_4.jpeg", year: "2024" },
+      { src: "/diwa2024_5.jpeg", year: "2024" },
+      { src: "/diwa2024_6.jpeg", year: "2024" },
+      { src: "/diwa2023_1.jpeg", year: "2023" },
+      { src: "/diwa2023_2.jpeg", year: "2023" },
+      { src: "/diwa2023_3.jpg", year: "2023" },
+      { src: "/diwa2023_4.jpg", year: "2023" },
+      { src: "/diwa2023_5.jpg", year: "2023" },
+      { src: "/diwa2023_6.jpg", year: "2023" },
     ],
   },
   patriot: {
@@ -56,18 +79,28 @@ const festivalGalleries = {
     ],
   },
   chhath: {
-    title: "Chhath Puja Celebration",
+    title: "New Year",
     description:
       "Deeply rooted in the cultural fabric of Bihar, we celebrate Chhath Puja with spiritual devotion. We support our team members with festive breaks, distribute traditional offerings (Thekua), and organize community support camps at the Ganga ghats in Patna.",
     date: "October/November, Annual",
     mainImage: "/chhatim1.jpg",
     images: [
-      { src: "/ch1.jpg", year: "2026" },
-      { src: "/ch2.jpg", year: "2026" },
-
-      { src: "/ch4.jpg", year: "2025" },
-      { src: "/ch5.jpg", year: "2024" },
-      { src: "/ch6.jpg", year: "2024" },
+      { src: "/new2026_1.jpeg", year: "2026" },
+      { src: "/new2026_2.jpeg", year: "2026" },
+      { src: "/new2026_3.jpeg", year: "2026" },
+      { src: "/new2026_4.jpeg", year: "2026" },
+      { src: "/new2026_5.jpeg", year: "2026" },
+      { src: "/new2026_6.jpeg", year: "2026" },
+      { src: "/new2025_1.jpeg", year: "2025" },
+      { src: "/new2025_2.jpg", year: "2025" },
+      { src: "/new2025_3.jpeg", year: "2025" },
+      { src: "/new2025_4.jpg", year: "2025" },
+      { src: "/new2025_5.jpeg", year: "2025" },
+      { src: "/new2025_6.jpeg", year: "2025" },
+      { src: "/new2024_1.jpeg", year: "2024" },
+      { src: "/new2024_2.jpg", year: "2024" },
+      { src: "/new2024_3.jpg", year: "2024" },
+      { src: "/new2024_4.jpg", year: "2024" },
     ],
   },
   holi: {
@@ -77,14 +110,23 @@ const festivalGalleries = {
     date: "March, Annual",
     mainImage: "/h1.jpg",
     images: [
-      { src: "/h1.jpg", year: "2026" },
-      { src: "/h2.jpg", year: "2026" },
-      { src: "/h3.jpg", year: "2026" },
-      { src: "/h4.jpg", year: "2025" },
-      { src: "/h5.jpg", year: "2025" },
-      { src: "/h6.jpg", year: "2024" },
-      { src: "/h7.jpg", year: "2024" },
-      { src: "/h8.jpg", year: "2024" },
+      { src: "/holi2026_1.jpeg", year: "2026" },
+      { src: "/holi2026_2.jpeg", year: "2026" },
+      { src: "/holi2026_3.jpeg", year: "2026" },
+      { src: "/holi2026_4.jpeg", year: "2026" },
+      { src: "/holi2026_5.jpeg", year: "2026" },
+      { src: "/holi2026_6.jpeg", year: "2026" },
+      { src: "/holi2025_1.jpg", year: "2025" },
+      { src: "/holi2025_2.jpeg", year: "2025" },
+      { src: "/holi2025_3.jpg", year: "2025" },
+      { src: "/holi2025_4.jpg", year: "2025" },
+      { src: "/holi2025_5.jpeg", year: "2025" },
+      { src: "/holi2024_1.jpg", year: "2024" },
+      { src: "/holi2024_2.jpg", year: "2024" },
+      { src: "/holi2024_3.jpg", year: "2024" },
+      { src: "/holi2024_4.jpg", year: "2024" },
+      { src: "/holi2024_5.jpg", year: "2024" },
+      { src: "/holi2024_6.jpg", year: "2024" },
     ],
   },
 };
@@ -123,7 +165,9 @@ function GalleryContent() {
   const [selectedYear, setSelectedYear] = useState("All");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const filterOptions = ["All", "2026", "2025", "2024"];
+  const filterOptions = (festivalKey === "holi" || festivalKey === "chhath")
+    ? ["All", "2026", "2025", "2024"] 
+    : ["All", "2025", "2024", "2023"];
   const filteredImages = gallery.images.filter(
     (img) => selectedYear === "All" || img.year === selectedYear
   );

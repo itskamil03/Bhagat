@@ -37,7 +37,7 @@ const festivalEvents = [
   {
     year: "Chhath",
     date: "October/November, Annual",
-    title: "Chhath Puja Celebration",
+    title: "New Year",
     description:
       "Deeply rooted in the cultural fabric of Bihar, we celebrate Chhath Puja with spiritual devotion. We support our team members with festive breaks, distribute traditional offerings (Thekua), and organize community support camps at the Ganga ghats in Patna.",
     image: "/chhatim1.jpg",
