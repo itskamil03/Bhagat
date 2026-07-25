@@ -1,32 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-
-const defaultData = [
-  {
-    title: "Power Infrastructure",
-    desc: "Substation erection, transformer support and high-voltage electrical networks for industrial and commercial sites.",
-    img: "/pk.png",
-  },
-  {
-    title: "Industrial Installations",
-    desc: "Cable laying, control panels, fabrication and commissioning for process systems and operational facilities.",
-    img: "/pa1.png",
-  },
-  {
-    title: "Energy Efficient Lighting",
-    desc: "LED, facade and acrylic lighting systems designed for safety, visibility, low maintenance and reduced energy use.",
-    img: "/pk2.png",
-  },
-  {
-    title: "Transmission Lines & Cabling",
-    desc: "High-voltage overhead transmission lines and underground cabling networks designed and installed for high-reliability energy delivery.",
-    img: "/d2.png",
-  },
-];
+import { getBuiltPerformance, builtPerformanceImageUrl } from "../../lib/api/builtPerformance";
 
 export default function Project() {
-  const [data, setData] = useState(defaultData);
+  const [data, setData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const [dragOffset, setDragOffset] = useState(0);
@@ -54,19 +32,16 @@ export default function Project() {
   };
 
   useEffect(() => {
-    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
-
     async function fetchProjects() {
-      if (!API_ENDPOINT) return;
       try {
-        const res = await fetch(API_ENDPOINT);
-        if (res.ok) {
-          const apiData = await res.json();
-          if (Array.isArray(apiData)) {
-            setData(apiData);
-          } else if (apiData.projects && Array.isArray(apiData.projects)) {
-            setData(apiData.projects);
-          }
+        const apiData = await getBuiltPerformance();
+        if (apiData && Array.isArray(apiData)) {
+          const formattedData = apiData.map(item => ({
+            title: item.title || "",
+            desc: item.description || "",
+            img: builtPerformanceImageUrl(item) || "/pk.png"
+          }));
+          setData(formattedData);
         }
       } catch (error) {
         console.error("Failed to fetch dynamic projects:", error);

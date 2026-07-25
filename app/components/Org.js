@@ -1,38 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-
-const defaultLogos = [
-  "/j1.png",
-  "/j2.png",
-  "/j3.png",
-  "/j4.png",
-  "/j5.png",
-  "/j3.png",
-  "/j4.png",
-  "/j5.png",
-  "/j1.png",
-  "/j2.png",
-  "/j3.png",
-];
+import { getBrandLogos } from "../../lib/api/brandLogo";
 
 const Org = () => {
-  const [logos, setLogos] = useState(defaultLogos);
+  const [logos, setLogos] = useState([]);
 
   useEffect(() => {
-    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
-
     async function fetchLogos() {
-      if (!API_ENDPOINT) return;
       try {
-        const res = await fetch(API_ENDPOINT);
-        if (res.ok) {
-          const apiData = await res.json();
-          if (Array.isArray(apiData)) {
-            setLogos(apiData);
-          } else if (apiData.logos && Array.isArray(apiData.logos)) {
-            setLogos(apiData.logos);
-          }
+        const apiData = await getBrandLogos();
+        if (apiData && Array.isArray(apiData)) {
+          setLogos(apiData);
         }
       } catch (error) {
         console.error("Failed to fetch dynamic org logos:", error);
@@ -53,7 +32,7 @@ const Org = () => {
           {/* First Set */}
           {logos.map((logo, i) => (
             <div key={i} className="w-[120px] h-[70px] md:w-[210px] md:h-[120px] relative">
-              <Image src={logo.img || logo} alt="logo" fill className="object-contain" />
+              <Image src={logo.image} alt="logo" fill className="object-contain" />
             </div>
           ))}
 
@@ -61,7 +40,7 @@ const Org = () => {
           {logos.map((logo, i) => {
             return (
               <div key={`dup-${i}`} className="w-[120px] h-[70px] md:w-[210px] md:h-[120px] relative">
-                <Image src={logo.img || logo} alt="logo" fill className="object-contain" />
+                <Image src={logo.image} alt="logo" fill className="object-contain" />
               </div>
             );
           })}

@@ -59,24 +59,29 @@ export default function Section() {
               return textOnly !== "" && textOnly !== "undefined" && textOnly !== "null";
             };
 
+            const stripHtml = (html) => html ? html.replace(/<[^>]*>?/gm, '').trim() : '';
+
             let finalImg = card.img;
             let finalTitle = card.title;
             let finalDesc = card.desc;
 
-            // Only replace the card if ALL fields are valid and the image successfully loads
-            if (isValid(apiCard.image) && isValid(apiCard.title) && isValid(apiCard.description)) {
+            // Check image independently
+            if (isValid(apiCard.image)) {
               const url = foundationImageUrl(apiCard);
-              console.log("Image URL:", url);
               const exists = await checkImageExists(url);
-              
               if (exists) {
-                // Image is fully valid and loads successfully, so we use the complete API data for this card
                 finalImg = url;
-                // Strip HTML tags from title and description just in case the admin panel sends them
-                const stripHtml = (html) => html ? html.replace(/<[^>]*>?/gm, '').trim() : '';
-                finalTitle = stripHtml(apiCard.title) || apiCard.title;
-                finalDesc = stripHtml(apiCard.description) || apiCard.description;
               }
+            }
+
+            // Check title independently
+            if (isValid(apiCard.title)) {
+              finalTitle = stripHtml(apiCard.title) || apiCard.title;
+            }
+
+            // Check description independently
+            if (isValid(apiCard.description)) {
+              finalDesc = stripHtml(apiCard.description) || apiCard.description;
             }
 
             return {
