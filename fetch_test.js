@@ -1,6 +1,6 @@
 const http = require('http');
 
-http.get('http://187.77.184.141:5000/api/foundation/', (resp) => {
+http.get('https://bhagat-api.aimtechai.in/api/foundation/', (resp) => {
   let data = '';
   resp.on('data', (chunk) => {
     data += chunk;
