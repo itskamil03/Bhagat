@@ -40,6 +40,10 @@ export default function OngoingProjects() {
   const cardRefs = useRef([]);
   const scrollTimeout = useRef(null);
 
+  // Extract unique filters from fetched projects dynamically
+  const uniqueDivisions = ["All", ...new Set(projects.map((p) => p.division).filter(Boolean))];
+  const uniqueLocations = ["All", ...new Set(projects.map((p) => p.location).filter(Boolean))];
+
   useEffect(() => {
     async function fetchProjects() {
       try {
@@ -228,15 +232,11 @@ export default function OngoingProjects() {
               }}
               className="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#E61B23] transition"
             >
-              <option value="All">All Divisions</option>
-              <option value="Railway Electrification">
-                Railway Electrification
-              </option>
-              <option value="Power Infrastructure">Power Infrastructure</option>
-              <option value="Energy Efficient Lighting">
-                Energy Efficient Lighting
-              </option>
-              <option value="Services">Services (O&M)</option>
+              {uniqueDivisions.map((division) => (
+                <option key={division} value={division}>
+                  {division === "All" ? "All Divisions" : division}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -250,12 +250,11 @@ export default function OngoingProjects() {
               }}
               className="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2.5 text-sm outline-none focus:border-[#E61B23] transition"
             >
-              <option value="All">All Locations</option>
-              <option value="TS">Telangana</option>
-              <option value="MH">Maharashtra</option>
-              <option value="GJ">Gujarat</option>
-              <option value="BR">Bihar</option>
-              <option value="WB">West Bengal</option>
+              {uniqueLocations.map((location) => (
+                <option key={location} value={location}>
+                  {location === "All" ? "All Locations" : location}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -321,7 +320,7 @@ export default function OngoingProjects() {
                 onScroll={handleScroll}
                 onTouchStart={() => setIsPaused(true)}
                 onTouchEnd={() => setTimeout(() => setIsPaused(false), 1500)}
-                className="flex-1 space-y-6 max-h-[600px] overflow-y-auto pr-3 scrollbar-thin"
+                className="flex-1 space-y-6 max-h-[600px] overflow-y-auto pr-3 py-3 scrollbar-thin"
               >
                 {loading ? (
                   <div className="bg-white rounded-xl p-12 text-center border border-gray-200 flex justify-center">

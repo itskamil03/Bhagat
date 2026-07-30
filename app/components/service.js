@@ -69,7 +69,7 @@ const defaultServicesData = [
       "/Facade Lighting 3.png",
       "/Facade Lighting 4.jpeg",
       "/Facade Lighting 5.png",
-    
+
     ],
     href: "/service/facade-lighting",
   },
@@ -203,11 +203,10 @@ export default function Service() {
                   <button
                     key={cat}
                     onClick={() => handleCategorySelect(cat)}
-                    className={`px-5 py-2 rounded-lg font-semibold text-sm transition duration-300 ${
-                      isActive
+                    className={`px-5 py-2 rounded-lg font-semibold text-sm transition duration-300 ${isActive
                         ? "bg-[#c00000] text-white shadow-sm"
                         : "text-gray-500 hover:text-gray-900"
-                    }`}
+                      }`}
                   >
                     {cat}
                   </button>
@@ -255,11 +254,10 @@ export default function Service() {
                       setActiveServiceIndex(i);
                       setActiveImageIndex(0);
                     }}
-                    className={`relative w-full text-left pl-7 pr-5 rounded-xl font-semibold transition-all duration-300 shadow-sm border text-xs lg:text-sm leading-snug flex items-center h-full cursor-pointer overflow-hidden ${
-                      isActive
+                    className={`relative w-full text-left pl-7 pr-5 rounded-xl font-semibold transition-all duration-300 shadow-sm border text-xs lg:text-sm leading-snug flex items-center h-full cursor-pointer overflow-hidden ${isActive
                         ? "bg-[#111622] text-white border-[#111622]"
                         : "bg-white text-gray-800 border-gray-100 hover:bg-gray-50 hover:border-gray-300"
-                    }`}
+                      }`}
                   >
                     {isActive && (
                       <motion.div
@@ -288,9 +286,8 @@ export default function Service() {
             return (
               <div
                 key={i}
-                className={`absolute inset-0 transition-opacity duration-500 ${
-                  isVisible ? "opacity-100 z-10" : "opacity-0 z-0"
-                }`}
+                className={`absolute inset-0 transition-opacity duration-500 ${isVisible ? "opacity-100 z-10" : "opacity-0 z-0"
+                  }`}
               >
                 <Image
                   src={img}
@@ -319,20 +316,18 @@ export default function Service() {
                       handleThumbnailClick(item.originalIndex);
                     }
                   }}
-                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${
-                    item.originalIndex === activeImageIndex ? "scale-105" : ""
-                  }`}
+                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${item.originalIndex === activeImageIndex ? "scale-105" : ""
+                    }`}
                 >
                   <Image src={item.img} fill className="object-cover" alt="" />
                   <div
-                    className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${
-                      item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
-                    }`}
+                    className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
+                      }`}
                   />
                 </div>
               ))}
             </div>
-            
+
             <div className="flex animate-custom-marquee group-hover:[animation-play-state:paused] pr-2.5 shrink-0" aria-hidden="true">
               {marqueeImages.map((item, i) => (
                 <div
@@ -340,15 +335,13 @@ export default function Service() {
                   role="button"
                   tabIndex={-1}
                   onClick={() => handleThumbnailClick(item.originalIndex)}
-                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${
-                    item.originalIndex === activeImageIndex ? "scale-105" : ""
-                  }`}
+                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${item.originalIndex === activeImageIndex ? "scale-105" : ""
+                    }`}
                 >
                   <Image src={item.img} fill className="object-cover" alt="" />
                   <div
-                    className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${
-                      item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
-                    }`}
+                    className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
+                      }`}
                   />
                 </div>
               ))}
@@ -402,11 +395,10 @@ export default function Service() {
                   setActiveServiceIndex(isOpen ? -1 : i);
                   setActiveImageIndex(0);
                 }}
-                className={`w-full flex items-center justify-between p-5 text-left font-semibold text-[15px] transition-all duration-300 ${
-                  isOpen
+                className={`w-full flex items-center justify-between p-5 text-left font-semibold text-[15px] transition-all duration-300 ${isOpen
                     ? "bg-black text-white"
                     : "bg-white text-gray-800 hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 <span>{service.title}</span>
                 <span
@@ -418,11 +410,10 @@ export default function Service() {
 
               {/* ACCORDION BODY */}
               <div
-                className={`transition-all duration-500 ease-in-out overflow-hidden ${
-                  isOpen
+                className={`transition-all duration-500 ease-in-out overflow-hidden ${isOpen
                     ? "max-h-[850px] opacity-100 border-t border-gray-100"
                     : "max-h-0 opacity-0 pointer-events-none"
-                }`}
+                  }`}
               >
                 {isOpen && (
                   <div className="p-5 flex flex-col gap-4 bg-gray-50">
@@ -433,9 +424,8 @@ export default function Service() {
                         return (
                           <div
                             key={imgIdx}
-                            className={`absolute inset-0 transition-opacity duration-500 ${
-                              isVisible ? "opacity-100 z-10" : "opacity-0 z-0"
-                            }`}
+                            className={`absolute inset-0 transition-opacity duration-500 ${isVisible ? "opacity-100 z-10" : "opacity-0 z-0"
+                              }`}
                           >
                             <Image
                               src={img}
@@ -453,11 +443,10 @@ export default function Service() {
                           <button
                             key={imgIdx}
                             onClick={() => handleThumbnailClick(imgIdx)}
-                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                              imgIdx === activeImageIndex
+                            className={`w-2 h-2 rounded-full transition-all duration-300 ${imgIdx === activeImageIndex
                                 ? "bg-white scale-125"
                                 : "bg-white/40"
-                            }`}
+                              }`}
                           />
                         ))}
                       </div>

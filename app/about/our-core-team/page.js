@@ -47,9 +47,9 @@ export default function OurCoreTeam() {
         if (data && data.length > 0) {
           const mappedData = data.map((member) => ({
             _id: member._id,
-            name: member.fullName,
-            role: member.position,
-            image: member.profileImage,
+            name: member.fullName || "Team Member",
+            role: member.position || "Member",
+            image: member.profileImage || "/fq2.jpg",
           }));
           setTeamMembers(mappedData);
         }
@@ -218,10 +218,9 @@ export default function OurCoreTeam() {
           {/* Responsive Leadership Cards Grid */}
           <motion.div
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
+            animate="visible"
             variants={containerVariants}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
           >
             {teamMembers.map((leader, index) => (
               <motion.div

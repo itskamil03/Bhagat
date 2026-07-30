@@ -222,21 +222,36 @@ export default function Project() {
 
       {/* DOTS CONTROLLER */}
       <div className="flex justify-center mt-8 gap-2.5">
-        {data.map((_, i) => {
-          const isActive = i === activeIndex;
-          return (
-            <button
-              key={i}
-              onClick={() => setActiveIndex(i)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                isActive
-                  ? "bg-blue-600 scale-125"
-                  : "bg-gray-300 hover:bg-gray-400"
-              }`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          );
-        })}
+        {(() => {
+          const totalDots = maxIndex + 1;
+          let visibleDots = [];
+          
+          if (totalDots <= 5) {
+            visibleDots = Array.from({ length: totalDots }, (_, i) => i);
+          } else if (activeIndex <= 2) {
+            visibleDots = [0, 1, 2, 3, 4];
+          } else if (activeIndex >= totalDots - 3) {
+            visibleDots = [totalDots - 5, totalDots - 4, totalDots - 3, totalDots - 2, totalDots - 1];
+          } else {
+            visibleDots = [activeIndex - 2, activeIndex - 1, activeIndex, activeIndex + 1, activeIndex + 2];
+          }
+
+          return visibleDots.map((i) => {
+            const isActive = i === activeIndex;
+            return (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  isActive
+                    ? "bg-blue-600 scale-125"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            );
+          });
+        })()}
       </div>
     </section>
   );

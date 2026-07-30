@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { FaChevronDown } from "react-icons/fa";
 import Contact from "../../components/contact";
 
 function CountUp({ end, suffix = "", duration = 1.5 }) {
@@ -50,31 +51,37 @@ function CountUp({ end, suffix = "", duration = 1.5 }) {
 
 export default function FoundationGalleryPage() {
   const [activeTab, setActiveTab] = useState("All");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const tabs = [
     "All",
     "Our Team",
-    "Electrical Installations",
-    "Transformer Services",
-    "Industrial Infrastructure",
-    "Railway Projects",
-    "Events & Achievements",
+    "Erection and Maintenance of Power Substation",
+    "Installation and Commissioning of Compact Substation",
+    "Over head and underground Cable Laying",
+    "Industrial/Quarter Wiring",
+    "Facade Lighting",
+    "Erection and commissioning of High Mast Pole/Tower and Poles",
   ];
 
   const images = [
-    "/a8.jpg",
-    "/a7.jpg",
-    "/dw1.jpg",
-    "/a9.png",
-    "/a5c.png",
-    "/lr1.png",
-    "/lr2.png",
-    "/lr3.png",
-    "/lr4.png",
-    "/lr5.png",
-    "/rr1.png",
-    "/rr2.png",
+    { src: "/a8.jpg", category: "Erection and Maintenance of Power Substation" },
+    { src: "/a7.jpg", category: "Installation and Commissioning of Compact Substation" },
+    { src: "/dw1.jpg", category: "Over head and underground Cable Laying" },
+    { src: "/a9.png", category: "Industrial/Quarter Wiring" },
+    { src: "/a5c.png", category: "Facade Lighting" },
+    { src: "/lr1.png", category: "Erection and commissioning of High Mast Pole/Tower and Poles" },
+    { src: "/lr2.png", category: "Our Team" },
+    { src: "/lr3.png", category: "Erection and Maintenance of Power Substation" },
+    { src: "/lr4.png", category: "Installation and Commissioning of Compact Substation" },
+    { src: "/lr5.png", category: "Over head and underground Cable Laying" },
+    { src: "/rr1.png", category: "Industrial/Quarter Wiring" },
+    { src: "/rr2.png", category: "Facade Lighting" },
   ];
+
+  const filteredImages = activeTab === "All" 
+    ? images 
+    : images.filter(img => img.category === activeTab);
 
   return (
     <main className="min-h-screen bg-white">
@@ -126,36 +133,84 @@ export default function FoundationGalleryPage() {
 
       {/* Gallery Section */}
       <section className="max-w-[1400px] mx-auto px-6 pt-16 pb-24">
-        {/* Filter Tabs */}
-        <div className="flex items-center gap-3 justify-start mb-12 overflow-x-auto no-scrollbar w-full pb-2">
-          {tabs.map((tab) => (
+        {/* Filters - Professional Dropdown */}
+        <div className="mb-12 flex justify-start relative z-30">
+          <div
+            className="relative w-full max-w-[500px]"
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
             <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`whitespace-nowrap flex-shrink-0 px-4 md:px-5 py-2 text-[13px] md:text-sm font-medium rounded-[4px] transition-colors border ${activeTab === tab
-                  ? "bg-[#CC0000] text-white border-[#CC0000]"
-                  : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                }`}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full flex items-center justify-between gap-4 px-5 py-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 text-gray-800 font-semibold text-[14px] md:text-[15px] group"
             >
-              {tab}
+              <span className="truncate">{activeTab}</span>
+              <FaChevronDown className={`flex-shrink-0 text-[#E61B23] transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : 'group-hover:translate-y-0.5'}`} />
             </button>
-          ))}
+
+            {/* Dropdown Menu */}
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-lg shadow-xl overflow-hidden z-40 origin-top"
+                >
+                  <div className="max-h-[350px] overflow-y-auto no-scrollbar">
+                    {tabs.map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => {
+                          setActiveTab(tab);
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`w-full text-left px-5 py-3.5 font-medium text-[14px] md:text-[15px] transition-all duration-200 hover:pl-7 ${activeTab === tab
+                            ? "text-[#E61B23] bg-red-50/50 border-l-[3px] border-[#E61B23]"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 border-l-[3px] border-transparent"
+                          }`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Image Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6">
-          {images.map((src, idx) => (
-            <div key={idx} className="relative aspect-[392/243] rounded-[9px] overflow-hidden group shadow-[0_4px_20px_rgba(0,0,0,0.06)] bg-[#D9D9D9] cursor-pointer">
-              <Image
-                src={src}
-                alt={`Gallery Image ${idx + 1}`}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              {/* Subtle overlay on hover */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-            </div>
-          ))}
+          <AnimatePresence>
+            {filteredImages.length > 0 ? (
+              filteredImages.map((item, idx) => (
+                <motion.div 
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  key={`${item.src}-${idx}`} 
+                  className="relative aspect-[392/243] rounded-[9px] overflow-hidden group shadow-[0_4px_20px_rgba(0,0,0,0.06)] bg-[#D9D9D9] cursor-pointer"
+                >
+                  <Image
+                    src={item.src}
+                    alt={`Gallery Image ${idx + 1}`}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Subtle overlay on hover */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center text-gray-500 font-medium">
+                No images found for this category.
+              </div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Load More Button */}

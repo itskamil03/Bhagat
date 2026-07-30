@@ -203,17 +203,17 @@ export default function Client() {
                     </h3>
 
                     {/* LINK */}
-                    {item.pdf ? (
+                    {item.pdf && item.pdf.split('?')[0].toLowerCase().endsWith(".pdf") ? (
                       <a
                         href={item.pdf}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 font-medium"
+                        className="flex items-center gap-2 font-medium cursor-pointer"
                       >
                         Read case study →
                       </a>
                     ) : (
-                      <p className="flex items-center gap-2 font-medium">
+                      <p className="flex items-center gap-2 font-medium opacity-50 cursor-not-allowed">
                         Read case study →
                       </p>
                     )}
