@@ -11,6 +11,7 @@ import {
   FaPaperPlane,
   FaShieldAlt,
 } from "react-icons/fa";
+import { submitEnquiryContact } from "../../lib/api/enquiryContact";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -24,18 +25,31 @@ export default function ContactPage() {
 
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setError(null);
+    try {
+      await submitEnquiryContact({
+        fullName: formData.name,
+        companyName: formData.company,
+        email: formData.email,
+        phoneNumber: formData.phone,
+        serviceRequired: formData.service,
+        projectDetailsAndLocation: formData.message,
+      });
       setSubmitted(true);
-    }, 1000);
+    } catch (err) {
+      setError(err.message || "Failed to submit form. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -191,8 +205,18 @@ export default function ContactPage() {
                     Send Another Inquiry
                   </button>
                 </div>
-              : <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid md:grid-cols-2 gap-5">
+              : <div className="space-y-5">
+                  {error && (
+                    <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl text-sm flex items-start gap-3">
+                      <div className="mt-0.5 font-bold">X</div>
+                      <div>
+                        <p className="font-semibold">Submission Failed</p>
+                        <p className="text-xs mt-0.5">{error}</p>
+                      </div>
+                    </div>
+                  )}
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid md:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
                         Full Name *
@@ -309,7 +333,8 @@ export default function ContactPage() {
                           <FaPaperPlane className="text-sm" />
                         </>}
                   </button>
-                </form>}
+                  </form>
+                </div>}
           </div>
 
           {/* RIGHT: PROFESSIONAL MAP SECTION (5 COLUMNS) */}

@@ -2,40 +2,10 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
-const defaultData = [
-  {
-    logo: "/j1.png",
-    text: `"Bhagat Engineering completed our substation project on schedule and with zero safety incidents. Their attention to detail is unmatched."`,
-    name: "Rajesh Kumar",
-    role: "Chief Engineer, State Power Board",
-    avatar: "/k1.jpg",
-  },
-  {
-    logo: "/j4.png",
-    text: `"Their railway electrification work has been reliable for over a decade. We trust them with our most critical infrastructure."`,
-    name: "Vikram Singh",
-    role: "Operations Director, Indian Railways",
-    avatar: "/k2.jpg",
-  },
-  {
-    logo: "/j5.png",
-    text: `"Professional, knowledgeable, and committed to excellence. They transformed our facility's electrical systems completely."`,
-    name: "Priya Sharma",
-    role: "Plant Manager, Industrial Manufacturing",
-    avatar: "/k3.jpg",
-    invertOnActive: true,
-  },
-  {
-    logo: "/j1.png",
-    text: `"Exceptional speed and precision. The entire infrastructure was modernized without interrupting our daily operations."`,
-    name: "Amit Desai",
-    role: "Director of Operations",
-    avatar: "/k1.jpg",
-  },
-];
+import { getClientVoices, clientVoiceImageUrl } from "../../lib/api/clientVoice";
 
 export default function Client() {
-  const [data, setData] = useState(defaultData);
+  const [data, setData] = useState([]);
   const [active, setActive] = useState(null); // for hover effect
   const ref = useRef();
 
@@ -109,20 +79,13 @@ export default function Client() {
   };
 
   useEffect(() => {
-    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
-
     async function fetchClients() {
-      if (!API_ENDPOINT) return;
       try {
-        const res = await fetch(API_ENDPOINT);
-        if (res.ok) {
-          const apiData = await res.json();
-          if (Array.isArray(apiData)) {
-            setData(apiData);
-          } else if (apiData.clients && Array.isArray(apiData.clients)) {
-            setData(apiData.clients);
-          }
+        const apiData = await getClientVoices();
+        if (apiData && Array.isArray(apiData)) {
+          setData(apiData);
         }
+        console.log(setData)
       } catch (error) {
         console.error("Failed to fetch dynamic clients:", error);
       }
@@ -221,7 +184,7 @@ export default function Client() {
                     {/* LOGO */}
                     <div className="relative w-[140px] h-[40px] mb-6">
                       <Image
-                        src={item.logo}
+                        src={clientVoiceImageUrl(item)}
                         alt="logo"
                         fill
                         className="object-contain transition-all duration-500"
@@ -236,13 +199,24 @@ export default function Client() {
 
                     {/* TEXT */}
                     <h3 className="mb-6 leading-relaxed font-semibold">
-                      {item.text}
+                      {item.description}
                     </h3>
 
                     {/* LINK */}
-                    <p className="flex items-center gap-2 font-medium">
-                      Read case study →
-                    </p>
+                    {item.pdf ? (
+                      <a
+                        href={item.pdf}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 font-medium"
+                      >
+                        Read case study →
+                      </a>
+                    ) : (
+                      <p className="flex items-center gap-2 font-medium">
+                        Read case study →
+                      </p>
+                    )}
                   </div>
                 </div>
               );

@@ -1,60 +1,54 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import Contact from "../../components/contact";
-
-const festivalEvents = [
-  {
-    year: "Diwali",
-    date: "October/November, Annual",
-    title: "Diwali & Corporate Milan",
-    description:
-      "Celebrating the festival of lights with sweets distribution, office lighting, and an annual milan ceremony that brings families of our employees together to honor our year-round accomplishments.",
-    image: "/diwali.jpg",
-    imageFirst: true,
-  },
-  {
-    year: "Puja",
-    date: "September 17, Annual",
-    title: "Vishwakarma Puja Celebration",
-    description:
-      "As engineers and creators, Vishwakarma Puja holds special significance at Bhagat Engineering Works. We clean and worship our machines, tools, and heavy erection gears, followed by community feasts with our site workers, engineers, and executive teams.",
-    image: "/fi4.jpg",
-    imageFirst: false,
-  },
-  {
-    year: "Patriot",
-    date: "National Festivals",
-    title: "Independence Day and Republic Day",
-    description:
-      "Flag hoisting ceremonies at our corporate head office in Patna and major railway site substations across India, commemorating our pride in building the country's utility infrastructure.",
-    image: "/indim1.jpg",
-    imageFirst: true,
-  },
-  {
-    year: "Chhath",
-    date: "October/November, Annual",
-    title: "New Year",
-    description:
-      "Deeply rooted in the cultural fabric of Bihar, we celebrate Chhath Puja with spiritual devotion. We support our team members with festive breaks, distribute traditional offerings (Thekua), and organize community support camps at the Ganga ghats in Patna.",
-    image: "/chhatim1.jpg",
-    imageFirst: false,
-  },
-  {
-    year: "Holi",
-    date: "March, Annual",
-    title: "Holi & Spring Milan",
-    description:
-      "Welcoming the spring season with vibrant colors, organic gulal, traditional music, and special festive delicacies. Our offices and sites come together for a special pre-Holi milan, reinforcing our team bonds.",
-    image: "/h1.jpg",
-    imageFirst: true,
-  },
-];
+import { getFestivalGallery } from "../../../lib/api/festivalGallery";
 
 export default function Festivals() {
+  const [festivalData, setFestivalData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getFestivalGallery();
+        let flattened = [];
+        
+        if (data && typeof data === 'object' && !Array.isArray(data)) {
+           // Object grouped by year
+           Object.keys(data).sort((a,b) => parseInt(b) - parseInt(a)).forEach(year => {
+              if (Array.isArray(data[year])) {
+                 data[year].forEach(item => {
+                    flattened.push({ ...item, year });
+                 });
+              }
+           });
+        } else if (Array.isArray(data)) {
+           data.forEach(group => {
+              if (group.festivals && Array.isArray(group.festivals)) {
+                 group.festivals.forEach(item => {
+                    flattened.push({ ...item, year: group.year });
+                 });
+              } else {
+                 flattened.push(group);
+              }
+           });
+        }
+        
+        setFestivalData(flattened);
+      } catch (err) {
+        setError(err.message || "Failed to load festival data");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <main className="min-h-screen bg-gray-100 font-sans">
       {/* ================= HERO SECTION (DARK NAVY / RED GRADIENT) ================= */}
@@ -145,59 +139,76 @@ export default function Festivals() {
           {/* Vertical timeline line */}
           <div className="hidden md:block absolute left-6 top-4 bottom-4 w-[2px] bg-red-200" />
 
-          <div className="space-y-8">
-            {festivalEvents.map((item, index) => (
-              <div key={index} className="relative flex items-center gap-6">
-                {/* Timeline dot column */}
-                <div className="hidden md:flex flex-col items-center w-12 flex-shrink-0">
-                  <span className="text-[11px] font-bold text-gray-400 mb-2 uppercase">
-                    {item.year}
-                  </span>
-                  <span className="w-3 h-3 rounded-full bg-red-600 ring-4 ring-red-100 z-10" />
-                </div>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E61B23]"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-600 py-12 font-semibold">
+              {error}
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {festivalData.map((item, index) => {
+                const imageFirst = index % 2 === 0;
+                const cardImage = item.coverImage?.image || item.image || "/fhero.jpg";
+                const displayTitle = item.heading || item.title || "";
+                const tag = item.category || "FESTIVAL";
+                
+                return (
+                  <div key={item._id || index} className="relative flex items-center gap-6">
+                    {/* Timeline dot column */}
+                    <div className="hidden md:flex flex-col items-center w-12 flex-shrink-0">
+                      <span className="text-[11px] font-bold text-gray-400 mb-2 uppercase">
+                        {tag}
+                      </span>
+                      <span className="w-3 h-3 rounded-full bg-red-600 ring-4 ring-red-100 z-10" />
+                    </div>
 
-                {/* Timeline Card - Exactly matching Gallery page style */}
-                <div className="w-full max-w-[1134px] md:h-[246px] grid md:grid-cols-2 bg-white rounded-[7px] shadow-[4px_4px_13px_rgba(0,0,0,0.13)] overflow-hidden border border-gray-100">
-                  {/* Card Image */}
-                  <div
-                    className={`relative h-48 md:h-[246px] overflow-hidden ${item.imageFirst ? "md:order-1" : "md:order-2"
-                      }`}
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
+                    {/* Timeline Card - Exactly matching Gallery page style */}
+                    <div className="w-full max-w-[1134px] md:h-[246px] grid md:grid-cols-2 bg-white rounded-[7px] shadow-[4px_4px_13px_rgba(0,0,0,0.13)] overflow-hidden border border-gray-100">
+                      {/* Card Image */}
+                      <div
+                        className={`relative h-48 md:h-[246px] overflow-hidden ${imageFirst ? "md:order-1" : "md:order-2"
+                          }`}
+                      >
+                        <img
+                          src={cardImage}
+                          alt={displayTitle}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Card Content */}
+                      <div
+                        className={`p-6 md:px-8 md:py-5 flex flex-col justify-center md:h-full ${imageFirst ? "md:order-2" : "md:order-1"
+                          }`}
+                      >
+                        {/* Mobile Category Tag */}
+                        <span className="text-red-500 font-bold text-[10px] md:hidden uppercase tracking-wider mb-1.5 block">
+                          {tag}
+                        </span>
+
+                        <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-snug">
+                          {displayTitle}
+                        </h3>
+                        <p className="text-gray-500 mt-3 text-xs md:text-[13px] leading-relaxed">
+                          {item.description}
+                        </p>
+                        <Link
+                          href={item.link || `/about/festivals/gallery?festival=${item._id || 'festival'}&title=${encodeURIComponent(displayTitle)}&description=${encodeURIComponent(item.description || '')}&image=${encodeURIComponent(cardImage)}`}
+                          className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5 decoration-none"
+                        >
+                          <span>Explore Festival</span>
+                          <span>→</span>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Card Content */}
-                  <div
-                    className={`p-6 md:px-8 md:py-5 flex flex-col justify-center md:h-full ${item.imageFirst ? "md:order-2" : "md:order-1"
-                      }`}
-                  >
-                    {/* Mobile Category Tag */}
-                    <span className="text-red-500 font-bold text-[10px] md:hidden uppercase tracking-wider mb-1.5 block">
-                      {item.year}
-                    </span>
-
-                    <h3 className="text-lg md:text-xl font-bold text-gray-900 leading-snug">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-500 mt-3 text-xs md:text-[13px] leading-relaxed">
-                      {item.description}
-                    </p>
-                    <Link
-                      href={`/about/festivals/gallery?festival=${item.year.toLowerCase()}&title=${encodeURIComponent(item.title)}&description=${encodeURIComponent(item.description)}&image=${encodeURIComponent(item.image)}`}
-                      className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5 decoration-none"
-                    >
-                      <span>Explore Festival</span>
-                      <span>→</span>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 

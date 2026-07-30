@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getLeadershipTeam } from "../../../lib/api/leadershipTeam";
+import { getTeamGroupImage } from "../../../lib/api/teamGroupImage";
 import { motion } from "framer-motion";
 import { FaHandshake, FaArrowRight } from "react-icons/fa";
 import Contact from "../../components/contact";
@@ -35,6 +37,42 @@ const fadeInUp = {
 
 export default function OurCoreTeam() {
   const isUnderConstruction = false;
+  const [teamMembers, setTeamMembers] = useState(leaders);
+  const [groupImage, setGroupImage] = useState("/Rectangle 106.png");
+
+  useEffect(() => {
+    async function fetchTeam() {
+      try {
+        const data = await getLeadershipTeam();
+        if (data && data.length > 0) {
+          const mappedData = data.map((member) => ({
+            _id: member._id,
+            name: member.fullName,
+            role: member.position,
+            image: member.profileImage,
+          }));
+          setTeamMembers(mappedData);
+        }
+      } catch (error) {
+        console.error("Failed to fetch team members, using fallback:", error);
+      }
+    }
+    fetchTeam();
+  }, []);
+
+  useEffect(() => {
+    async function fetchGroupImage() {
+      try {
+        const data = await getTeamGroupImage();
+        if (data && data.length > 0 && data[0].groupImage) {
+          setGroupImage(data[0].groupImage);
+        }
+      } catch (error) {
+        console.error("Failed to fetch group image, using fallback:", error);
+      }
+    }
+    fetchGroupImage();
+  }, []);
   
   if (isUnderConstruction) {
     return (
@@ -185,9 +223,9 @@ export default function OurCoreTeam() {
             variants={containerVariants}
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
           >
-            {leaders.map((leader, index) => (
+            {teamMembers.map((leader, index) => (
               <motion.div
-                key={index}
+                key={leader._id || index}
                 variants={{
                   hidden: { opacity: 0, y: 35 },
                   visible: {
@@ -265,7 +303,7 @@ export default function OurCoreTeam() {
             className="relative w-full aspect-[1.5/1] md:aspect-[2.35/1] rounded-2xl overflow-hidden shadow-lg border border-gray-100 mb-8"
           >
             <Image
-              src="/Rectangle 106.png"
+              src={groupImage}
               alt="Our Engineering and Project Team"
               fill
               className="object-cover"

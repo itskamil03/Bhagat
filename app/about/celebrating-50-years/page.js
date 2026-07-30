@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -19,6 +19,8 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import Contact from "../../components/contact";
+import { getJourneyGallery } from "../../../lib/api/journeyGallery";
+import { getCelebrationGallery } from "../../../lib/api/celebrationGallery";
 
 // ==========================================
 // EASILY REPLACEABLE IMAGE CONFIGURATION FOR ADMIN
@@ -243,16 +245,53 @@ function CountingNumber({ from, to, duration = 1.8, delay = 500 }) {
 }
 
 export default function Celebrating50Years() {
-  const [momentIndex, setMomentIndex] = useState(0);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [celebrationMoments, setCelebrationMoments] = useState(momentImages);
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getJourneyGallery();
+        const images = (data || []).slice(0, 4).map(item => item.coverImage?.image || item.image);
+        setGalleryImages(images);
+      } catch (err) {
+        console.error("Failed to load gallery images:", err);
+      }
+      
+      try {
+        const celebrationData = await getCelebrationGallery();
+        let dynamicMoments = [];
+        (celebrationData || []).forEach(item => {
+          if (item.images && Array.isArray(item.images)) {
+            item.images.forEach(img => {
+              dynamicMoments.push({ src: img.image, alt: "Celebration Moment" });
+            });
+          }
+        });
+        
+        if (dynamicMoments.length > 0) {
+          setCelebrationMoments(dynamicMoments);
+        }
+      } catch (err) {
+        console.error("Failed to load celebration gallery:", err);
+      }
+    }
+    fetchData();
+  }, []);
 
   const handleNext = () => {
-    setMomentIndex((prev) => (prev + 1) % momentImages.length);
+    if (sliderRef.current && sliderRef.current.firstElementChild) {
+      const cardWidth = sliderRef.current.firstElementChild.clientWidth;
+      sliderRef.current.scrollBy({ left: cardWidth + 24, behavior: 'smooth' });
+    }
   };
 
   const handlePrev = () => {
-    setMomentIndex(
-      (prev) => (prev - 1 + momentImages.length) % momentImages.length,
-    );
+    if (sliderRef.current && sliderRef.current.firstElementChild) {
+      const cardWidth = sliderRef.current.firstElementChild.clientWidth;
+      sliderRef.current.scrollBy({ left: -(cardWidth + 24), behavior: 'smooth' });
+    }
   };
 
   return (
@@ -658,38 +697,24 @@ export default function Celebrating50Years() {
 
           {/* Journey Right 2x2 Photo Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-md">
-              <Image
-                src={celebrating50Images.journeyGridTopLeft}
-                alt="Stage Event Group"
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-md">
-              <Image
-                src={celebrating50Images.journeyGridTopRight}
-                alt="Cake Ceremony"
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-md">
-              <Image
-                src={celebrating50Images.journeyGridBottomLeft}
-                alt="Award Ceremony"
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-md">
-              <Image
-                src={celebrating50Images.journeyGridBottomRight}
-                alt="Group Photo"
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-500"
-              />
-            </div>
+            {[0, 1, 2, 3].map((index) => {
+              const fallbacks = [
+                celebrating50Images.journeyGridTopLeft,
+                celebrating50Images.journeyGridTopRight,
+                celebrating50Images.journeyGridBottomLeft,
+                celebrating50Images.journeyGridBottomRight,
+              ];
+              const src = galleryImages[index] || fallbacks[index];
+              return (
+                <div key={index} className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-md bg-gray-100">
+                  <img
+                    src={src}
+                    alt={`Journey moment ${index + 1}`}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -784,29 +809,27 @@ export default function Celebrating50Years() {
             </button>
 
             {/* Slider Content Wrapper */}
-            <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-6 overflow-hidden py-2">
-              {Array.from({ length: 4 }).map((_, i) => {
-                const imgIdx = (momentIndex + i) % momentImages.length;
-                const img = momentImages[imgIdx];
-
-                return (
-                  <div
-                    key={imgIdx}
-                    className={`bg-white rounded-xl overflow-hidden border border-gray-150 shadow-sm transition-all duration-300 ${
-                      i === 0 ? "block" : "hidden md:block"
-                    }`}
-                  >
-                    <div className="relative w-full aspect-[4/3]">
-                      <Image
-                        src={img.src}
-                        alt={img.alt}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
+            <div 
+              ref={sliderRef}
+              className="w-full flex gap-6 overflow-x-auto snap-x snap-mandatory py-2 scrollbar-hide scroll-smooth"
+              style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}
+            >
+              {celebrationMoments.map((img, idx) => (
+                <div
+                  key={idx}
+                  className="flex-none w-full md:w-[calc(25%-18px)] snap-start bg-white rounded-xl overflow-hidden border border-gray-150 shadow-sm transition-all duration-300"
+                >
+                  <div className="relative w-full aspect-[4/3] bg-gray-100">
+                    <Image
+                      src={img?.src || "/placeholder.jpg"}
+                      alt={img?.alt || "Celebration Moment"}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 25vw"
+                      className="object-cover hover:scale-105 transition-transform duration-500"
+                    />
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
 
             {/* Next Button */}

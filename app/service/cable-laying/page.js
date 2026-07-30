@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ServiceDetailTemplate from "../../components/ServiceDetailTemplate";
 import Contact from "../../components/contact";
+import { getCableLayingPortfolio } from "../../../lib/api/overheadUndergroundCableLayingPortfolio";
+import { submitCableLayingContact } from "../../../lib/api/cableLayingContact";
 import {
   FiGrid,
   FiSettings,
@@ -91,6 +93,38 @@ const formServicesList = [
 ];
 
 export default function CableLayingPage() {
+  const [portfolioData, setPortfolioData] = useState(undefined);
+  const [portfolioLoading, setPortfolioLoading] = useState(true);
+  const [portfolioError, setPortfolioError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getCableLayingPortfolio();
+        setPortfolioData(data || []);
+      } catch (err) {
+        setPortfolioError(err.message || "Failed to load portfolio");
+        setPortfolioData([]);
+      } finally {
+        setPortfolioLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const handleContactSubmit = async (formData) => {
+    const payload = {
+      fullName: formData.fullName,
+      phoneNumber: formData.phone,
+      email: formData.email,
+      location: formData.location,
+      serviceRequired: formData.service,
+      otherMessage: formData.service === "Others" ? formData.otherService : "",
+      projectDetails: formData.message,
+    };
+    await submitCableLayingContact(payload);
+  };
+
   return (
     <>
       <ServiceDetailTemplate
@@ -107,19 +141,14 @@ export default function CableLayingPage() {
         whyChooseUsChecklist={whyChooseUsChecklist}
         whyChooseUsImage="/a6.png"
         portfolioTitle="Showcasing Cable Laying Excellence"
-        portfolioBigImage="/dw1.jpg"
-        portfolioBigTag="HT Cabling"
-        portfolioBigTitle="Underground High-Tension (HT) Power Cable Laying"
-        portfolioStackedImage1="/pk.png"
-        portfolioStackedTag1="Terminations"
-        portfolioStackedTitle1="Raychem Heat-Shrink Cable Terminations & Joints"
-        portfolioStackedImage2="/a9.png"
-        portfolioStackedTag2="Overhead Trays"
-        portfolioStackedTitle2="Substation Structural Overhead Cable Trays & Racks"
+        portfolioData={portfolioData}
+        portfolioLoading={portfolioLoading}
+        portfolioError={portfolioError}
         processSteps={processSteps}
         ctaTitle="Need Heavy-Duty Cable Laying Solutions?"
         ctaDesc="Get reliable, safe, and high-quality power transmission cabling from our certified team. Your power distribution stability is our priority."
         formServicesList={formServicesList}
+        onSubmitContact={handleContactSubmit}
       />
       <div className="bg-gray-100">
         <Contact />

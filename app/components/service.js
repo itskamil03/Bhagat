@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { getIntegratedServices } from "@/lib/api/integratedService";
 
 const defaultServicesData = [
   {
@@ -88,25 +89,25 @@ const defaultServicesData = [
 ];
 
 export default function Service() {
-  const [servicesData, setServicesData] = useState(defaultServicesData);
+  const [servicesData, setServicesData] = useState([]);
 
   useEffect(() => {
-    const API_ENDPOINT = ""; // TODO: Provide the API endpoint here
-
     async function fetchServices() {
-      if (!API_ENDPOINT) return;
       try {
-        const res = await fetch(API_ENDPOINT);
-        if (res.ok) {
-          const apiData = await res.json();
-          if (Array.isArray(apiData)) {
-            setServicesData(apiData);
-          } else if (apiData.services && Array.isArray(apiData.services)) {
-            setServicesData(apiData.services);
-          }
+        const apiData = await getIntegratedServices();
+        if (apiData && Array.isArray(apiData) && apiData.length > 0) {
+          const formattedData = apiData.map(service => ({
+            ...service,
+            desc: service.description || service.desc,
+            images: Array.isArray(service.images) ? service.images : (service.images ? [service.images] : [])
+          }));
+          setServicesData(formattedData);
+        } else {
+          setServicesData(defaultServicesData);
         }
       } catch (error) {
         console.error("Failed to fetch dynamic services:", error);
+        setServicesData(defaultServicesData);
       }
     }
     fetchServices();
@@ -121,7 +122,7 @@ export default function Service() {
   const activeService = servicesData[activeServiceIndex] || servicesData[0];
 
   // Derive active category from the selected service
-  const activeCategory = activeService.category;
+  const activeCategory = activeService?.category || "";
 
   // Reset image index when switching active service
   useEffect(() => {
@@ -153,6 +154,14 @@ export default function Service() {
       setActiveImageIndex(0);
     }
   };
+
+  if (servicesData.length === 0 || !activeService) {
+    return (
+      <section className="w-full bg-[#fcf9f6] py-16 px-6 relative z-10 min-h-[500px] flex items-center justify-center">
+        <p className="text-gray-500 font-medium">Loading integrated services...</p>
+      </section>
+    );
+  }
 
   // Prepare images for infinite marquee (ensure enough width for seamless loop)
   const originalImages = activeService?.images || [];
@@ -228,7 +237,7 @@ export default function Service() {
               const isActive = i === activeServiceIndex;
               return (
                 <motion.div
-                  key={i}
+                  key={service._id || i}
                   initial={{ opacity: 0, x: -25 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
@@ -379,13 +388,12 @@ export default function Service() {
         </div>
       </div>
 
-      {/* MOBILE/TABLET VIEW (Hidden on Desktop) */}
       <div className="lg:hidden flex flex-col gap-4 mt-8 max-w-[800px] w-[calc(100%-32px)] mx-auto">
         {servicesData.map((service, i) => {
           const isOpen = i === activeServiceIndex;
           return (
             <div
-              key={i}
+              key={service._id || i}
               className="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300"
             >
               {/* ACCORDION HEADER */}

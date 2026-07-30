@@ -14,95 +14,57 @@ import {
   FaMap,
   FaCheckCircle,
 } from "react-icons/fa";
+import { getProjectsByStatus } from "../../../lib/api/project";
 
-const initialProjects = [
-  {
-    id: "BEW-2024-003",
-    title: "25KV OHE Electrification - South Central Railway",
-    division: "Railway Electrification",
-    location: "Secunderabad, TS",
-    date: "12 Jan 2024",
-    type: "EPC Turnkey",
-    team: ["/a2.png", "/a3.png", "/a4.png"],
-    status: "Work In Progress",
-  },
-  {
-    id: "BEW-2024-004",
-    title: "132/33kV Substation Construction - Tata Power",
-    division: "Power Infrastructure",
-    location: "Mumbai, MH",
-    date: "05 Feb 2024",
-    type: "Industrial Electrical",
-    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
-    status: "Work In Progress",
-  },
-  {
-    id: "BEW-2024-005",
-    title: "Transformer Maintenance Contract - Western Railway",
-    division: "Services",
-    location: "Ahmedabad, GJ",
-    date: "10 Mar 2024",
-    type: "Maintenance (AMC)",
-    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
-    status: "Work In Progress",
-  },
-  {
-    id: "BEW-2024-006",
-    title: "Facade and Acrylic LED Installation - Unity Mall",
-    division: "Energy Efficient Lighting",
-    location: "Patna, BR",
-    date: "18 Apr 2024",
-    type: "Commercial Install",
-    team: ["/a2.png", "/a6.png"],
-    status: "Work In Progress",
-  },
-  {
-    id: "BEW-2024-007",
-    title: "HT Cable Laying and Jointing - NTPC Plant",
-    division: "Power Infrastructure",
-    location: "Barh, BR",
-    date: "22 May 2024",
-    type: "Industrial Turnkey",
-    team: ["/a3.png", "/ic1.jpg", "/a6.png"],
-    status: "Work In Progress",
-  },
-  {
-    id: "BEW-2024-008",
-    title: "Traction Substation Erection - Metro Rail Corp",
-    division: "Railway Electrification",
-    location: "Kolkata, WB",
-    date: "02 Jun 2024",
-    type: "EPC Construction",
-    team: ["/a2.png", "/a3.png", "/a4.png"],
-    status: "Work In Progress",
-  },
-];
+function formatDate(isoStr) {
+  if (!isoStr) return "";
+  const d = new Date(isoStr);
+  if (isNaN(d.getTime())) return isoStr;
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${String(d.getDate()).padStart(2, '0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
 
 export default function OngoingProjects() {
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [divisionFilter, setDivisionFilter] = useState("All");
   const [locationFilter, setLocationFilter] = useState("All");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [selectedProjectDetails, setSelectedProjectDetails] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef(null);
   const cardRefs = useRef([]);
   const scrollTimeout = useRef(null);
 
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const data = await getProjectsByStatus("Ongoing");
+        setProjects((data || []).filter((p) => p.status === "Ongoing"));
+      } catch (err) {
+        setError(err.message || "Failed to load projects");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
+
   // Filter project lists
   const filteredProjects = projects.filter((proj) => {
     const matchesSearch =
-      proj.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      proj.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      proj.location.toLowerCase().includes(searchTerm.toLowerCase());
+      (proj.title && proj.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (proj._id && proj._id.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (proj.location && proj.location.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const matchesDivision =
       divisionFilter === "All" || proj.division === divisionFilter;
     const matchesLocation =
-      locationFilter === "All" || proj.location.includes(locationFilter);
+      locationFilter === "All" || (proj.location && proj.location.includes(locationFilter));
 
     return matchesSearch && matchesDivision && matchesLocation;
   });
@@ -361,29 +323,42 @@ export default function OngoingProjects() {
                 onTouchEnd={() => setTimeout(() => setIsPaused(false), 1500)}
                 className="flex-1 space-y-6 max-h-[600px] overflow-y-auto pr-3 scrollbar-thin"
               >
-                {filteredProjects.length === 0
-                  ? <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
+                {loading ? (
+                  <div className="bg-white rounded-xl p-12 text-center border border-gray-200 flex justify-center">
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#E61B23]"></div>
+                  </div>
+                ) : error ? (
+                  <div className="bg-white rounded-xl p-12 text-center border border-gray-200 text-red-600 font-semibold">
+                    {error}
+                  </div>
+                ) : filteredProjects.length === 0 ? (
+                  <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
                     <p className="text-gray-500">
                       No ongoing projects matching your criteria.
                     </p>
                   </div>
-                  : filteredProjects.map((project, index) => (
+                ) : (
+                  filteredProjects.map((project, index) => (
                     <div
-                      key={project.id}
+                      key={project._id}
                       ref={(el) => (cardRefs.current[index] = el)}
                       onMouseEnter={() => handleMouseEnterCard(index)}
                       onMouseLeave={handleMouseLeaveCard}
-                      className={`bg-white rounded-xl p-6 border transition-all duration-500 ease-out shadow-sm cursor-pointer relative overflow-hidden transform ${index === activeIndex
-                        ? "border-[#E61B23] shadow-lg ring-1 ring-red-500/10 scale-[1.02] z-10"
-                        : "border-gray-200 hover:border-gray-300 hover:shadow scale-100 z-0 opacity-70 hover:opacity-100"
-                        }`}
+                      className={`bg-white rounded-xl p-6 border transition-all duration-500 ease-out shadow-sm cursor-pointer relative overflow-hidden transform ${
+                        index === activeIndex
+                          ? "border-[#E61B23] shadow-lg ring-1 ring-red-500/10 scale-[1.02] z-10"
+                          : "border-gray-200 hover:border-gray-300 hover:shadow scale-100 z-0 opacity-70 hover:opacity-100"
+                      }`}
                     >
                       {/* Left color bar for active card */}
-                      <div className={`absolute left-0 top-0 bottom-0 w-1.5 bg-[#E61B23] transition-all duration-500 ease-out origin-top ${index === activeIndex ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"}`}></div>
+                      <div
+                        className={`absolute left-0 top-0 bottom-0 w-1.5 bg-[#E61B23] transition-all duration-500 ease-out origin-top ${
+                          index === activeIndex ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
+                        }`}
+                      ></div>
 
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                         <div>
-
                           <h3 className="text-lg md:text-xl font-bold text-gray-900 mt-1 leading-snug">
                             {project.title}
                           </h3>
@@ -419,12 +394,12 @@ export default function OngoingProjects() {
                           </p>
                           <p className="text-xs md:text-sm font-bold text-gray-800 mt-1 flex items-center gap-1">
                             <FaCalendarAlt className="text-gray-400 text-xs" />
-                            <span>{project.date}</span>
+                            <span>{formatDate(project.startDate)}</span>
                           </p>
                         </div>
                         <div className="flex items-center sm:justify-start md:justify-end">
                           <Link
-                            href={`/project/detail?id=${project.id}`}
+                            href={`/project/${project._id}`}
                             className="text-[#E61B23] font-bold text-xs hover:text-red-700 inline-flex items-center gap-1.5 active:translate-x-1 transition mt-2 md:mt-0"
                           >
                             <span>View Details</span>
@@ -432,10 +407,9 @@ export default function OngoingProjects() {
                           </Link>
                         </div>
                       </div>
-
-
                     </div>
-                  ))}
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -451,7 +425,9 @@ export default function OngoingProjects() {
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <p className="text-3xl font-extrabold text-[#E61B23]">06</p>
+                  <p className="text-3xl font-extrabold text-[#E61B23]">
+                    {projects.length > 0 ? (projects.length < 10 ? '0' + projects.length : projects.length) : '06'}
+                  </p>
                   <p className="text-xs text-red-800/80 mt-1 font-semibold">
                     Live Projects
                   </p>
@@ -497,131 +473,6 @@ export default function OngoingProjects() {
           </div>
         </div>
       </section>
-
-      {/* 4. DETAILS POPUP MODAL */}
-      <AnimatePresence>
-        {selectedProjectDetails && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-white rounded-2xl w-full max-w-xl p-6 md:p-8 shadow-2xl relative border border-gray-100"
-            >
-              <button
-                onClick={() => setSelectedProjectDetails(null)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-1.5 rounded-full hover:bg-gray-50 transition"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-
-              <span className="text-[#E61B23] text-xs font-bold uppercase tracking-wider">
-                Project Details
-              </span>
-
-              <h3 className="text-2xl font-extrabold text-gray-900 mt-2 pr-6 leading-tight">
-                {selectedProjectDetails.title}
-              </h3>
-
-              <div className="bg-gray-50 rounded-xl p-4 my-6 grid grid-cols-2 gap-4 border border-gray-100 text-sm">
-                <div>
-                  <span className="text-gray-400 font-semibold text-xs block uppercase">
-                    Project ID
-                  </span>
-                  <span className="font-bold text-gray-800 mt-0.5 block">
-                    #{selectedProjectDetails.id}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-400 font-semibold text-xs block uppercase">
-                    Status
-                  </span>
-                  <span className="text-green-600 font-bold mt-0.5 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                    <span>{selectedProjectDetails.status}</span>
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-400 font-semibold text-xs block uppercase">
-                    Division
-                  </span>
-                  <span className="font-bold text-gray-800 mt-0.5 block">
-                    {selectedProjectDetails.division}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-400 font-semibold text-xs block uppercase">
-                    Type
-                  </span>
-                  <span className="font-bold text-gray-800 mt-0.5 block">
-                    {selectedProjectDetails.type}
-                  </span>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-xs text-gray-400 font-bold uppercase">
-                    Description
-                  </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed mt-1">
-                    This project focuses on delivering highest-quality
-                    electrical infrastructure. Tasks include comprehensive
-                    engineering design, component sourcing, layout construction,
-                    quality tests, commissioning, and continuous monitoring to
-                    satisfy security and efficiency standards.
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="text-xs text-gray-400 font-bold uppercase mb-2">
-                    Scope of Operations
-                  </h4>
-                  <ul className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                    <li className="flex items-center gap-2 font-medium">
-                      <FaCheckCircle className="text-green-500" />
-                      <span>Erection & Cable laying</span>
-                    </li>
-                    <li className="flex items-center gap-2 font-medium">
-                      <FaCheckCircle className="text-green-500" />
-                      <span>Safety and inspections</span>
-                    </li>
-                    <li className="flex items-center gap-2 font-medium">
-                      <FaCheckCircle className="text-green-500" />
-                      <span>Transformer setup</span>
-                    </li>
-                    <li className="flex items-center gap-2 font-medium">
-                      <FaCheckCircle className="text-green-500" />
-                      <span>Grid line matching</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="mt-8 flex justify-end">
-                <button
-                  onClick={() => setSelectedProjectDetails(null)}
-                  className="bg-[#E61B23] hover:bg-red-700 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition"
-                >
-                  Close Window
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* 5. CONTACT CTA */}
       <Contact />

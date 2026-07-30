@@ -15,62 +15,41 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 
-const initialProjects = [
-  {
-    id: "COMP-2023-01",
-    title: "132kV Substation Electrification - Railways Zone",
-    division: "Railway Electrification",
-    location: "Katihar, BR",
-    date: "15 Dec 2023",
-    type: "EPC Construction",
-    team: ["/a2.png", "/a3.png", "/a4.png"],
-    status: "Completed",
-    desc: "Successful erection, commissioning, and validation of 132kV railway traction substations to power expanded lines.",
-  },
-  {
-    id: "COMP-2023-02",
-    title: "HT Cable Laying and Jointing - IOCL Refinery",
-    division: "Power Infrastructure",
-    location: "Barauni, BR",
-    date: "20 Oct 2023",
-    type: "Industrial Turnkey",
-    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
-    status: "Completed",
-    desc: "Laid over 15km of high-tension cabling with state-of-the-art termination and safety matching systems in hazardous zones.",
-  },
-  {
-    id: "COMP-2023-03",
-    title: "Commercial Smart Grid Panel Installation - Patna Plaza",
-    division: "Services",
-    location: "Patna, BR",
-    date: "10 Aug 2023",
-    type: "Commercial Install",
-    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
-    status: "Completed",
-    desc: "Complete power distribution panels, servo stabilizers, and backup grid coordination for commercial complex operations.",
-  },
-  {
-    id: "COMP-2023-04",
-    title: "Sub-station Transformer Filtration and Overhauling",
-    division: "Services",
-    location: "Gaya, BR",
-    date: "05 Jun 2023",
-    type: "Maintenance (AMC)",
-    team: ["/a2.png", "/a6.png"],
-    status: "Completed",
-    desc: "Preventive maintenance, oil filtration, and structural repairs for three 5MVA distribution power transformers.",
-  },
-];
+import { getProjectsByStatus } from "../../../lib/api/project";
+
+function formatDate(isoStr) {
+  if (!isoStr) return "";
+  const d = new Date(isoStr);
+  if (isNaN(d.getTime())) return isoStr;
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${String(d.getDate()).padStart(2, '0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
 
 export default function CompletedProjects() {
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [divisionFilter, setDivisionFilter] = useState("All");
   const [locationFilter, setLocationFilter] = useState("All");
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [selectedProjectDetails, setSelectedProjectDetails] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const data = await getProjectsByStatus("Completed");
+        setProjects((data || []).filter((p) => p.status === "Completed"));
+      } catch (err) {
+        setError(err.message || "Failed to load projects");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
 
   const containerRef = useRef(null);
   const cardRefs = useRef([]);
@@ -79,14 +58,14 @@ export default function CompletedProjects() {
   // Filter project lists
   const filteredProjects = projects.filter((proj) => {
     const matchesSearch =
-      proj.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      proj.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      proj.location.toLowerCase().includes(searchTerm.toLowerCase());
+      (proj.title && proj.title.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (proj._id && proj._id.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (proj.location && proj.location.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const matchesDivision =
       divisionFilter === "All" || proj.division === divisionFilter;
     const matchesLocation =
-      locationFilter === "All" || proj.location.includes(locationFilter);
+      locationFilter === "All" || (proj.location && proj.location.includes(locationFilter));
 
     return matchesSearch && matchesDivision && matchesLocation;
   });
@@ -345,15 +324,24 @@ export default function CompletedProjects() {
                 onTouchEnd={() => setTimeout(() => setIsPaused(false), 1500)}
                 className="flex-1 space-y-6 max-h-[600px] overflow-y-auto pr-3 scrollbar-thin"
               >
-                {filteredProjects.length === 0
-                  ? <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
+                {loading ? (
+                  <div className="bg-white rounded-xl p-12 text-center border border-gray-200 flex justify-center">
+                    <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#E61B23]"></div>
+                  </div>
+                ) : error ? (
+                  <div className="bg-white rounded-xl p-12 text-center border border-gray-200 text-red-600 font-semibold">
+                    {error}
+                  </div>
+                ) : filteredProjects.length === 0 ? (
+                  <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
                     <p className="text-gray-500">
                       No completed projects matching your criteria.
                     </p>
                   </div>
-                  : filteredProjects.map((project, index) => (
+                ) : (
+                  filteredProjects.map((project, index) => (
                     <div
-                      key={project.id}
+                      key={project._id}
                       ref={(el) => (cardRefs.current[index] = el)}
                       onMouseEnter={() => handleMouseEnterCard(index)}
                       onMouseLeave={handleMouseLeaveCard}
@@ -404,12 +392,12 @@ export default function CompletedProjects() {
                           </p>
                           <p className="text-xs md:text-sm font-bold text-gray-800 mt-1 flex items-center gap-1">
                             <FaCalendarAlt className="text-gray-400 text-xs" />
-                            <span>{project.date}</span>
+                            <span>{formatDate(project.startDate)}</span>
                           </p>
                         </div>
                         <div className="flex items-center sm:justify-start md:justify-end">
                           <Link
-                            href={`/project/detail?id=${project.id}`}
+                            href={`/project/${project._id}`}
                             className="text-[#E61B23] font-bold text-xs hover:text-red-700 inline-flex items-center gap-1.5 active:translate-x-1 transition mt-2 md:mt-0"
                           >
                             <span>View Details</span>
@@ -420,7 +408,8 @@ export default function CompletedProjects() {
 
 
                     </div>
-                  ))}
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -436,7 +425,9 @@ export default function CompletedProjects() {
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <p className="text-3xl font-extrabold text-[#E61B23]">04</p>
+                  <p className="text-3xl font-extrabold text-[#E61B23]">
+                    {projects.length > 0 ? (projects.length < 10 ? '0' + projects.length : projects.length) : '04'}
+                  </p>
                   <p className="text-xs text-red-800/80 mt-1 font-semibold">
                     Completed Projects
                   </p>
@@ -483,126 +474,7 @@ export default function CompletedProjects() {
         </div>
       </section>
 
-      {/* 4. DETAILS POPUP MODAL */}
-      <AnimatePresence>
-        {selectedProjectDetails && (
-          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-white rounded-2xl w-full max-w-xl p-6 md:p-8 shadow-2xl relative border border-gray-100"
-            >
-              <button
-                onClick={() => setSelectedProjectDetails(null)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-1.5 rounded-full hover:bg-gray-50 transition"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
 
-              <span className="text-[#E61B23] text-xs font-bold uppercase tracking-wider">
-                Project Details
-              </span>
-
-              <h3 className="text-2xl font-extrabold text-gray-900 mt-2 pr-6 leading-tight">
-                {selectedProjectDetails.title}
-              </h3>
-
-              <div className="bg-gray-50 rounded-xl p-4 my-6 grid grid-cols-2 gap-4 border border-gray-100 text-sm">
-                <div>
-                  <span className="text-gray-400 font-semibold text-xs block uppercase">
-                    Project ID
-                  </span>
-                  <span className="font-bold text-gray-800 mt-0.5 block">
-                    #{selectedProjectDetails.id}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-400 font-semibold text-xs block uppercase">
-                    Status
-                  </span>
-                  <span className="text-green-600 font-bold mt-0.5 flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                    <span>{selectedProjectDetails.status}</span>
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-400 font-semibold text-xs block uppercase">
-                    Division
-                  </span>
-                  <span className="font-bold text-gray-800 mt-0.5 block">
-                    {selectedProjectDetails.division}
-                  </span>
-                </div>
-                <div>
-                  <span className="text-gray-400 font-semibold text-xs block uppercase">
-                    Type
-                  </span>
-                  <span className="font-bold text-gray-800 mt-0.5 block">
-                    {selectedProjectDetails.type}
-                  </span>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-xs text-gray-400 font-bold uppercase">
-                    Description
-                  </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed mt-1">
-                    {selectedProjectDetails.desc}
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="text-xs text-gray-400 font-bold uppercase mb-2">
-                    Scope of Operations Completed
-                  </h4>
-                  <ul className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                    <li className="flex items-center gap-2 font-medium">
-                      <FaCheckCircle className="text-green-500" />
-                      <span>Erection & Cable laying</span>
-                    </li>
-                    <li className="flex items-center gap-2 font-medium">
-                      <FaCheckCircle className="text-green-500" />
-                      <span>Safety and inspections</span>
-                    </li>
-                    <li className="flex items-center gap-2 font-medium">
-                      <FaCheckCircle className="text-green-500" />
-                      <span>Transformer setup</span>
-                    </li>
-                    <li className="flex items-center gap-2 font-medium">
-                      <FaCheckCircle className="text-green-500" />
-                      <span>Grid line matching</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="mt-8 flex justify-end">
-                <button
-                  onClick={() => setSelectedProjectDetails(null)}
-                  className="bg-[#E61B23] hover:bg-red-700 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition"
-                >
-                  Close Window
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
       {/* 5. CONTACT CTA */}
       <Contact />

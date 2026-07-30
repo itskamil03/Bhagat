@@ -84,30 +84,35 @@ const itemVariants = {
 };
 
 export default function Hero() {
-  const [colLeft, setColLeft] = useState(defaultColLeft);
-  const [colRight, setColRight] = useState(defaultColRight);
+  const [colLeft, setColLeft] = useState(
+    defaultColLeft.map((url, i) => ({ _id: `defaultL-${i}`, image: url }))
+  );
+  const [colRight, setColRight] = useState(
+    defaultColRight.map((url, i) => ({ _id: `defaultR-${i}`, image: url }))
+  );
 
   useEffect(() => {
-    // Dynamic image fetching temporarily disabled as requested to restore default images.
-    /*
     let isMounted = true;
     async function fetchImages() {
       try {
-        const banners = await getBanners();
+        const response = await getBanners();
         if (!isMounted) return;
         
-        if (banners && banners.length > 0) {
-          const urls = banners.map(bannerImageUrl).filter(Boolean);
-          if (urls.length > 0) {
-            let left = urls.filter((_, i) => i % 2 === 0);
-            let right = urls.filter((_, i) => i % 2 !== 0);
+        let bannersArray = Array.isArray(response) ? response : (response?.data || []);
 
-            if (left.length === 0) left = defaultColLeft;
-            if (right.length === 0) right = defaultColRight;
+        if (bannersArray && bannersArray.length > 0) {
+          let left = bannersArray.filter((_, i) => i % 2 === 0);
+          let right = bannersArray.filter((_, i) => i % 2 !== 0);
 
-            setColLeft(left);
-            setColRight(right);
+          if (left.length === 0) {
+            left = defaultColLeft.map((url, i) => ({ _id: `defaultL-${i}`, image: url }));
           }
+          if (right.length === 0) {
+            right = defaultColRight.map((url, i) => ({ _id: `defaultR-${i}`, image: url }));
+          }
+
+          setColLeft(left);
+          setColRight(right);
         }
       } catch (error) {
         if (isMounted) {
@@ -120,7 +125,6 @@ export default function Hero() {
     return () => {
       isMounted = false;
     };
-    */
   }, []);
 
   return (
@@ -195,14 +199,14 @@ export default function Hero() {
         >
           {/* LEFT COLUMN (DOWN - MOVING DOWNWARD) */}
           <div className="flex-1 lg:flex-none lg:w-[220px] [@media(width:1024px)]:flex-1 [@media(width:1024px)]:w-full xl:w-[298px] flex flex-col gap-3 [@media(width:800px)]:gap-6 [@media(width:1024px)]:gap-6 xl:gap-5 animate-downSlow h-max pb-3 [@media(width:800px)]:pb-6 [@media(width:1024px)]:pb-6 xl:pb-5 [@media(width:900px)]:flex-1 [@media(width:900px)]:w-full [@media(width:900px)]:gap-6 [@media(width:900px)]:pb-6">
-            {[...colLeft, ...colLeft].map((img, i) => (
+            {[...colLeft, ...colLeft].map((banner, i) => (
               <div
-                key={i}
+                key={i < colLeft.length ? banner._id : `${banner._id}-dup-${i}`}
                 className="w-full max-w-[298px] [@media(width:800px)]:max-w-[360px] [@media(width:1024px)]:max-w-[420px] h-[180px] sm:h-[240px] [@media(width:800px)]:h-[320px] lg:h-[240px] [@media(width:1024px)]:h-[360px] xl:h-[317px] flex-shrink-0 mx-auto [@media(width:900px)]:max-w-[400px] [@media(width:900px)]:h-[340px]"
               >
                 <div className="relative w-full h-full overflow-hidden rounded-none">
                   <Image
-                    src={img}
+                    src={banner.image}
                     alt=""
                     fill
                     sizes="(max-width: 1280px) 33vw, 25vw"
@@ -216,14 +220,14 @@ export default function Hero() {
 
           {/* RIGHT COLUMN (UP - MOVING UPWARD) */}
           <div className="flex-1 lg:flex-none lg:w-[220px] [@media(width:1024px)]:flex-1 [@media(width:1024px)]:w-full xl:w-[298px] flex flex-col gap-3 [@media(width:800px)]:gap-6 [@media(width:1024px)]:gap-6 xl:gap-5 animate-upFast lg:mt-6 xl:mt-12 [@media(width:800px)]:mt-12 [@media(width:1024px)]:mt-12 h-max pb-3 [@media(width:800px)]:pb-6 [@media(width:1024px)]:pb-6 xl:pb-5 [@media(width:900px)]:flex-1 [@media(width:900px)]:w-full [@media(width:900px)]:gap-6 [@media(width:900px)]:mt-12 [@media(width:900px)]:pb-6">
-            {[...colRight, ...colRight].map((img, i) => (
+            {[...colRight, ...colRight].map((banner, i) => (
               <div
-                key={i}
+                key={i < colRight.length ? banner._id : `${banner._id}-dup-${i}`}
                 className="w-full max-w-[298px] [@media(width:800px)]:max-w-[360px] [@media(width:1024px)]:max-w-[420px] h-[180px] sm:h-[240px] [@media(width:800px)]:h-[320px] lg:h-[240px] [@media(width:1024px)]:h-[360px] xl:h-[317px] flex-shrink-0 mx-auto [@media(width:900px)]:max-w-[400px] [@media(width:900px)]:h-[340px]"
               >
                 <div className="relative w-full h-full overflow-hidden rounded-none">
                   <Image
-                    src={img}
+                    src={banner.image}
                     alt=""
                     fill
                     sizes="(max-width: 1280px) 33vw, 25vw"

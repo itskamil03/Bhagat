@@ -11,6 +11,7 @@ import {
   FiShield,
   FiTag,
 } from "react-icons/fi";
+import ServicePortfolio from "./ServicePortfolio";
 
 export default function ServiceDetailTemplate({
   breadcrumb,
@@ -39,14 +40,21 @@ export default function ServiceDetailTemplate({
   ctaTitle,
   ctaDesc,
   formServicesList = [], // Array of strings for select dropdown
+  portfolioData, // dynamic array of portfolio items
+  portfolioLoading = false,
+  portfolioError = null,
+  onSubmitContact, // Optional custom submit handler
 }) {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState(null);
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
     email: "",
     location: "",
     service: formServiceDefault || formServicesList[0] || "",
+    otherService: "",
     message: "",
   });
 
@@ -55,20 +63,46 @@ export default function ServiceDetailTemplate({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    setTimeout(() => {
-      setFormSubmitted(false);
-      setFormData({
-        fullName: "",
-        phone: "",
-        email: "",
-        location: "",
-        service: formServiceDefault || formServicesList[0] || "",
-        message: "",
-      });
-    }, 5000);
+    
+    if (onSubmitContact) {
+      setFormLoading(true);
+      setFormError(null);
+      try {
+        await onSubmitContact(formData);
+        setFormSubmitted(true);
+        setFormData({
+          fullName: "",
+          phone: "",
+          email: "",
+          location: "",
+          service: formServiceDefault || formServicesList[0] || "",
+          otherService: "",
+          message: "",
+        });
+        setTimeout(() => setFormSubmitted(false), 5000);
+      } catch (err) {
+        setFormError(err.message || "Failed to submit form. Please try again.");
+      } finally {
+        setFormLoading(false);
+      }
+    } else {
+      // Hardcoded mock submission
+      setFormSubmitted(true);
+      setTimeout(() => {
+        setFormSubmitted(false);
+        setFormData({
+          fullName: "",
+          phone: "",
+          email: "",
+          location: "",
+          service: formServiceDefault || formServicesList[0] || "",
+          otherService: "",
+          message: "",
+        });
+      }, 5000);
+    }
   };
 
   return (
@@ -365,6 +399,16 @@ export default function ServiceDetailTemplate({
                 </div>
               )}
 
+              {formError && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl text-sm flex items-start gap-3">
+                  <div className="mt-0.5 font-bold">X</div>
+                  <div>
+                    <p className="font-semibold">Submission Failed</p>
+                    <p className="text-xs mt-0.5">{formError}</p>
+                  </div>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <input
@@ -423,8 +467,23 @@ export default function ServiceDetailTemplate({
                         {srv}
                       </option>
                     ))}
+                    <option value="Others">Others</option>
                   </select>
                 </div>
+
+                {formData.service === "Others" && (
+                  <div className="animate-fade-in">
+                    <input
+                      type="text"
+                      name="otherService"
+                      value={formData.otherService}
+                      onChange={handleInputChange}
+                      placeholder="Please specify your requirement"
+                      required
+                      className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:bg-white focus:border-red-500 transition"
+                    />
+                  </div>
+                )}
 
                 <div>
                   <textarea
@@ -439,10 +498,11 @@ export default function ServiceDetailTemplate({
 
                 <button
                   type="submit"
-                  className="w-full bg-black text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition shadow-lg flex items-center justify-center gap-2 text-sm"
+                  disabled={formLoading}
+                  className={`w-full bg-black text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition shadow-lg flex items-center justify-center gap-2 text-sm ${formLoading ? "opacity-70 cursor-not-allowed" : ""}`}
                 >
-                  <span>Submit Enquiry</span>
-                  <FiArrowRight />
+                  <span>{formLoading ? "Submitting..." : "Submit Enquiry"}</span>
+                  {!formLoading && <FiArrowRight />}
                 </button>
               </form>
             </div>
@@ -453,86 +513,28 @@ export default function ServiceDetailTemplate({
       {/* ========================================================
           4. SHOWCASING EXCELLENCE (PORTFOLIO - DARK SECTION)
       ======================================================== */}
-      <section className="w-full py-20 px-6 lg:px-20 bg-[#111111] text-white border-y border-gray-900">
-        <div className="max-w-7xl mx-auto">
-          {/* TOP HEADER */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <p className="text-red-500 font-semibold text-sm uppercase tracking-widest mb-2">
-                Portfolio
-              </p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
-                {portfolioTitle}
-              </h2>
-            </div>
-            <p className="text-gray-400 text-xs md:text-sm max-w-sm mt-4 md:mt-0 text-left md:text-right leading-relaxed">
-              A glimpse into our high-precision electrical engineering works and
-              infrastructure layouts.
-            </p>
-          </div>
-
-          {/* GALLERY GRID */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* LEFT BIG IMAGE */}
-            <div className="lg:col-span-7 h-[360px] sm:h-[430px] rounded-3xl overflow-hidden relative group bg-gray-900 border border-gray-800">
-              <Image
-                src={portfolioBigImage}
-                alt={portfolioBigTitle}
-                fill
-                className="object-cover group-hover:scale-105 transition duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
-              <div className="absolute bottom-6 left-6 right-6 translate-y-4 group-hover:translate-y-0 transition duration-500 opacity-0 group-hover:opacity-100">
-                <span className="px-3 py-1 bg-red-600 text-white text-[10px] font-semibold rounded-full uppercase tracking-wider">
-                  {portfolioBigTag}
-                </span>
-                <p className="text-white font-bold text-lg mt-2 leading-snug">
-                  {portfolioBigTitle}
-                </p>
-              </div>
-            </div>
-
-            {/* RIGHT STACKED IMAGES */}
-            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 h-auto lg:h-[430px]">
-              <div className="h-[200px] lg:h-[203px] rounded-3xl overflow-hidden relative group bg-gray-900 border border-gray-800">
-                <Image
-                  src={portfolioStackedImage1}
-                  alt={portfolioStackedTitle1}
-                  fill
-                  className="object-cover group-hover:scale-105 transition duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute bottom-4 left-5">
-                  <p className="text-xs text-red-400 font-semibold uppercase tracking-wider">
-                    {portfolioStackedTag1}
-                  </p>
-                  <p className="text-sm font-bold text-white mt-1">
-                    {portfolioStackedTitle1}
-                  </p>
-                </div>
-              </div>
-
-              <div className="h-[200px] lg:h-[203px] rounded-3xl overflow-hidden relative group bg-gray-900 border border-gray-800">
-                <Image
-                  src={portfolioStackedImage2}
-                  alt={portfolioStackedTitle2}
-                  fill
-                  className="object-cover group-hover:scale-105 transition duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute bottom-4 left-5">
-                  <p className="text-xs text-red-400 font-semibold uppercase tracking-wider">
-                    {portfolioStackedTag2}
-                  </p>
-                  <p className="text-sm font-bold text-white mt-1">
-                    {portfolioStackedTitle2}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServicePortfolio 
+        title={portfolioTitle}
+        data={portfolioData !== undefined ? portfolioData : [
+          {
+            image: portfolioBigImage,
+            title: portfolioBigTitle,
+            subTitle: portfolioBigTag
+          },
+          {
+            image: portfolioStackedImage1,
+            title: portfolioStackedTitle1,
+            subTitle: portfolioStackedTag1
+          },
+          {
+            image: portfolioStackedImage2,
+            title: portfolioStackedTitle2,
+            subTitle: portfolioStackedTag2
+          }
+        ]}
+        loading={portfolioLoading}
+        error={portfolioError}
+      />
 
       {/* ========================================================
           5. THE BHAGAT EXECUTION PROCESS + GUARANTEE CARDS

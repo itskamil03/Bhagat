@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Contact from "../components/contact";
+import { getJobPosts } from "../../lib/api/jobPost";
+import { createJobApplication } from "../../lib/api/jobApplication";
 import {
   FaStar,
   FaProjectDiagram,
@@ -70,92 +72,7 @@ const benefits = [
   },
 ];
 
-const jobs = [
-  {
-    title: "Electrical Engineer",
-    department: "Engineering",
-    type: "Full-Time",
-    location: "Patna, Bihar",
-    experience: "3-5 Years",
-    salary: "Competitive",
-    desc: "Responsible for executing power substation and distribution network projects, leading engineering teams and ensuring safety compliance.",
-    responsibilities: [
-      "Design, layout, and install electrical control panels and substation structures.",
-      "Coordinate with clients, electricity boards, and project heads to resolve technical discrepancies.",
-      "Conduct electrical load flow studies and circuit layout calculations.",
-      "Supervise on-site electrical installations and ensure strictly 100% safety standards.",
-    ],
-    requirements: [
-      "B.Tech / B.E. in Electrical Engineering from a recognized institution.",
-      "3+ years of experience in high-tension (HT) switchyard or grid erection.",
-      "Proficient in AutoCAD Electrical and electrical load analysis software.",
-      "Willingness to travel to on-site projects as needed.",
-    ],
-  },
-  {
-    title: "Project Manager",
-    department: "Management",
-    type: "Full-Time",
-    location: "Patna, Bihar",
-    experience: "6-8 Years",
-    salary: "Industry Standard",
-    desc: "Oversee project planning, execution, budgeting, client communication, and overall delivery of substation and rail electrification projects.",
-    responsibilities: [
-      "Manage end-to-end execution of utility-scale power transmission contracts.",
-      "Lead cross-functional teams of engineers, site supervisors, and electrical draftsmen.",
-      "Monitor budgets, control material requirements, and coordinate procurement timelines.",
-      "Maintain active communications with government officials and corporate clients.",
-    ],
-    requirements: [
-      "B.Tech in Electrical/Civil Engineering; MBA in Project Management is a major plus.",
-      "6+ years of management experience leading power sector turn-key contracts.",
-      "Strong understanding of project scheduling tools like Primavera or MS Project.",
-      "Excellent negotiation and client relationship management skills.",
-    ],
-  },
-  {
-    title: "Site Engineer",
-    department: "Engineering",
-    type: "Full-Time",
-    location: "Patna, Bihar",
-    experience: "1-3 Years",
-    salary: "Competitive",
-    desc: "Oversee day-to-day site operations, resource management, electrical installations, and quality inspections.",
-    responsibilities: [
-      "Perform daily supervision of cable laying, panel erections, and grounding installations.",
-      "Maintain material logs, report daily progress charts, and inspect incoming equipment.",
-      "Coordinate safety drills and enforce personal protective equipment (PPE) rules on site.",
-      "Support testing and commissioning activities of power transformers.",
-    ],
-    requirements: [
-      "Diploma or B.Tech in Electrical Engineering.",
-      "1-3 years of practical experience on industrial construction or power grid sites.",
-      "Familiarity with electrical engineering diagrams and single-line schematics.",
-      "Detail-oriented mindset with good troubleshooting capabilities.",
-    ],
-  },
-  {
-    title: "Accounts Executive",
-    department: "Finance",
-    type: "Full-Time",
-    location: "Patna, Bihar",
-    experience: "2-4 Years",
-    salary: "Competitive",
-    desc: "Manage site accounting, client billing, vendor payments, expense tracking, and financial record-keeping.",
-    responsibilities: [
-      "Prepare client invoices based on project measurements and milestones.",
-      "Track vendor invoices, manage ledger accounts, and handle expense reimbursements.",
-      "Ensure compliance with GST filing, tax deductions at source (TDS), and other local rules.",
-      "Provide weekly financial statements and cash flow projections to company heads.",
-    ],
-    requirements: [
-      "B.Com / M.Com or MBA in Finance.",
-      "2-4 years of experience, preferably within real estate or engineering sectors.",
-      "High proficiency in Tally Prime, MS Excel, and standard accounting systems.",
-      "Strong attention to detail and clear communication skills.",
-    ],
-  },
-];
+// Jobs are now fetched dynamically via the API
 
 const benefitContainerVariants = {
   hidden: { opacity: 0 },
@@ -181,12 +98,15 @@ const benefitCardVariants = {
 };
 
 export default function CareerPage() {
+  const [jobs, setJobs] = useState([]);
+  const [isLoadingJobs, setIsLoadingJobs] = useState(true);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     experience: "",
-    position: "Electrical Engineer",
+    position: "",
     qualification: "",
   });
   const [file, setFile] = useState(null);
@@ -196,6 +116,38 @@ export default function CareerPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedJob, setSelectedJob] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    async function fetchJobs() {
+      try {
+        const data = await getJobPosts();
+        if (data && Array.isArray(data)) {
+          const formattedJobs = data.map(job => ({
+            title: job.jobTitle || "",
+            department: job.department || "Engineering",
+            type: job.jobType || "",
+            location: job.location || "",
+            experience: job.experience || "",
+            salary: job.salary || "",
+            desc: job.roleOverview || "",
+            responsibilities: job.keyResponsibilities 
+              ? job.keyResponsibilities.split(',').map(s => s.trim()).filter(Boolean) 
+              : [],
+            requirements: job.qualification 
+              ? job.qualification.split(',').map(s => s.trim()).filter(Boolean) 
+              : [],
+            ...job
+          }));
+          setJobs(formattedJobs);
+        }
+      } catch (error) {
+        console.error("Failed to fetch jobs:", error);
+      } finally {
+        setIsLoadingJobs(false);
+      }
+    }
+    fetchJobs();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -213,26 +165,46 @@ export default function CareerPage() {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!file) {
       alert("Please upload your resume.");
       return;
     }
+    if (!formData.position) {
+      alert("Please select a position.");
+      return;
+    }
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const data = new FormData();
+      data.append("jobId", formData.position);
+      data.append("fullName", formData.name);
+      data.append("email", formData.email);
+      data.append("phone", formData.phone);
+      data.append("qualification", formData.qualification);
+      data.append("experience", formData.experience);
+      data.append("resume", file);
+      data.append("applicationStatus", "Pending");
+
+      await createJobApplication(data);
+
       setSubmitSuccess(true);
       setFormData({
         name: "",
         email: "",
         phone: "",
         experience: "",
-        position: "Electrical Engineer",
+        position: "",
         qualification: "",
       });
       setFile(null);
-    }, 1800);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to submit application. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Filter jobs dynamically
@@ -498,7 +470,18 @@ export default function CareerPage() {
         {/* Jobs Cards Grid (Animate-on-Filter layout) */}
         <motion.div layout className="grid md:grid-cols-2 gap-6 min-h-[220px]">
           <AnimatePresence mode="popLayout">
-            {filteredJobs.length > 0
+            {isLoadingJobs ? (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="col-span-2 text-center py-16 flex flex-col items-center justify-center bg-gray-50 rounded-xl border border-gray-200 border-dashed"
+              >
+                <div className="w-8 h-8 border-4 border-[#E61B23] border-t-transparent rounded-full animate-spin mb-4"></div>
+                <h4 className="font-bold text-gray-800">Loading open positions...</h4>
+              </motion.div>
+            ) : filteredJobs.length > 0
               ? filteredJobs.map((job, idx) => (
                   <motion.div
                     layout
@@ -755,16 +738,14 @@ export default function CareerPage() {
                             required
                             className="w-full border border-transparent bg-[#F8F9FA] rounded-xl p-3.5 text-sm text-gray-800 outline-none focus:bg-white focus:border-[#E61B23] transition-all duration-200 appearance-none pr-10 font-medium"
                           >
-                            <option value="Electrical Engineer">
-                              Electrical Engineer
+                            <option value="" disabled>
+                              Select a position
                             </option>
-                            <option value="Project Manager">
-                              Project Manager
-                            </option>
-                            <option value="Site Engineer">Site Engineer</option>
-                            <option value="Accounts Executive">
-                              Accounts Executive
-                            </option>
+                            {jobs.map((job) => (
+                              <option key={job._id || job.title} value={job._id}>
+                                {job.title}
+                              </option>
+                            ))}
                           </select>
                           <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-800">
                             <FaChevronDown size={11} />
@@ -961,7 +942,7 @@ export default function CareerPage() {
                   onClick={() => {
                     setFormData((prev) => ({
                       ...prev,
-                      position: selectedJob.title,
+                      position: selectedJob._id,
                     }));
                     setSelectedJob(null);
                     document

@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ServiceDetailTemplate from "../../components/ServiceDetailTemplate";
 import Contact from "../../components/contact";
+import { getHighMastPortfolio } from "../../../lib/api/highMastPortfolio";
+import { submitServoStabilizerContact } from "../../../lib/api/servoStabilizerContact";
 import {
   FiGrid,
   FiSettings,
@@ -91,6 +93,38 @@ const formServicesList = [
 ];
 
 export default function ServoStabilizersPage() {
+  const [portfolioData, setPortfolioData] = useState(undefined);
+  const [portfolioLoading, setPortfolioLoading] = useState(true);
+  const [portfolioError, setPortfolioError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getHighMastPortfolio();
+        setPortfolioData(data || []);
+      } catch (err) {
+        setPortfolioError(err.message || "Failed to load portfolio");
+        setPortfolioData([]);
+      } finally {
+        setPortfolioLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const handleContactSubmit = async (formData) => {
+    const payload = {
+      fullName: formData.fullName,
+      phoneNumber: formData.phone,
+      email: formData.email,
+      location: formData.location,
+      serviceRequired: formData.service,
+      otherMessage: formData.service === "Others" ? formData.otherService : "",
+      projectDetails: formData.message,
+    };
+    await submitServoStabilizerContact(payload);
+  };
+
   return (
     <>
       <ServiceDetailTemplate
@@ -107,19 +141,14 @@ export default function ServoStabilizersPage() {
         whyChooseUsChecklist={whyChooseUsChecklist}
         whyChooseUsImage="/pk2.png"
         portfolioTitle="Showcasing Stabilizer Excellence"
-        portfolioBigImage="/pa1.png"
-        portfolioBigTag="Stabilizer Installation"
-        portfolioBigTitle="Automatic Voltage Stabilizer Board Installation"
-        portfolioStackedImage1="/a6.png"
-        portfolioStackedTag1="Diagnostics"
-        portfolioStackedTitle1="Servo Controller Panel Tuning & Calibration"
-        portfolioStackedImage2="/d1.png"
-        portfolioStackedTag2="Heavy Industry"
-        portfolioStackedTitle2="3-Phase Industrial Grade Voltage Safeguards"
+        portfolioData={portfolioData}
+        portfolioLoading={portfolioLoading}
+        portfolioError={portfolioError}
         processSteps={processSteps}
         ctaTitle="Protect Your Industrial Loads with Servo?"
         ctaDesc="Get reliable, stable, and clean power for your manufacturing lines with our expert stabilizer sizing and maintenance support."
         formServicesList={formServicesList}
+        onSubmitContact={handleContactSubmit}
       />
       <div className="bg-gray-100">
         <Contact />

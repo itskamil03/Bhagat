@@ -1,60 +1,30 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Contact from "../components/contact";
-
-const timelineData = [
-  {
-    year: "1976",
-    range: "1976 - 1985",
-    title: "Foundations Of Excellence",
-    description:
-      "The beginning of our journey in electrical contracting and power infrastructure. Built on integrity, technical expertise, and customer trust, we established the foundation that continues to power our growth today.",
-    image: "/a8.jpg",
-    imageFirst: true,
-    link: "/gallery/foundation",
-  },
-  {
-    year: "1986",
-    range: "1986 - 1995",
-    title: "Expansion Across Bihar",
-    description:
-      "Expanding our capabilities through government and industrial projects, while strengthening our presence across Bihar with reliable electrical engineering and maintenance services.",
-    image: "/a7.jpg ",
-    imageFirst: false,
-  },
-  {
-    year: "1996",
-    range: "1996 - 2005",
-    title: "Driving Industrial Growth",
-    description:
-      "Delivering advanced electrical infrastructure solutions for manufacturing facilities, commercial developments, and critical industrial operations with a focus on quality and performance.",
-    image: "dw1.jpg",
-    imageFirst: true,
-  },
-  {
-    year: "2006",
-    range: "2006 - 2015",
-    title: "Powering Railway Infrastructure",
-    description:
-      "Executing major railway electrification, substation development, and station electrical works, and high-voltage infrastructure projects that strengthened India's transportation network.",
-    image: "/a9.png",
-    imageFirst: false,
-  },
-  {
-    year: "2016",
-    range: "2016 - Present",
-    title: "Engineering The Future With Innovation",
-    description:
-      "Leveraging modern technologies, automation, and sustainable engineering practices to deliver next-generation electrical infrastructure solutions for industries and public utilities.",
-    image: "dw1.jpg",
-    imageFirst: true,
-  },
-];
+import { getJourneyGallery } from "../../lib/api/journeyGallery";
 
 export default function LegacyPage() {
+  const [journeyData, setJourneyData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getJourneyGallery();
+        setJourneyData(data || []);
+      } catch (err) {
+        setError(err.message || "Failed to load gallery data");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <main className="min-h-screen bg-gray-100">
       {/* Hero Section */}
@@ -173,63 +143,72 @@ export default function LegacyPage() {
           {/* Vertical line on the left */}
           <div className="hidden md:block absolute left-6 top-4 bottom-4 w-[2px] bg-red-200" />
 
-          <div className="space-y-8">
-            {timelineData.map((item) => (
-              <div key={item.year} className="relative flex items-center gap-6">
-                {/* Year label + dot column */}
-                <div className="hidden md:flex flex-col items-center w-12 flex-shrink-0">
-                  <span className="text-xs font-semibold text-gray-400 mb-2">
-                    {item.year}
-                  </span>
-                  <span className="w-3 h-3 rounded-full bg-red-600 ring-4 ring-red-100 z-10" />
-                </div>
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E61B23]"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-600 py-12 font-semibold">
+              {error}
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {journeyData.map((item, index) => {
+                const imageFirst = index % 2 === 0;
+                const cardImage = item.coverImage?.image || item.image;
+                const dotYear = item.year ? item.year.split(' ')[0] : "";
+                
+                return (
+                  <div key={item._id || index} className="relative flex items-center gap-6">
+                    {/* Year label + dot column */}
+                    <div className="hidden md:flex flex-col items-center w-12 flex-shrink-0">
+                      <span className="text-xs font-semibold text-gray-400 mb-2">
+                        {dotYear}
+                      </span>
+                      <span className="w-3 h-3 rounded-full bg-red-600 ring-4 ring-red-100 z-10" />
+                    </div>
 
-                {/* Card Block - Exactly 1134px width x 246px height */}
-                <div className="w-full max-w-[1134px] md:h-[246px] grid md:grid-cols-2 bg-white rounded-[7px] shadow-[4px_4px_13px_rgba(0,0,0,0.13)] overflow-hidden border border-gray-100">
-                  {/* Image */}
-                  <div
-                    className={`relative h-48 md:h-[246px] overflow-hidden ${
-                      item.imageFirst ? "md:order-1" : "md:order-2"
-                    }`}
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                    {/* Card Block - Exactly 1134px width x 246px height */}
+                    <div className="w-full max-w-[1134px] md:h-[246px] grid md:grid-cols-2 bg-white rounded-[7px] shadow-[4px_4px_13px_rgba(0,0,0,0.13)] overflow-hidden border border-gray-100">
+                      {/* Image */}
+                      <div
+                        className={`relative h-48 md:h-[246px] overflow-hidden ${
+                          imageFirst ? "md:order-1" : "md:order-2"
+                        }`}
+                      >
+                        <img
+                          src={cardImage}
+                          alt={item.heading}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
 
-                  {/* Content */}
-                  <div
-                    className={`p-6 md:px-8 md:py-5 flex flex-col justify-center h-full ${
-                      item.imageFirst ? "md:order-2" : "md:order-1"
-                    }`}
-                  >
-                    <h3 className="text-[#E61B23] font-bold text-sm md:text-base">
-                      {item.range}
-                    </h3>
-                    <h4 className="text-lg md:text-xl font-bold text-gray-900 mt-1">
-                      {item.title}
-                    </h4>
-                    <p className="text-gray-600 mt-2 text-xs md:text-[13px] leading-relaxed">
-                      {item.description}
-                    </p>
-                    {item.link ? (
-                      <Link href={item.link} className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5">
-                        <span>Explore gallery</span>
-                        <span>→</span>
-                      </Link>
-                    ) : (
-                      <button className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5">
-                        <span>Explore gallery</span>
-                        <span>→</span>
-                      </button>
-                    )}
+                      {/* Content */}
+                      <div
+                        className={`p-6 md:px-8 md:py-5 flex flex-col justify-center h-full ${
+                          imageFirst ? "md:order-2" : "md:order-1"
+                        }`}
+                      >
+                        <h3 className="text-[#E61B23] font-bold text-sm md:text-base">
+                          {item.year}
+                        </h3>
+                        <h4 className="text-lg md:text-xl font-bold text-gray-900 mt-1">
+                          {item.heading}
+                        </h4>
+                        <p className="text-gray-600 mt-2 text-xs md:text-[13px] leading-relaxed">
+                          {item.description}
+                        </p>
+                        <Link href={item.link || "/gallery/foundation"} className="mt-4 bg-[#E61B23] text-white px-4 py-1.5 rounded-[4px] w-fit hover:bg-red-700 transition-colors text-xs font-semibold flex items-center gap-1.5">
+                          <span>Explore gallery</span>
+                          <span>→</span>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 

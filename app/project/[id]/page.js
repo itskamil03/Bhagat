@@ -1,7 +1,7 @@
 "use client";
 
-import React, { Suspense, useState, useEffect, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -14,155 +14,15 @@ import {
   FaArrowRight
 } from "react-icons/fa";
 import Contact from "../../components/contact";
+import { getProjectById } from "../../../lib/api/project";
 
-const allProjects = [
-  // Ongoing Projects
-  {
-    id: "BEW-2024-003",
-    title: "25KV OHE Electrification - South Central Railway",
-    division: "Railway Electrification",
-    location: "Secunderabad, TS",
-    date: "12 Jan 2024",
-    type: "EPC Turnkey",
-    team: ["/a2.png", "/a3.png", "/a4.png"],
-    status: "Work In Progress",
-    desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
-  },
-  {
-    id: "BEW-2024-004",
-    title: "132/33kV Substation Construction - Tata Power",
-    division: "Power Infrastructure",
-    location: "Mumbai, MH",
-    date: "05 Feb 2024",
-    type: "Industrial Electrical",
-    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
-    status: "Work In Progress",
-    desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
-  },
-  {
-    id: "BEW-2024-005",
-    title: "Transformer Maintenance Contract - Western Railway",
-    division: "Services",
-    location: "Ahmedabad, GJ",
-    date: "10 Mar 2024",
-    type: "Maintenance (AMC)",
-    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
-    status: "Work In Progress",
-    desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
-  },
-  {
-    id: "BEW-2024-006",
-    title: "Facade and Acrylic LED Installation - Unity Mall",
-    division: "Energy Efficient Lighting",
-    location: "Patna, BR",
-    date: "18 Apr 2024",
-    type: "Commercial Install",
-    team: ["/a2.png", "/a6.png"],
-    status: "Work In Progress",
-    desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
-  },
-  {
-    id: "BEW-2024-007",
-    title: "HT Cable Laying and Jointing - NTPC Plant",
-    division: "Power Infrastructure",
-    location: "Barh, BR",
-    date: "22 May 2024",
-    type: "Industrial Turnkey",
-    team: ["/a3.png", "/ic1.jpg", "/a6.png"],
-    status: "Work In Progress",
-    desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
-  },
-  {
-    id: "BEW-2024-008",
-    title: "Traction Substation Erection - Metro Rail Corp",
-    division: "Railway Electrification",
-    location: "Kolkata, WB",
-    date: "02 Jun 2024",
-    type: "EPC Construction",
-    team: ["/a2.png", "/a3.png", "/a4.png"],
-    status: "Work In Progress",
-    desc: "This project focuses on delivering highest-quality electrical infrastructure. Tasks include comprehensive engineering design, component sourcing, layout construction, quality tests, commissioning, and continuous monitoring to satisfy security and efficiency standards.",
-  },
-  // Completed Projects
-  {
-    id: "COMP-2023-01",
-    title: "132kV Substation Electrification - Railways Zone",
-    division: "Railway Electrification",
-    location: "Katihar, BR",
-    date: "15 Dec 2023",
-    type: "EPC Construction",
-    team: ["/a2.png", "/a3.png", "/a4.png"],
-    status: "Completed",
-    desc: "Successful erection, commissioning, and validation of 132kV railway traction substations to power expanded lines.",
-  },
-  {
-    id: "COMP-2023-02",
-    title: "HT Cable Laying and Jointing - IOCL Refinery",
-    division: "Power Infrastructure",
-    location: "Barauni, BR",
-    date: "20 Oct 2023",
-    type: "Industrial Turnkey",
-    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
-    status: "Completed",
-    desc: "Laid over 15km of high-tension cabling with state-of-the-art termination and safety matching systems in hazardous zones.",
-  },
-  {
-    id: "COMP-2023-03",
-    title: "Commercial Smart Grid Panel Installation - Patna Plaza",
-    division: "Services",
-    location: "Patna, BR",
-    date: "10 Aug 2023",
-    type: "Commercial Install",
-    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
-    status: "Completed",
-    desc: "Complete power distribution panels, servo stabilizers, and backup grid coordination for commercial complex operations.",
-  },
-  {
-    id: "COMP-2023-04",
-    title: "Sub-station Transformer Filtration and Overhauling",
-    division: "Services",
-    location: "Gaya, BR",
-    date: "05 Jun 2023",
-    type: "Maintenance (AMC)",
-    team: ["/a2.png", "/a6.png"],
-    status: "Completed",
-    desc: "Preventive maintenance, oil filtration, and structural repairs for three 5MVA distribution power transformers.",
-  },
-  // Upcoming Projects
-  {
-    id: "UP-2024-01",
-    title: "132/33kV Smart Substation Erection - Bihar Power Corp",
-    division: "Power Infrastructure",
-    location: "Muzzafarpur, BR",
-    date: "Starts Q3 2024",
-    type: "EPC Construction",
-    team: ["/a2.png", "/a3.png", "/a4.png"],
-    status: "Planned / Upcoming",
-    desc: "Pre-engineering site preparation, transformer mapping, and grid matching for a new smart automated substation.",
-  },
-  {
-    id: "UP-2024-02",
-    title: "Railway Track Electrification - North East Frontier Zone",
-    division: "Railway Electrification",
-    location: "Katihar - Jogbani Link, BR",
-    date: "Starts Q4 2024",
-    type: "EPC Electrification",
-    team: ["/a3.png", "/a4.png", "/ic1.jpg"],
-    status: "Planned / Upcoming",
-    desc: "Electrification, mast erection, and OHE cabling for a crucial border-link transport line expansion project.",
-  },
-  {
-    id: "UP-2024-03",
-    title: "Solar Grid Interconnection and Cabling",
-    division: "Power Infrastructure",
-    location: "Bhagalpur, BR",
-    date: "Starts Q1 2025",
-    type: "Grid Integration",
-    team: ["/a4.png", "/ic1.jpg", "/a6.png"],
-    status: "Planned / Upcoming",
-    desc: "Integrating decentralized solar power arrays to local distribution grids, involving specialized cable laying and synchronization panels.",
-  },
-];
+function formatDate(isoStr) {
+  if (!isoStr) return "";
+  const d = new Date(isoStr);
+  if (isNaN(d.getTime())) return isoStr;
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${String(d.getDate()).padStart(2, '0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
 
 const ProjectGallery = ({ images }) => {
   const [isPaused, setIsPaused] = useState(false);
@@ -343,12 +203,36 @@ const ProjectGallery = ({ images }) => {
   );
 };
 
-function DetailContent() {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const project = allProjects.find((p) => p.id === id);
+export default function DetailPage() {
+  const params = useParams();
+  const id = params?.id;
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!project) {
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getProjectById(id);
+        setProject(data);
+      } catch (err) {
+        setError(err.message || "Failed to load project data");
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (id) fetchData();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#E61B23]"></div>
+      </div>
+    );
+  }
+
+  if (error || !project) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
         <h2 className="text-2xl font-bold text-gray-800">Project Not Found</h2>
@@ -368,6 +252,9 @@ function DetailContent() {
   const isCompleted = project.status === "Completed";
   const isUpcoming =
     project.status.includes("Planned") || project.status.includes("Upcoming");
+
+  // Format images for the gallery
+  const galleryImages = (project.images || []).map(img => img.image);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans flex flex-col justify-between">
@@ -405,7 +292,7 @@ function DetailContent() {
                   Project Details
                 </span>
                 <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                  {project.desc}
+                  {project.description}
                 </p>
               </div>
 
@@ -460,14 +347,12 @@ function DetailContent() {
                 </span>
                 <span className="font-bold text-gray-800 mt-2 flex items-center gap-1.5 text-base">
                   <FaCalendarAlt className="text-gray-400 text-sm" />
-                  <span>{project.date}</span>
+                  <span>{formatDate(project.startDate)}</span>
                 </span>
               </div>
             </div>
 
-
-
-            <ProjectGallery images={project.team} />
+            <ProjectGallery images={galleryImages} />
 
             <div className="mt-6 flex justify-end">
               <button
@@ -483,19 +368,5 @@ function DetailContent() {
 
       <Contact />
     </div>
-  );
-}
-
-export default function DetailPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#E61B23]"></div>
-        </div>
-      }
-    >
-      <DetailContent />
-    </Suspense>
   );
 }

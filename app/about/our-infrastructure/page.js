@@ -6,14 +6,64 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import Contact from "../../components/contact";
 import InfrastructureGallery from "../../components/InfrastructureGallery";
 
-const heroImages = ["/in1.png", "/in2.png", "/in3.png"];
-
+import { getOurInfrastructure } from "../../../lib/api/infrastructure";
+import { getInfrastructureGalleries, getInfrastructureGallery } from "../../../lib/api/infrastructureGallery";
 export default function OurInfrastructure() {
   const sectionRef = useRef(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [infraData, setInfraData] = useState(null);
+  const [galleryImages, setGalleryImages] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getOurInfrastructure();
+        if (data && data.length > 0) {
+          setInfraData(data[0]);
+          
+          try {
+            // First get the list of infrastructure galleries to obtain the correct Infrastructure Gallery document ID
+            const galleries = await getInfrastructureGalleries();
+            if (galleries && galleries.length > 0 && galleries[0]._id) {
+              const galleryId = galleries[0]._id; // The correct ID expected by the backend
+              
+              const galleryData = await getInfrastructureGallery(galleryId);
+              if (galleryData && galleryData.images && galleryData.images.length > 0) {
+                const formattedImages = galleryData.images.map(img => ({
+                  src: img,
+                  alt: "Infrastructure Gallery Image"
+                }));
+                setGalleryImages(formattedImages);
+              } else {
+                setGalleryImages([]);
+              }
+            } else {
+              setGalleryImages([]);
+            }
+          } catch (galleryErr) {
+            console.error("Gallery fetch error:", galleryErr);
+            setGalleryImages([]);
+          }
+        }
+      } catch (err) {
+        setError(err.message || "Failed to load infrastructure data");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const heroImages = infraData?.images?.length ? infraData.images : ["/in1.png"];
+  const displayTitle = infraData?.title || "Our Infrastructure";
+  const displayDesc = infraData?.description || "";
 
   // Auto-rotate hero showcase images smoothly with dynamic duration
   useEffect(() => {
+    if (!heroImages || heroImages.length <= 1) return;
+
     let currentDuration = 7000;
     if (currentImageIndex === 0) currentDuration = 8000;
 
@@ -21,7 +71,7 @@ export default function OurInfrastructure() {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
     }, currentDuration);
     return () => clearTimeout(timer);
-  }, [currentImageIndex]);
+  }, [currentImageIndex, heroImages.length]);
 
   // Subtle Scroll Parallax Interaction
   const { scrollYProgress } = useScroll({
@@ -31,6 +81,22 @@ export default function OurInfrastructure() {
 
   const heroParallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
+
+  if (loading) {
+    return (
+      <main className="w-full bg-[#050505] flex flex-col min-h-screen font-sans items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E61B23]"></div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="w-full bg-[#050505] flex flex-col min-h-screen font-sans items-center justify-center">
+        <div className="text-red-600 font-semibold">{error}</div>
+      </main>
+    );
+  }
 
   return (
     <main className="w-full bg-[#050505] flex flex-col min-h-screen font-sans overflow-x-hidden">
@@ -66,6 +132,12 @@ export default function OurInfrastructure() {
                   { duration: 1.8, ease: [0.33, 1, 0.68, 1] }
               }
               className="absolute inset-0 w-full h-full origin-center"
+              style={{
+                willChange: "transform, opacity, filter",
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transformStyle: "preserve-3d"
+              }}
             >
               {/* Inner container for heavy continuous majestic panning/zooming */}
               <motion.div
@@ -111,6 +183,12 @@ export default function OurInfrastructure() {
                         delay: Math.random() * 1.5 // Random stagger up to 1.5s
                       }}
                       className="w-full h-full bg-[#050505]" // Matches background color to hide image initially
+                      style={{
+                        willChange: "transform, opacity",
+                        backfaceVisibility: "hidden",
+                        WebkitBackfaceVisibility: "hidden",
+                        transform: "translateZ(0)"
+                      }}
                     />
                   ))}
                 </div>
@@ -137,18 +215,49 @@ export default function OurInfrastructure() {
             animate={{ y: ["0%", "-10%", "0%"], scale: [1, 1.1, 1], opacity: [0.15, 0.4, 0.15] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
             className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/20 rounded-full blur-[100px] z-10 mix-blend-screen pointer-events-none"
+            style={{ willChange: "transform, opacity", transform: "translateZ(0)", backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
           ></motion.div>
 
           <motion.div
             animate={{ x: ["0%", "10%", "0%"], scale: [1, 1.2, 1], opacity: [0.1, 0.3, 0.1] }}
             transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1 }}
             className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] z-10 mix-blend-screen pointer-events-none"
+            style={{ willChange: "transform, opacity", transform: "translateZ(0)", backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
           ></motion.div>
         </motion.div>
 
-        {/* Hero Content (Premium Progress Indicators Only) */}
-        <div className="max-w-[1480px] mx-auto px-6 sm:px-10 lg:px-16 relative z-20 w-full flex justify-center">
-          <div className="flex gap-4 z-30">
+        {/* Hero Content (Text & Indicators) */}
+        <div className="absolute inset-0 max-w-[1480px] mx-auto px-6 sm:px-10 lg:px-16 z-20 w-full flex flex-col justify-between pt-16 lg:pt-20 pb-12 items-start">
+          
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentImageIndex}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="max-w-2xl text-left text-white pr-4 md:pr-8 lg:pr-12"
+            >
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+                className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 drop-shadow-lg tracking-tight"
+              >
+                {displayTitle}
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+                className="text-sm sm:text-base md:text-lg text-white/90 drop-shadow-md leading-relaxed md:leading-loose"
+              >
+                {displayDesc}
+              </motion.p>
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="flex gap-4 z-30 w-full justify-start">
             {heroImages.map((_, idx) => (
               <button
                 key={idx}
@@ -176,7 +285,7 @@ export default function OurInfrastructure() {
 
       {/* Infrastructure Gallery Section */}
       <div className="relative z-20 bg-white">
-        <InfrastructureGallery />
+        <InfrastructureGallery adminImages={galleryImages || []} />
       </div>
 
       {/* Contact Section */}

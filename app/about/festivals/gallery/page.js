@@ -4,132 +4,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { FaCamera, FaChevronLeft, FaChevronDown, FaTimes } from "react-icons/fa";
 import Contact from "../../../components/contact";
-
-const festivalGalleries = {
-  puja: {
-    title: "Vishwakarma Puja Celebration",
-    description:
-      "As engineers and creators, Vishwakarma Puja holds special significance at Bhagat Engineering Works. We clean and worship our machines, tools, and heavy erection gears, followed by community feasts with our site workers, engineers, and executive teams.",
-    date: "September 17, Annual",
-    mainImage: "/fi1.jpg",
-    images: [
-      { src: "/vish1.jpeg", year: "2023" },
-      { src: "/vish2.jpeg", year: "2023" },
-      { src: "/1761220624_1.jpg", year: "2023" },
-      { src: "/1761220624_2.jpg", year: "2023" },
-      { src: "/1761220624_3.jpg", year: "2023" },
-      { src: "/1761220624_5.jpg", year: "2023" },
-      { src: "/vish25_1.jpg", year: "2025" },
-      { src: "/vish25_2.jpg", year: "2025" },
-      { src: "/vish25_3.jpg", year: "2025" },
-      { src: "/vish25_4.jpg", year: "2025" },
-      { src: "/vish25_5.jpg", year: "2025" },
-      { src: "/vish25_6.jpg", year: "2025" },
-      { src: "/vish24_1.jpeg", year: "2024" },
-      { src: "/vish24_2.jpg", year: "2024" },
-      { src: "/vish24_3.jpg", year: "2024" },
-      { src: "/vish24_4.jpg", year: "2024" },
-      { src: "/vish24_5.jpeg", year: "2024" },
-    ],
-  },
-  diwali: {
-    title: "Diwali & Corporate Milan",
-    description:
-      "Celebrating the festival of lights with sweets distribution, office lighting, and an annual milan ceremony that brings families of our employees together to honor our year-round accomplishments.",
-    date: "October/November, Annual",
-    mainImage: "/diwali.jpg",
-    images: [
-      
-      { src: "/diwa2025_1.png", year: "2025" },
-      { src: "/diwa2025_2.jpg", year: "2025" },
-      { src: "/diwa2025_3.jpg", year: "2025" },
-      { src: "/diwa2025_4.jpg", year: "2025" },
-      { src: "/diwa2025_5.png", year: "2025" },
-      { src: "/diwa2025_6.jpg", year: "2025" },
-      { src: "/diwa2024_1.jpg", year: "2024" },
-      { src: "/diwa2024_2.jpg", year: "2024" },
-      { src: "/diwa2024_3.jpg", year: "2024" },
-      { src: "/diwa2024_4.jpeg", year: "2024" },
-      { src: "/diwa2024_5.jpeg", year: "2024" },
-      { src: "/diwa2024_6.jpeg", year: "2024" },
-      { src: "/diwa2023_1.jpeg", year: "2023" },
-      { src: "/diwa2023_2.jpeg", year: "2023" },
-      { src: "/diwa2023_3.jpg", year: "2023" },
-      { src: "/diwa2023_4.jpg", year: "2023" },
-      { src: "/diwa2023_5.jpg", year: "2023" },
-      { src: "/diwa2023_6.jpg", year: "2023" },
-    ],
-  },
-  patriot: {
-    title: "Independence Day and Republic Day",
-    description:
-      "Flag hoisting ceremonies at our corporate head office in Patna and major railway site substations across India, commemorating our pride in building the country's utility infrastructure.",
-    date: "National Festivals",
-    mainImage: "/fi3.jpg",
-    images: [
-      { src: "/fi3.jpg", year: "2026" },
-      { src: "/fi3.jpg", year: "2026" },
-      { src: "/fi3.jpg", year: "2025" },
-      { src: "/fi3.jpg", year: "2025" },
-      { src: "/fi3.jpg", year: "2024" },
-      { src: "/fi3.jpg", year: "2024" },
-    ],
-  },
-  chhath: {
-    title: "New Year",
-    description:
-      "Deeply rooted in the cultural fabric of Bihar, we celebrate Chhath Puja with spiritual devotion. We support our team members with festive breaks, distribute traditional offerings (Thekua), and organize community support camps at the Ganga ghats in Patna.",
-    date: "October/November, Annual",
-    mainImage: "/chhatim1.jpg",
-    images: [
-      { src: "/new2026_1.jpeg", year: "2026" },
-      { src: "/new2026_2.jpeg", year: "2026" },
-      { src: "/new2026_3.jpeg", year: "2026" },
-      { src: "/new2026_4.jpeg", year: "2026" },
-      { src: "/new2026_5.jpeg", year: "2026" },
-      { src: "/new2026_6.jpeg", year: "2026" },
-      { src: "/new2025_1.jpeg", year: "2025" },
-      { src: "/new2025_2.jpg", year: "2025" },
-      { src: "/new2025_3.jpeg", year: "2025" },
-      { src: "/new2025_4.jpg", year: "2025" },
-      { src: "/new2025_5.jpeg", year: "2025" },
-      { src: "/new2025_6.jpeg", year: "2025" },
-      { src: "/new2024_1.jpeg", year: "2024" },
-      { src: "/new2024_2.jpg", year: "2024" },
-      { src: "/new2024_3.jpg", year: "2024" },
-      { src: "/new2024_4.jpg", year: "2024" },
-    ],
-  },
-  holi: {
-    title: "Holi & Spring Milan",
-    description:
-      "Welcoming the spring season with vibrant colors, organic gulal, traditional music, and special festive delicacies. Our offices and sites come together for a special pre-Holi milan, reinforcing our team bonds.",
-    date: "March, Annual",
-    mainImage: "/h1.jpg",
-    images: [
-      { src: "/holi2026_1.jpeg", year: "2026" },
-      { src: "/holi2026_2.jpeg", year: "2026" },
-      { src: "/holi2026_3.jpeg", year: "2026" },
-      { src: "/holi2026_4.jpeg", year: "2026" },
-      { src: "/holi2026_5.jpeg", year: "2026" },
-      { src: "/holi2026_6.jpeg", year: "2026" },
-      { src: "/holi2025_1.jpg", year: "2025" },
-      { src: "/holi2025_2.jpeg", year: "2025" },
-      { src: "/holi2025_3.jpg", year: "2025" },
-      { src: "/holi2025_4.jpg", year: "2025" },
-      { src: "/holi2025_5.jpeg", year: "2025" },
-      { src: "/holi2024_1.jpg", year: "2024" },
-      { src: "/holi2024_2.jpg", year: "2024" },
-      { src: "/holi2024_3.jpg", year: "2024" },
-      { src: "/holi2024_4.jpg", year: "2024" },
-      { src: "/holi2024_5.jpg", year: "2024" },
-      { src: "/holi2024_6.jpg", year: "2024" },
-    ],
-  },
-};
+import { getFestivalGallery } from "../../../../lib/api/festivalGallery";
 
 function GalleryContent() {
   const searchParams = useSearchParams();
@@ -139,35 +17,195 @@ function GalleryContent() {
   const queryDesc = searchParams.get("description");
   const queryImage = searchParams.get("image");
 
-  let gallery = festivalGalleries[festivalKey];
+  const [gallery, setGallery] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [globalYears, setGlobalYears] = useState([]);
 
-  if (queryTitle && queryImage) {
-    gallery = {
-      title: queryTitle,
-      description: queryDesc || (gallery ? gallery.description : ""),
-      date: "Event Gallery",
-      mainImage: queryImage,
-      // Use specific images if defined in the dictionary, otherwise use placeholders
-      images: gallery && gallery.images ? gallery.images : [
-        { src: queryImage, year: "2026" },
-        { src: queryImage, year: "2026" },
-        { src: queryImage, year: "2025" },
-        { src: queryImage, year: "2025" },
-        { src: queryImage, year: "2024" },
-        { src: queryImage, year: "2024" },
-      ],
-    };
-  } else if (!gallery) {
-    gallery = festivalGalleries.puja;
-  }
+  useEffect(() => {
+    async function fetchGallery() {
+      try {
+        const data = await getFestivalGallery();
+        let foundFestival = null;
+        let foundYear = "";
+        console.log("=== DEBUG FESTIVAL DETAILS ===");
+        console.log("API Response (raw data from getFestivalGallery):", data);
+
+        // Find the actual grouped object regardless of how deeply it is wrapped
+        let actualGroupedObject = null;
+        
+        if (data && typeof data === 'object') {
+           // Helper to check if an object has year-like keys (e.g. "2023", "2024")
+           const hasYearKeys = (obj) => typeof obj === 'object' && obj !== null && !Array.isArray(obj) && Object.keys(obj).some(k => /^\d{4}$/.test(k));
+           
+           if (hasYearKeys(data)) {
+              actualGroupedObject = data;
+           } else if (hasYearKeys(data.data)) {
+              actualGroupedObject = data.data;
+           } else if (Array.isArray(data) && data.length > 0 && hasYearKeys(data[0])) {
+              actualGroupedObject = data[0];
+           } else if (data.data && Array.isArray(data.data) && data.data.length > 0 && hasYearKeys(data.data[0])) {
+              actualGroupedObject = data.data[0];
+           }
+        }
+        
+        console.log("Target actualGroupedObject for extraction:", actualGroupedObject);
+        
+        let extractedYears = [];
+        
+        if (actualGroupedObject) {
+           extractedYears = Object.keys(actualGroupedObject).filter(key => /^\d{4}$/.test(key));
+           
+           for (const year of extractedYears) {
+              if (Array.isArray(actualGroupedObject[year])) {
+                 const match = actualGroupedObject[year].find(item => item._id === festivalKey);
+                 if (match) {
+                    foundFestival = match;
+                    foundYear = year;
+                    break;
+                 }
+              }
+           }
+        } else if (Array.isArray(data?.data || data)) {
+           // Fallback for flat array structure
+           const flatArray = Array.isArray(data?.data) ? data.data : data;
+           for (const group of flatArray) {
+              if (group.year) extractedYears.push(group.year.toString());
+              if (group.festivals && Array.isArray(group.festivals)) {
+                 const match = group.festivals.find(item => item._id === festivalKey);
+                 if (match) {
+                    foundFestival = match;
+                    foundYear = group.year || "";
+                 }
+              } else {
+                 if (group._id === festivalKey) {
+                    foundFestival = group;
+                    foundYear = group.year || "";
+                 }
+              }
+           }
+        }
+        
+        // Remove duplicates, ensure it is exactly 4 digits, and sort ascending
+        const sortedYears = Array.from(new Set(extractedYears))
+           .map(y => y.toString().trim())
+           .filter(y => /^\d{4}$/.test(y))
+           .sort((a, b) => parseInt(a) - parseInt(b));
+           
+        console.log("Extracted Years:", extractedYears);
+        console.log("Sorted Years:", sortedYears);
+        
+        // Force state update with the extracted years
+        setGlobalYears(sortedYears);
+
+        let images = [];
+        if (foundFestival) {
+           const targetLabel = foundFestival.label || foundFestival.title;
+           
+           if (actualGroupedObject) {
+              for (const year of extractedYears) {
+                 if (Array.isArray(actualGroupedObject[year])) {
+                    const matchingEvents = actualGroupedObject[year].filter(item => 
+                       (item.label && targetLabel && item.label === targetLabel) || 
+                       (item.title && targetLabel && item.title === targetLabel) ||
+                       (item._id === foundFestival._id) // Fallback if no label/title
+                    );
+                    
+                    for (const event of matchingEvents) {
+                       let eventHasImages = false;
+                       const eventYear = event.year || year;
+                       
+                       if (Array.isArray(event.images) && event.images.length > 0) {
+                          event.images.forEach(img => {
+                             if (img && img.image) {
+                                images.push({ src: img.image, year: eventYear });
+                                eventHasImages = true;
+                             }
+                          });
+                       }
+                       
+                       if (!eventHasImages) {
+                          const fallbackImg = event.coverImage?.image || event.image;
+                          if (fallbackImg) images.push({ src: fallbackImg, year: eventYear });
+                       }
+                    }
+                 }
+              }
+           } else if (Array.isArray(data?.data || data)) {
+              const flatArray = Array.isArray(data?.data) ? data.data : data;
+              const matchingEvents = flatArray.filter(item => 
+                 (item.label && targetLabel && item.label === targetLabel) || 
+                 (item.title && targetLabel && item.title === targetLabel) ||
+                 (item._id === foundFestival._id)
+              );
+              
+              for (const event of matchingEvents) {
+                 let eventHasImages = false;
+                 const eventYear = event.year;
+                 
+                 if (Array.isArray(event.images) && event.images.length > 0) {
+                    event.images.forEach(img => {
+                       if (img && img.image) {
+                          images.push({ src: img.image, year: eventYear });
+                          eventHasImages = true;
+                       }
+                    });
+                 }
+                 
+                 if (!eventHasImages) {
+                    const fallbackImg = event.coverImage?.image || event.image;
+                    if (fallbackImg) images.push({ src: fallbackImg, year: eventYear });
+                 }
+              }
+           }
+        }
+
+        if (images.length === 0) {
+          if (foundFestival && foundFestival.image) {
+            images = [{ src: foundFestival.image, year: foundFestival.year || foundYear }];
+          } else if (queryImage) {
+            images = [{ src: queryImage, year: "" }];
+          }
+        }
+        
+        setGallery({
+          title: foundFestival?.heading || foundFestival?.title || queryTitle || "Festival Gallery",
+          description: foundFestival?.description || queryDesc || "",
+          mainImage: foundFestival?.coverImage?.image || foundFestival?.image || queryImage || "/fhero.jpg",
+          images: images
+        });
+      } catch (err) {
+        console.error("Failed to load festival gallery", err);
+        setGallery({
+          title: queryTitle || "Festival Gallery",
+          description: queryDesc || "",
+          mainImage: queryImage || "/fhero.jpg",
+          images: queryImage ? [{ src: queryImage, year: "" }] : []
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchGallery();
+  }, [festivalKey, queryTitle, queryDesc, queryImage]);
 
   const [activeImageIndex, setActiveImageIndex] = useState(null);
   const [selectedYear, setSelectedYear] = useState("All");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const filterOptions = (festivalKey === "holi" || festivalKey === "chhath")
-    ? ["All", "2026", "2025", "2024"] 
-    : ["All", "2025", "2024", "2023"];
+  if (loading || !gallery) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center text-gray-500 text-sm font-semibold">
+        Loading gallery...
+      </div>
+    );
+  }
+
+  const filterOptions = ["All", ...globalYears];
+
+  console.log("Dropdown state (globalYears):", globalYears);
+  console.log("Rendered dropdown options (filterOptions):", filterOptions);
+
   const filteredImages = gallery.images.filter(
     (img) => selectedYear === "All" || img.year === selectedYear
   );

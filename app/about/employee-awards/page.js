@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import { FaAward, FaCalendarAlt, FaTrophy, FaUser, FaChevronDown } from "react-icons/fa";
 import { FiUsers, FiAward, FiZap, FiCrosshair, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Contact from "../../components/contact";
+import { getAwardGallery } from "../../../lib/api/awardGallery";
+import { getGallerySlider } from "../../../lib/api/gallerySlider";
 
 const initialAwards = [
   {
@@ -243,19 +245,20 @@ const cardVariants = {
 export default function EmployeeAwards() {
   const [selectedAward, setSelectedAward] = useState(null);
   const [awardsList, setAwardsList] = useState(initialAwards);
+  const [masterGalleryList, setMasterGalleryList] = useState(galleryImages);
   const [galleryList, setGalleryList] = useState(galleryImages);
   const [selectedYear, setSelectedYear] = useState("All years");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const filterOptions = ["All years", "2023", "2024", "2025"];
+  const [filterOptions, setFilterOptions] = useState(["All years", "2025", "2024", "2023"]);
 
   useEffect(() => {
     if (selectedYear === "All years") {
-      setGalleryList(galleryImages);
+      setGalleryList(masterGalleryList);
     } else {
-      setGalleryList(galleryImages.filter(img => img.year === selectedYear || (img.title && img.title.includes(selectedYear))));
+      setGalleryList(masterGalleryList.filter(img => img.year === selectedYear));
     }
     setActiveGalleryIndex(0);
-  }, [selectedYear]);
+  }, [selectedYear, masterGalleryList]);
 
   // --- 3D Gallery State & Logic ---
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
@@ -329,23 +332,75 @@ export default function EmployeeAwards() {
 
   // Load from local storage on client mount (populated by admin panel)
   useEffect(() => {
-    const savedAwards = localStorage.getItem("employee_awards");
-    if (savedAwards) {
+    async function fetchAwards() {
       try {
-        setAwardsList(JSON.parse(savedAwards));
-      } catch (e) {
-        console.error("Error parsing saved awards", e);
+        const awards = await getAwardGallery();
+        setAwardsList(awards || initialAwards);
+      } catch (err) {
+        console.error("Failed to fetch awards:", err);
+        const savedAwards = localStorage.getItem("employee_awards");
+        if (savedAwards) {
+          try {
+            setAwardsList(JSON.parse(savedAwards));
+          } catch (e) {
+            setAwardsList(initialAwards);
+          }
+        } else {
+          setAwardsList(initialAwards);
+        }
       }
     }
+    fetchAwards();
 
-    const savedGallery = localStorage.getItem("gallery_images");
-    if (savedGallery) {
+    async function fetchGallerySlider() {
       try {
-        setGalleryList(JSON.parse(savedGallery));
-      } catch (e) {
-        console.error("Error parsing saved gallery images", e);
+        const sliderData = await getGallerySlider();
+        let flattenedGallery = [];
+        let idCounter = 1;
+        
+        (sliderData || []).forEach(item => {
+          const yearStr = item.year?.toString();
+          
+          if (item.images && Array.isArray(item.images)) {
+            item.images.forEach(img => {
+              flattenedGallery.push({
+                id: idCounter++,
+                src: img.image,
+                title: `Annual Meet ${yearStr}`,
+                desc: `Memories from our ${yearStr} annual meet.`,
+                year: yearStr
+              });
+            });
+          }
+        });
+        
+        if (flattenedGallery.length > 0) {
+          const uniqueYears = Array.from(new Set(flattenedGallery.map(img => img.year))).sort((a, b) => parseInt(b) - parseInt(a));
+          setFilterOptions(["All years", ...uniqueYears]);
+          setMasterGalleryList(flattenedGallery);
+        } else {
+          const savedGallery = localStorage.getItem("gallery_images");
+          if (savedGallery) {
+            try {
+              setMasterGalleryList(JSON.parse(savedGallery));
+            } catch (e) {
+              console.error("Error parsing saved gallery images", e);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load gallery slider:", err);
+        const savedGallery = localStorage.getItem("gallery_images");
+        if (savedGallery) {
+          try {
+            setMasterGalleryList(JSON.parse(savedGallery));
+          } catch (e) {
+            console.error("Error parsing saved gallery images", e);
+          }
+        }
       }
     }
+    fetchGallerySlider();
   }, []);
 
   return (
@@ -590,7 +645,7 @@ export default function EmployeeAwards() {
         >
           {awardsList.map((item, index) => (
             <motion.div
-              key={item.title + "-" + index}
+              key={item._id || item.title + "-" + index}
               variants={cardVariants}
               whileHover={{
                 y: -4,
@@ -607,7 +662,7 @@ export default function EmployeeAwards() {
                 <div className="relative w-full h-[145px] bg-gray-50 overflow-hidden border-b border-gray-100/50">
                   <Image
                     src={item.image}
-                    alt={item.title}
+                    alt={item.heading || item.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-103"
@@ -622,18 +677,18 @@ export default function EmployeeAwards() {
                 <div className="p-4 pt-3 pb-2 flex-grow flex flex-col justify-start overflow-hidden">
                   {/* Award Heading */}
                   <h3 className="text-sm font-bold text-gray-900 leading-snug mb-1 line-clamp-2 min-h-[36px] flex items-center">
-                    {item.title}
+                    {item.heading || item.title}
                   </h3>
 
                   {/* Recipient */}
                   <p className="text-[11px] text-gray-500 font-bold mb-1.5 flex items-center gap-1">
                     <FaUser className="text-[#E61B23]/70 text-[9px]" />
-                    <span className="truncate">{item.recipient}</span>
+                    <span className="truncate">{item.oneLineHeading || item.recipient}</span>
                   </p>
 
                   {/* Award Description */}
                   <p className="text-gray-600 text-[11px] leading-relaxed line-clamp-3">
-                    {item.desc}
+                    {item.smallDescription || item.desc}
                   </p>
                 </div>
               </div>
@@ -642,7 +697,7 @@ export default function EmployeeAwards() {
               <div className="px-4 py-2.5 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500 font-semibold mt-auto">
                 <div className="flex items-center gap-1.5">
                   <FaCalendarAlt className="text-gray-400 text-[10px]" />
-                  <span>{item.date}</span>
+                  <span>{item.category || item.date}</span>
                 </div>
                 <span className="text-[#E61B23] text-[9px] uppercase font-bold tracking-wider opacity-90 group-hover:text-red-700 transition-colors">
                   Details
@@ -700,7 +755,7 @@ export default function EmployeeAwards() {
                 <div className="w-full md:w-3/5 bg-gray-950 flex items-center justify-center p-4 md:p-6 border-b md:border-b-0 md:border-r border-gray-100 relative min-h-[220px] md:min-h-full aspect-[4/3] md:aspect-auto">
                   <Image
                     src={selectedAward.image}
-                    alt={selectedAward.title}
+                    alt={selectedAward.heading || selectedAward.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 60vw"
                     className="object-contain p-4"
@@ -723,18 +778,18 @@ export default function EmployeeAwards() {
 
                     {/* Title */}
                     <h3 className="text-xl md:text-2xl font-extrabold text-gray-900 leading-snug mb-3">
-                      {selectedAward.title}
+                      {selectedAward.heading || selectedAward.title}
                     </h3>
 
                     {/* Recipient */}
                     <div className="flex items-center gap-2 text-sm text-gray-700 font-bold mb-6">
                       <FaUser className="text-[#E61B23]" />
-                      <span>{selectedAward.recipient}</span>
+                      <span>{selectedAward.oneLineHeading || selectedAward.recipient}</span>
                     </div>
 
                     {/* Description */}
-                    <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6">
-                      {selectedAward.desc}
+                    <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 whitespace-pre-wrap">
+                      {selectedAward.description || selectedAward.desc}
                     </p>
                   </div>
 
@@ -742,7 +797,7 @@ export default function EmployeeAwards() {
                   <div className="border-t border-gray-100 pt-6 flex items-center justify-between text-xs text-gray-500 font-bold">
                     <div className="flex items-center gap-2">
                       <FaCalendarAlt className="text-gray-400" />
-                      <span>{selectedAward.date}</span>
+                      <span>{selectedAward.category || selectedAward.date}</span>
                     </div>
                     <button
                       type="button"

@@ -39,8 +39,8 @@ const allImages = [
 ];
 
 export default function InfrastructureGallery({ adminImages = null }) {
-  // Use admin provided images if available, otherwise fallback to our highly-curated static images
-  const displayImages = adminImages && adminImages.length > 0 ? adminImages : allImages;
+  // Use admin provided images if provided (even if empty), otherwise fallback to our highly-curated static images
+  const displayImages = adminImages !== null ? adminImages : allImages;
 
   const [visibleCount, setVisibleCount] = useState(12);
 

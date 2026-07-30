@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ServiceDetailTemplate from "../../components/ServiceDetailTemplate";
 import Contact from "../../components/contact";
+import { getFacadeLightingPortfolio } from "../../../lib/api/facadeLightingPortfolio";
+import { submitFacadeLightingContact } from "../../../lib/api/facadeLightingContact";
 import {
   FiGrid,
   FiSun,
@@ -91,6 +93,38 @@ const formServicesList = [
 ];
 
 export default function FacadeLightingPage() {
+  const [portfolioData, setPortfolioData] = useState(undefined);
+  const [portfolioLoading, setPortfolioLoading] = useState(true);
+  const [portfolioError, setPortfolioError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getFacadeLightingPortfolio();
+        setPortfolioData(data || []);
+      } catch (err) {
+        setPortfolioError(err.message || "Failed to load portfolio");
+        setPortfolioData([]);
+      } finally {
+        setPortfolioLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const handleContactSubmit = async (formData) => {
+    const payload = {
+      fullName: formData.fullName,
+      phoneNumber: formData.phone,
+      email: formData.email,
+      location: formData.location,
+      serviceRequired: formData.service,
+      otherMessage: formData.service === "Others" ? formData.otherService : "",
+      projectDetails: formData.message,
+    };
+    await submitFacadeLightingContact(payload);
+  };
+
   return (
     <>
       <ServiceDetailTemplate
@@ -107,19 +141,14 @@ export default function FacadeLightingPage() {
         whyChooseUsChecklist={whyChooseUsChecklist}
         whyChooseUsImage="/a4.png"
         portfolioTitle="Showcasing Facade Lighting Excellence"
-        portfolioBigImage="/pk2.png"
-        portfolioBigTag="Facade Design"
-        portfolioBigTitle="Dynamic Facade LED Lighting Erection & Programming"
-        portfolioStackedImage1="/a4.png"
-        portfolioStackedTag1="Dynamic Color"
-        portfolioStackedTitle1="Multi-Color DMX512 Facade Controller Projects"
-        portfolioStackedImage2="/a3.png"
-        portfolioStackedTag2="Landscape Lighting"
-        portfolioStackedTitle2="Aesthetic Building Landscape & Path Illumination"
+        portfolioData={portfolioData}
+        portfolioLoading={portfolioLoading}
+        portfolioError={portfolioError}
         processSteps={processSteps}
         ctaTitle="Aesthetic Illumination for Your Building?"
         ctaDesc="Get a custom design proposal and energy-efficient LED installation for your property. Your branding visibility is our specialty."
         formServicesList={formServicesList}
+        onSubmitContact={handleContactSubmit}
       />
       <div className="bg-gray-100">
         <Contact />

@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ServiceDetailTemplate from "../../components/ServiceDetailTemplate";
 import Contact from "../../components/contact";
+import { getTransformerPortfolio } from "../../../lib/api/transformerPortfolio";
+import { submitTransformerOilFiltrationContact } from "../../../lib/api/transformerOilFiltrationContact";
 import {
   FiGrid,
   FiActivity,
@@ -91,6 +93,38 @@ const formServicesList = [
 ];
 
 export default function TransformerServicesPage() {
+  const [portfolioData, setPortfolioData] = useState(undefined);
+  const [portfolioLoading, setPortfolioLoading] = useState(true);
+  const [portfolioError, setPortfolioError] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getTransformerPortfolio();
+        setPortfolioData(data || []);
+      } catch (err) {
+        setPortfolioError(err.message || "Failed to load portfolio");
+        setPortfolioData([]);
+      } finally {
+        setPortfolioLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const handleContactSubmit = async (formData) => {
+    const payload = {
+      fullName: formData.fullName,
+      phoneNumber: formData.phone,
+      email: formData.email,
+      location: formData.location,
+      serviceRequired: formData.service,
+      otherMessage: formData.service === "Others" ? formData.otherService : "",
+      projectDetails: formData.message,
+    };
+    await submitTransformerOilFiltrationContact(payload);
+  };
+
   return (
     <>
       <ServiceDetailTemplate
@@ -107,19 +141,14 @@ export default function TransformerServicesPage() {
         whyChooseUsChecklist={whyChooseUsChecklist}
         whyChooseUsImage="/za1.jpg"
         portfolioTitle="Showcasing Transformer Excellence"
-        portfolioBigImage="/pk.png"
-        portfolioBigTag="Oil Filtration"
-        portfolioBigTitle="6000 LPH High-Vacuum Oil Filtration & De-gasification"
-        portfolioStackedImage1="/a8.jpg"
-        portfolioStackedTag1="Diagnostics"
-        portfolioStackedTitle1="Dielectric Insulation Megger & BDV Testing"
-        portfolioStackedImage2="/za1.jpg"
-        portfolioStackedTag2="Breather Servicing"
-        portfolioStackedTitle2="Bushing, Gasket & Breather Re-commissioning Projects"
+        portfolioData={portfolioData}
+        portfolioLoading={portfolioLoading}
+        portfolioError={portfolioError}
         processSteps={processSteps}
         ctaTitle="Need Professional Transformer Services?"
         ctaDesc="Get reliable, safe, and high-quality transformer filtration and testing from our certified engineers. Your grid health is our priority."
         formServicesList={formServicesList}
+        onSubmitContact={handleContactSubmit}
       />
       <div className="bg-gray-100">
         <Contact />

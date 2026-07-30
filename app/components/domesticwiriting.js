@@ -16,6 +16,7 @@ import {
   FiZap,
 } from "react-icons/fi";
 import { FaLightbulb } from "react-icons/fa";
+import ServicePortfolio from "./ServicePortfolio";
 
 const expertiseCards = [
   {
@@ -62,14 +63,22 @@ const expertiseCards = [
   },
 ];
 
-export default function DomesticWiriting() {
+export default function DomesticWiriting({
+  portfolioData,
+  portfolioLoading = false,
+  portfolioError = null,
+  onSubmitContact, // Optional custom submit handler
+}) {
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState(null);
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
     email: "",
     location: "",
     service: "Domestic Wiring",
+    otherService: "",
     message: "",
   });
 
@@ -78,20 +87,45 @@ export default function DomesticWiriting() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    setTimeout(() => {
-      setFormSubmitted(false);
-      setFormData({
-        fullName: "",
-        phone: "",
-        email: "",
-        location: "",
-        service: "Domestic Wiring",
-        message: "",
-      });
-    }, 5000);
+
+    if (onSubmitContact) {
+      setFormLoading(true);
+      setFormError(null);
+      try {
+        await onSubmitContact(formData);
+        setFormSubmitted(true);
+        setFormData({
+          fullName: "",
+          phone: "",
+          email: "",
+          location: "",
+          service: "Domestic Wiring",
+          otherService: "",
+          message: "",
+        });
+        setTimeout(() => setFormSubmitted(false), 5000);
+      } catch (err) {
+        setFormError(err.message || "Failed to submit form. Please try again.");
+      } finally {
+        setFormLoading(false);
+      }
+    } else {
+      setFormSubmitted(true);
+      setTimeout(() => {
+        setFormSubmitted(false);
+        setFormData({
+          fullName: "",
+          phone: "",
+          email: "",
+          location: "",
+          service: "Domestic Wiring",
+          otherService: "",
+          message: "",
+        });
+      }, 5000);
+    }
   };
 
   return (
@@ -422,6 +456,16 @@ export default function DomesticWiriting() {
                 </div>
               )}
 
+              {formError && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl text-sm flex items-start gap-3">
+                  <div className="mt-0.5 font-bold">X</div>
+                  <div>
+                    <p className="font-semibold">Submission Failed</p>
+                    <p className="text-xs mt-0.5">{formError}</p>
+                  </div>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <input
@@ -486,8 +530,23 @@ export default function DomesticWiriting() {
                     <option value="Other Electrical Works">
                       Other Electrical Works
                     </option>
+                    <option value="Others">Others</option>
                   </select>
                 </div>
+
+                {formData.service === "Others" && (
+                  <div className="animate-fade-in">
+                    <input
+                      type="text"
+                      name="otherService"
+                      value={formData.otherService}
+                      onChange={handleInputChange}
+                      placeholder="Please specify your requirement"
+                      required
+                      className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:bg-white focus:border-red-500 transition"
+                    />
+                  </div>
+                )}
 
                 <div>
                   <textarea
@@ -502,9 +561,10 @@ export default function DomesticWiriting() {
 
                 <button
                   type="submit"
-                  className="w-full bg-black text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition shadow-lg flex items-center justify-center gap-2"
+                  disabled={formLoading}
+                  className={`w-full bg-black text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition shadow-lg flex items-center justify-center gap-2 ${formLoading ? "opacity-70 cursor-not-allowed" : ""}`}
                 >
-                  Submit Enquiry <FiArrowRight />
+                  {formLoading ? "Submitting..." : "Submit Enquiry"} {!formLoading && <FiArrowRight />}
                 </button>
               </form>
             </div>
@@ -515,86 +575,28 @@ export default function DomesticWiriting() {
       {/* ========================================================
           4. SHOWCASING EXCELLENCE (PORTFOLIO - DARK SECTION)
       ======================================================== */}
-      <section className="w-full py-20 px-6 lg:px-20 bg-[#111111] text-white">
-        <div className="max-w-7xl mx-auto">
-          {/* TOP HEADER */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <p className="text-red-500 font-semibold text-sm uppercase tracking-widest mb-2">
-                Portfolio
-              </p>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
-                Showcasing Excellence
-              </h2>
-            </div>
-            <p className="text-gray-400 text-sm max-w-sm mt-4 md:mt-0 text-left md:text-right">
-              A glimpse into our high-precision electrical installations across
-              luxury residences.
-            </p>
-          </div>
-
-          {/* GALLERY GRID */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* LEFT BIG IMAGE */}
-            <div className="lg:col-span-7 h-[360px] sm:h-[430px] rounded-3xl overflow-hidden relative group bg-gray-900 border border-gray-800">
-              <Image
-                src="/a1.png"
-                alt="Electrical Distribution Panel Excellence"
-                fill
-                className="object-cover group-hover:scale-105 transition duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
-              <div className="absolute bottom-6 left-6 right-6 translate-y-4 group-hover:translate-y-0 transition duration-500 opacity-0 group-hover:opacity-100">
-                <span className="px-3 py-1 bg-red-600 text-white text-xs font-semibold rounded-full">
-                  Precision Wiring
-                </span>
-                <p className="text-white font-bold text-lg mt-2">
-                  Multi-Phase Distribution Control Panel
-                </p>
-              </div>
-            </div>
-
-            {/* RIGHT STACKED IMAGES */}
-            <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 h-auto lg:h-[430px]">
-              <div className="h-[200px] lg:h-[203px] rounded-3xl overflow-hidden relative group bg-gray-900 border border-gray-800">
-                <Image
-                  src="/a7.jpg"
-                  alt="Certified Engineer Inspection"
-                  fill
-                  className="object-cover group-hover:scale-105 transition duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute bottom-4 left-5">
-                  <p className="text-xs text-red-400 font-semibold">
-                    Certified Technicians
-                  </p>
-                  <p className="text-sm font-bold text-white">
-                    Rigorous Safety Compliance Audits
-                  </p>
-                </div>
-              </div>
-
-              <div className="h-[200px] lg:h-[203px] rounded-3xl overflow-hidden relative group bg-gray-900 border border-gray-800">
-                <Image
-                  src="/a8.jpg"
-                  alt="Electrical Load & Earthing Testing"
-                  fill
-                  className="object-cover group-hover:scale-105 transition duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute bottom-4 left-5">
-                  <p className="text-xs text-red-400 font-semibold">
-                    Testing & Diagnostic
-                  </p>
-                  <p className="text-sm font-bold text-white">
-                    Insulation & Load Balance Verification
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServicePortfolio 
+        title="Showcasing Excellence"
+        data={portfolioData !== undefined ? portfolioData : [
+          {
+            image: "/a1.png",
+            title: "Multi-Phase Distribution Control Panel",
+            subTitle: "Precision Wiring"
+          },
+          {
+            image: "/a7.jpg",
+            title: "Rigorous Safety Compliance Audits",
+            subTitle: "Certified Technicians"
+          },
+          {
+            image: "/a8.jpg",
+            title: "Insulation & Load Balance Verification",
+            subTitle: "Testing & Diagnostic"
+          }
+        ]}
+        loading={portfolioLoading}
+        error={portfolioError}
+      />
 
       {/* ========================================================
           5. THE BHAGAT EXECUTION PROCESS + GUARANTEE CARDS

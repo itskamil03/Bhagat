@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
+import { getAboutHeads } from "@/lib/api/aboutHead";
 
 // Reusable animated counter component
 function Counter({ target, duration = 1500, suffix = "" }) {
@@ -54,10 +55,28 @@ function Counter({ target, duration = 1500, suffix = "" }) {
 }
 
 export default function Abouthero() {
-  const slideshowImages = ["/dw1.jpg", "/fi2.jpg", "/fi3.jpg"];
+  const [aboutData, setAboutData] = useState(null);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await getAboutHeads();
+        if (data && data.length > 0) {
+          setAboutData(data[0]);
+        }
+      } catch (err) {
+        console.error("Failed to load about head:", err);
+      }
+    }
+    loadData();
+  }, []);
+
+  const apiImages = aboutData?.images?.map(img => img.image) || [];
+  const slideshowImages = apiImages.length > 0 ? apiImages : ["/dw1.jpg", "/fi2.jpg", "/fi3.jpg"];
   const [activeIdx, setActiveIdx] = useState(0);
 
   useEffect(() => {
+    if (slideshowImages.length <= 1) return;
     const timer = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % slideshowImages.length);
     }, 4000);
@@ -72,18 +91,23 @@ export default function Abouthero() {
           <p className="text-red-500 font-bold text-base sm:text-lg lg:text-xl mb-2 lg:mb-1 [@media(width:1680px)]:text-2xl [@media(width:1680px)]:mb-4">ABOUT US</p>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-gray-800 [@media(width:1680px)]:text-[4.5rem]">
-            Engineering Excellence.
-            <br />
-            <span className="text-red-500">Built on Trust.</span>
+            {aboutData?.title ? (
+              <span dangerouslySetInnerHTML={{ __html: aboutData.title }} />
+            ) : (
+              <>
+                Engineering Excellence.
+                <br />
+                <span className="text-red-500">Built on Trust.</span>
+              </>
+            )}
           </h1>
 
           <p className="mt-4 lg:mt-6 text-sm sm:text-base text-gray-600 leading-relaxed [@media(width:1680px)]:text-2xl [@media(width:1680px)]:mt-10 [@media(width:1680px)]:leading-relaxed">
-            For nearly five decades, Bhagat Engineering Works has delivered
-            integrated electrical, mechanical, and infrastructure engineering
-            solutions with precision, reliability, and innovation. From power
-            infrastructure and railway electrification to turnkey engineering
-            projects, we continue to power India's progress with uncompromising
-            quality.
+            {aboutData?.description ? (
+              <span dangerouslySetInnerHTML={{ __html: aboutData.description }} />
+            ) : (
+              "For nearly five decades, Bhagat Engineering Works has delivered integrated electrical, mechanical, and infrastructure engineering solutions with precision, reliability, and innovation. From power infrastructure and railway electrification to turnkey engineering projects, we continue to power India's progress with uncompromising quality."
+            )}
           </p>
 
           {/* STATS */}

@@ -1,10 +1,117 @@
 "use client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { getCertificates, certificatePdfUrl } from "../../lib/api/certificate";
 
 export default function Certification() {
+  const [certificates, setCertificates] = useState([]);
+
+  // Slider states
+  const [scrollIndex, setScrollIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
+
+  // Resize listener
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) setItemsPerPage(1);
+      else if (window.innerWidth < 1024) setItemsPerPage(2);
+      else setItemsPerPage(3);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const maxIndex = Math.max(0, certificates.length - itemsPerPage);
+
+  const slidePrev = () => setScrollIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  const slideNext = () => setScrollIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsDragging(true);
+  };
+
+  const onTouchMove = (e) => {
+    if (!touchStart) return;
+    const currentX = e.targetTouches[0].clientX;
+    const deltaX = currentX - touchStart;
+
+    let finalOffset = deltaX;
+    if (scrollIndex === 0 && deltaX > 0) {
+      finalOffset = deltaX * 0.3;
+    } else if (scrollIndex === maxIndex && deltaX < 0) {
+      finalOffset = deltaX * 0.3;
+    }
+    setDragOffset(finalOffset);
+  };
+
+  const onTouchEnd = () => {
+    setIsDragging(false);
+    if (!touchStart || dragOffset === 0) {
+      setTouchStart(null);
+      setDragOffset(0);
+      return;
+    }
+
+    const distance = dragOffset;
+    const isLeftSwipe = distance < -minSwipeDistance;
+    const isRightSwipe = distance > minSwipeDistance;
+
+    let nextIndex = scrollIndex;
+    if (isLeftSwipe && scrollIndex < maxIndex) {
+      nextIndex = scrollIndex + 1;
+    } else if (isRightSwipe && scrollIndex > 0) {
+      nextIndex = scrollIndex - 1;
+    }
+
+    setScrollIndex(nextIndex);
+    setTouchStart(null);
+    setDragOffset(0);
+  };
+
+  useEffect(() => {
+    async function fetchCertificates() {
+      try {
+        const data = await getCertificates();
+        if (data && Array.isArray(data)) {
+          setCertificates(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch dynamic certificates:", err);
+      }
+    }
+    fetchCertificates();
+  }, []);
+
   return (
     <section className="w-full bg-gray-100 py-12 px-6 lg:px-20 text-center">
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .cert-slider-track {
+          transform: var(--slider-transform);
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+          .cert-slider-track {
+            transform: translateX(calc(-1 * min(var(--scroll-index), var(--max-index-tablet)) * (50% + 12px))) !important;
+          }
+        }
+        @media (min-width: 1024px) {
+          .cert-slider-track {
+            transform: translateX(calc(-1 * min(var(--scroll-index), var(--max-index-desktop)) * (33.333% + 8px))) !important;
+          }
+        }
+      `,
+        }}
+      />
+
       {/* HEADING */}
       <p className="text-red-600 text-lg sm:text-xl lg:text-2xl font-bold tracking-widest">
         <span className="text-black">CERTIFICATIONS</span>
@@ -20,27 +127,68 @@ export default function Certification() {
         continuous improvement.
       </p>
 
-      {/* CARDS */}
-      <motion.div
-        className="mt-12 grid md:grid-cols-3 gap-6"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-        variants={{
-          hidden: { opacity: 0 },
-          visible: {
-            opacity: 1,
-            transition: {
-              staggerChildren: 0.15,
-            },
-          },
-        }}
+      {/* CAROUSEL WRAPPER */}
+      <div
+        className="w-full overflow-hidden max-w-7xl mx-auto mt-12"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
       >
-        {/* ALL IMAGE CARDS */}
-        <Card img="/cer2_page-0001.jpg" />
-        <Card img="/cer1_page-0001.jpg" />
-        <Card img="/cer3_page-0001.jpg" />
-      </motion.div>
+        <motion.div
+          className={`cert-slider-track flex gap-6 ${isDragging
+              ? "transition-none"
+              : "transition-transform duration-500 ease-out"
+            }`}
+          style={{
+            "--scroll-index": scrollIndex,
+            "--max-index-tablet": maxIndex,
+            "--max-index-desktop": maxIndex,
+            "--slider-transform": isDragging
+              ? `translateX(calc(-1 * ${scrollIndex} * (100% + 24px) + ${dragOffset}px))`
+              : `translateX(calc(-1 * ${scrollIndex} * (100% + 24px)))`,
+          }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.15,
+              },
+            },
+          }}
+        >
+          {certificates.map((item) => (
+            <div key={item._id} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0">
+              <Card img={certificatePdfUrl(item)} />
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* SLIDER CONTROLS */}
+      {maxIndex > 0 && (
+        <div className="flex justify-center mt-10">
+          <div className="bg-black text-white px-6 py-3 rounded-full flex gap-6 items-center shadow-lg">
+            <button
+              onClick={slidePrev}
+              className="cursor-pointer hover:text-red-600 transition text-xl font-bold px-2"
+              aria-label="Previous Certificates"
+            >
+              ‹
+            </button>
+            <button
+              onClick={slideNext}
+              className="cursor-pointer hover:text-red-600 transition text-xl font-bold px-2"
+              aria-label="Next Certificates"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
