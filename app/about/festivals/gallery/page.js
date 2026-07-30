@@ -85,18 +85,6 @@ function GalleryContent() {
            }
         }
         
-        // Remove duplicates, ensure it is exactly 4 digits, and sort ascending
-        const sortedYears = Array.from(new Set(extractedYears))
-           .map(y => y.toString().trim())
-           .filter(y => /^\d{4}$/.test(y))
-           .sort((a, b) => parseInt(a) - parseInt(b));
-           
-        console.log("Extracted Years:", extractedYears);
-        console.log("Sorted Years:", sortedYears);
-        
-        // Force state update with the extracted years
-        setGlobalYears(sortedYears);
-
         let images = [];
         if (foundFestival) {
            const targetLabel = foundFestival.label || foundFestival.title;
@@ -107,7 +95,7 @@ function GalleryContent() {
                     const matchingEvents = actualGroupedObject[year].filter(item => 
                        (item.label && targetLabel && item.label === targetLabel) || 
                        (item.title && targetLabel && item.title === targetLabel) ||
-                       (item._id === foundFestival._id) // Fallback if no label/title
+                       (item._id === foundFestival._id)
                     );
                     
                     for (const event of matchingEvents) {
@@ -117,7 +105,7 @@ function GalleryContent() {
                        if (Array.isArray(event.images) && event.images.length > 0) {
                           event.images.forEach(img => {
                              if (img && img.image) {
-                                images.push({ src: img.image, year: eventYear });
+                                images.push({ src: img.image, year: img.year || eventYear });
                                 eventHasImages = true;
                              }
                           });
@@ -145,7 +133,7 @@ function GalleryContent() {
                  if (Array.isArray(event.images) && event.images.length > 0) {
                     event.images.forEach(img => {
                        if (img && img.image) {
-                          images.push({ src: img.image, year: eventYear });
+                          images.push({ src: img.image, year: img.year || eventYear });
                           eventHasImages = true;
                        }
                     });
@@ -157,15 +145,16 @@ function GalleryContent() {
                  }
               }
            }
+        } else if (queryImage) {
+           images = [{ src: queryImage, year: "" }];
         }
-
-        if (images.length === 0) {
-          if (foundFestival && foundFestival.image) {
-            images = [{ src: foundFestival.image, year: foundFestival.year || foundYear }];
-          } else if (queryImage) {
-            images = [{ src: queryImage, year: "" }];
-          }
-        }
+        
+        // Compute unique years actually present in the images array
+        const actualYears = Array.from(new Set(images.map(img => img.year?.toString().trim())))
+           .filter(y => y && /^\d{4}$/.test(y))
+           .sort((a, b) => parseInt(a) - parseInt(b));
+           
+        setGlobalYears(actualYears);
         
         setGallery({
           title: foundFestival?.heading || foundFestival?.title || queryTitle || "Festival Gallery",
