@@ -147,18 +147,6 @@ export default function Certification() {
               ? `translateX(calc(-1 * ${scrollIndex} * (100% + 24px) + ${dragOffset}px))`
               : `translateX(calc(-1 * ${scrollIndex} * (100% + 24px)))`,
           }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.15,
-              },
-            },
-          }}
         >
           {certificates.map((item) => (
             <div key={item._id} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0">
@@ -195,31 +183,38 @@ export default function Certification() {
 
 /* CARD COMPONENT */
 function Card({ img }) {
+  const isPdf = img?.toLowerCase().endsWith(".pdf");
+
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 40 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.5, ease: "easeOut" },
-        },
-      }}
+    <motion.a
+      href={img} 
+      target="_blank" 
+      rel="noopener noreferrer"
       whileHover={{
         scale: 1.04,
         y: -6,
         shadow: "0 25px 50px -12px rgba(230, 27, 35, 0.25)",
         transition: { duration: 0.25 },
       }}
-      className="group bg-white border-2 border-red-500 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer relative w-full aspect-[4/3]"
+      className="group block bg-gray-50 flex flex-col items-center justify-center border-2 border-red-500 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer relative w-full aspect-[4/3]"
     >
-      <Image
-        src={img}
-        alt="certificate"
-        fill
-        className="object-cover transition-all duration-300 group-hover:object-contain bg-white"
-        sizes="(max-w-768px) 100vw, 33vw"
-      />
-    </motion.div>
+      {isPdf ? (
+        <div className="flex flex-col items-center justify-center w-full h-full text-red-600 bg-white group-hover:bg-red-50 transition-colors duration-300 p-4">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span className="font-semibold text-lg text-gray-800">View Certificate</span>
+          <span className="text-sm text-gray-500 mt-1 text-center">(PDF Document)</span>
+        </div>
+      ) : (
+        <Image
+          src={img}
+          alt="certificate"
+          fill
+          className="object-cover transition-all duration-300 group-hover:object-contain bg-white"
+          sizes="(max-w-768px) 100vw, 33vw"
+        />
+      )}
+    </motion.a>
   );
 }
