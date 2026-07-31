@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
-import { getClientVoices, clientVoiceImageUrl } from "../../lib/api/clientVoice";
+import { getClientVoices, clientVoiceImageUrl, clientVoiceDocumentUrl } from "../../lib/api/clientVoice";
 
 export default function Client() {
   const [data, setData] = useState([]);
@@ -203,20 +203,23 @@ export default function Client() {
                     </h3>
 
                     {/* LINK */}
-                    {item.pdf && item.pdf.split('?')[0].toLowerCase().endsWith(".pdf") ? (
-                      <a
-                        href={item.pdf}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 font-medium cursor-pointer"
-                      >
-                        Read case study →
-                      </a>
-                    ) : (
-                      <p className="flex items-center gap-2 font-medium opacity-50 cursor-not-allowed">
-                        Read case study →
-                      </p>
-                    )}
+                    {(() => {
+                      const docUrl = clientVoiceDocumentUrl(item);
+                      return docUrl && docUrl.split('?')[0].toLowerCase().endsWith(".pdf") ? (
+                        <a
+                          href={docUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 font-medium cursor-pointer"
+                        >
+                          Read case study →
+                        </a>
+                      ) : (
+                        <p className="flex items-center gap-2 font-medium opacity-50 cursor-not-allowed">
+                          Read case study →
+                        </p>
+                      );
+                    })()}
                   </div>
                 </div>
               );

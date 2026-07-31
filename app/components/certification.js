@@ -129,7 +129,7 @@ export default function Certification() {
 
       {/* CAROUSEL WRAPPER */}
       <div
-        className="w-full overflow-hidden max-w-7xl mx-auto mt-12"
+        className="w-full overflow-hidden max-w-7xl mx-auto mt-2 py-10 px-6"
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -199,12 +199,14 @@ function Card({ img }) {
       className="group block bg-gray-50 flex flex-col items-center justify-center border-2 border-red-500 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer relative w-full aspect-[4/3]"
     >
       {isPdf ? (
-        <div className="flex flex-col items-center justify-center w-full h-full text-red-600 bg-white group-hover:bg-red-50 transition-colors duration-300 p-4">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <span className="font-semibold text-lg text-gray-800">View Certificate</span>
-          <span className="text-sm text-gray-500 mt-1 text-center">(PDF Document)</span>
+        <div className="relative w-full h-full overflow-hidden bg-gray-200 flex items-center justify-center">
+          <iframe
+            src={`${img}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
+            className="w-full h-full pointer-events-none border-none transition-transform duration-500 scale-[1.85] group-hover:scale-100 origin-center"
+            title="Certificate PDF Preview"
+          />
+          {/* Overlay to catch clicks and prevent interaction with the iframe */}
+          <div className="absolute inset-0 bg-transparent z-10" />
         </div>
       ) : (
         <Image

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa";
 import Contact from "../../components/contact";
@@ -306,12 +307,22 @@ export default function FoundationGalleryPage() {
             </h2>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-            <button className="w-full sm:w-auto bg-[#CC0000] text-white px-8 md:px-10 py-3.5 md:py-4 rounded-[4px] font-semibold text-[13px] md:text-sm hover:bg-red-800 transition-colors shadow-[0_4px_14px_rgba(204,0,0,0.3)] text-center">
+            <button
+              onClick={() => {
+                window.scrollTo({
+                  top: document.body.scrollHeight,
+                  behavior: "smooth",
+                });
+              }}
+              className="w-full sm:w-auto bg-[#CC0000] text-white px-8 md:px-10 py-3.5 md:py-4 rounded-[4px] font-semibold text-[13px] md:text-sm hover:bg-red-800 transition-colors shadow-[0_4px_14px_rgba(204,0,0,0.3)] text-center"
+            >
               Discuss Your Project
             </button>
-            <button className="w-full sm:w-auto bg-white text-gray-800 border border-gray-200 px-8 md:px-10 py-3.5 md:py-4 rounded-[4px] font-semibold text-[13px] md:text-sm hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm text-center">
-              View Our Services
-            </button>
+            <Link href="/service">
+              <button className="w-full sm:w-auto bg-white text-gray-800 border border-gray-200 px-8 md:px-10 py-3.5 md:py-4 rounded-[4px] font-semibold text-[13px] md:text-sm hover:bg-gray-50 hover:border-gray-300 transition-colors shadow-sm text-center">
+                View Our Services
+              </button>
+            </Link>
           </div>
         </div>
       </section>

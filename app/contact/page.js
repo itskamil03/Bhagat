@@ -88,7 +88,12 @@ export default function ContactPage() {
       <section className="max-w-7xl mx-auto px-6 lg:px-20 -mt-10 relative z-20">
         <div className="grid md:grid-cols-3 gap-6">
           {/* CARD 1 - LOCATION */}
-          <div className="bg-white rounded-2xl p-7 shadow-xl border border-gray-100 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300">
+          <a
+            href="https://maps.google.com/?q=Bihar,+India"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block bg-white rounded-2xl p-7 shadow-xl border border-gray-100 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 cursor-pointer"
+          >
             <div>
               <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl mb-5">
                 <FaMapMarkerAlt />
@@ -108,10 +113,13 @@ export default function ContactPage() {
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs font-bold text-red-600">
               <span>Authorised Class-A Contractor</span>
             </div>
-          </div>
+          </a>
 
           {/* CARD 2 - DIRECT PHONES */}
-          <div className="bg-white rounded-2xl p-7 shadow-xl border border-gray-100 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300">
+          <a
+            href="tel:18008890705"
+            className="block bg-white rounded-2xl p-7 shadow-xl border border-gray-100 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 cursor-pointer"
+          >
             <div>
               <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl mb-5">
                 <FaPhoneAlt />
@@ -132,10 +140,13 @@ export default function ContactPage() {
               <FaCheckCircle />
               <span>Mon — Sat (9:00 AM – 7:00 PM)</span>
             </div>
-          </div>
+          </a>
 
           {/* CARD 3 - EMAIL */}
-          <div className="bg-white rounded-2xl p-7 shadow-xl border border-gray-100 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300">
+          <a
+            href="mailto:info@bhagatengg.in"
+            className="block bg-white rounded-2xl p-7 shadow-xl border border-gray-100 flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300 cursor-pointer"
+          >
             <div>
               <div className="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-xl mb-5">
                 <FaEnvelope />
@@ -154,7 +165,7 @@ export default function ContactPage() {
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs font-bold text-blue-600">
               <span>Average response time: &lt; 4 hours</span>
             </div>
-          </div>
+          </a>
         </div>
       </section>
 
