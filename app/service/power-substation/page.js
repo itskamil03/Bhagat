@@ -133,13 +133,13 @@ export default function PowerSubstationPage() {
         titlePart2="Power Substation"
         subtext="Operating and maintaining high voltage systems up to 33kV. Complete turnkey planning, gantry erection, switchgear installations, and safety testing."
         description="Bhagat Engineering Works provides complete planning, civil foundations, structural erection, component assembly, and safety testing of electrical substations. We have nearly 50 years of experience serving South Central Railway, Metro lines, state power boards, and heavy industrial units."
-        heroImage="/a9.png"
+        heroImage="/S1.1.jpg"
         formServiceDefault="Substation Erection"
         expertiseTitle="Specialized Substation Services"
         expertiseCards={expertiseCards}
         whyChooseUsTitle="Why Engineers Choose Us for Substation Erection"
         whyChooseUsChecklist={whyChooseUsChecklist}
-        whyChooseUsImage="/pk.png"
+        whyChooseUsImage="/S1.2.jpg"
         portfolioTitle="Showcasing Substation Excellence"
         portfolioData={portfolioData}
         portfolioLoading={portfolioLoading}

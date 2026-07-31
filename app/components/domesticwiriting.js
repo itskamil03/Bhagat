@@ -189,7 +189,7 @@ export default function DomesticWiriting({
           <div className="lg:col-span-5">
             <div className="relative w-full h-[380px] sm:h-[440px] rounded-3xl overflow-hidden shadow-2xl border border-white/40">
               <Image
-                src="/za1.jpg"
+                src="/S4.1.jpg"
                 alt="Domestic Wiring Excellence"
                 fill
                 className="object-cover hover:scale-105 transition duration-700"
@@ -414,7 +414,7 @@ export default function DomesticWiriting({
             {/* ENGINEER WIRING IMAGE BANNER */}
             <div className="relative w-full h-[280px] sm:h-[320px] rounded-3xl overflow-hidden shadow-xl border border-gray-100">
               <Image
-                src="/dw1.jpg"
+                src="/S4.2.jpg"
                 alt="Precision Domestic Electrical Installation"
                 fill
                 className="object-cover hover:scale-105 transition duration-700"

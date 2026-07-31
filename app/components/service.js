@@ -136,7 +136,7 @@ export default function Service() {
 
     const timer = setTimeout(() => {
       setActiveImageIndex((prev) => (prev + 1) % imagesCount);
-    }, 1500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [activeServiceIndex, activeImageIndex, activeService?.images?.length]);
@@ -167,8 +167,10 @@ export default function Service() {
   const originalImages = activeService?.images || [];
   let marqueeImages = originalImages.map((img, i) => ({ img, originalIndex: i }));
   // Duplicate until we have enough to fill the screen (at least 6-8 usually enough for max 470px width)
-  while (marqueeImages.length < 8) {
-    marqueeImages = [...marqueeImages, ...originalImages.map((img, i) => ({ img, originalIndex: i }))];
+  if (originalImages.length > 1) {
+    while (marqueeImages.length < 8) {
+      marqueeImages = [...marqueeImages, ...originalImages.map((img, i) => ({ img, originalIndex: i }))];
+    }
   }
 
   return (
@@ -204,8 +206,8 @@ export default function Service() {
                     key={cat}
                     onClick={() => handleCategorySelect(cat)}
                     className={`px-5 py-2 rounded-lg font-semibold text-sm transition duration-300 ${isActive
-                        ? "bg-[#c00000] text-white shadow-sm"
-                        : "text-gray-500 hover:text-gray-900"
+                      ? "bg-[#c00000] text-white shadow-sm"
+                      : "text-gray-500 hover:text-gray-900"
                       }`}
                   >
                     {cat}
@@ -255,8 +257,8 @@ export default function Service() {
                       setActiveImageIndex(0);
                     }}
                     className={`relative w-full text-left pl-7 pr-5 rounded-xl font-semibold transition-all duration-300 shadow-sm border text-xs lg:text-sm leading-snug flex items-center h-full cursor-pointer overflow-hidden ${isActive
-                        ? "bg-[#111622] text-white border-[#111622]"
-                        : "bg-white text-gray-800 border-gray-100 hover:bg-gray-50 hover:border-gray-300"
+                      ? "bg-[#111622] text-white border-[#111622]"
+                      : "bg-white text-gray-800 border-gray-100 hover:bg-gray-50 hover:border-gray-300"
                       }`}
                   >
                     {isActive && (
@@ -281,72 +283,93 @@ export default function Service() {
         {/* CENTER COLUMN: MAIN IMAGE & FLOATING THUMBNAILS IN BOTTOM-LEFT */}
         <div className="relative overflow-hidden rounded-[20px] bg-gray-100 shadow-lg h-[300px] lg:h-[500px] w-full min-w-0">
           {/* Main Slider Images */}
-          {activeService?.images.map((img, i) => {
-            const isVisible = i === activeImageIndex;
-            return (
-              <div
-                key={i}
-                className={`absolute inset-0 transition-opacity duration-500 ${isVisible ? "opacity-100 z-10" : "opacity-0 z-0"
-                  }`}
-              >
-                <Image
-                  src={img}
-                  fill
-                  className="object-cover"
-                  alt=""
-                  priority={i === 0}
-                />
-              </div>
-            );
-          })}
+          {activeService?.images?.length > 0 ? (
+            activeService.images.map((img, i) => {
+              const isVisible = i === activeImageIndex;
+              return (
+                <div
+                  key={i}
+                  className={`absolute inset-0 transition-opacity duration-500 ${isVisible ? "opacity-100 z-10" : "opacity-0 z-0"
+                    }`}
+                >
+                  <Image
+                    src={img}
+                    fill
+                    className="object-cover"
+                    alt=""
+                    priority={i === 0}
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-200">
+              <svg className="w-12 h-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <span className="text-gray-500 font-medium">No images uploaded for this service</span>
+            </div>
+          )}
 
           {/* Floating Thumbnails centered at bottom */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-fit max-w-[90%] lg:max-w-[470px] overflow-hidden flex py-2 px-2 group">
-            {/* We render two identical marquee tracks that animate together */}
-            <div className="flex animate-custom-marquee group-hover:[animation-play-state:paused] pr-2.5 shrink-0">
-              {marqueeImages.map((item, i) => (
-                <div
-                  key={`track1-${i}`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => handleThumbnailClick(item.originalIndex)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      handleThumbnailClick(item.originalIndex);
-                    }
-                  }}
-                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${item.originalIndex === activeImageIndex ? "scale-105" : ""
-                    }`}
-                >
-                  <Image src={item.img} fill className="object-cover" alt="" />
-                  <div
-                    className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
-                      }`}
-                  />
+          {originalImages.length > 0 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-fit max-w-[90%] lg:max-w-[470px] overflow-hidden flex py-2 px-2 group">
+              {originalImages.length === 1 ? (
+                /* Static single thumbnail */
+                <div className="flex justify-center w-full">
+                  <div className="relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden border-red-600 scale-105">
+                    <Image src={originalImages[0]} fill className="object-cover" alt="" />
+                    <div className="absolute inset-0 rounded-lg border-2 pointer-events-none z-10 border-red-600" />
+                  </div>
                 </div>
-              ))}
-            </div>
+              ) : (
+                /* Continuous sliding marquee for multiple images */
+                <>
+                  <div className="flex animate-custom-marquee group-hover:[animation-play-state:paused] pr-2.5 shrink-0">
+                    {marqueeImages.map((item, i) => (
+                      <div
+                        key={`track1-${i}`}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => handleThumbnailClick(item.originalIndex)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            handleThumbnailClick(item.originalIndex);
+                          }
+                        }}
+                        className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${item.originalIndex === activeImageIndex ? "scale-105" : ""
+                          }`}
+                      >
+                        <Image src={item.img} fill className="object-cover" alt="" />
+                        <div
+                          className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
+                            }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
 
-            <div className="flex animate-custom-marquee group-hover:[animation-play-state:paused] pr-2.5 shrink-0" aria-hidden="true">
-              {marqueeImages.map((item, i) => (
-                <div
-                  key={`track2-${i}`}
-                  role="button"
-                  tabIndex={-1}
-                  onClick={() => handleThumbnailClick(item.originalIndex)}
-                  className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${item.originalIndex === activeImageIndex ? "scale-105" : ""
-                    }`}
-                >
-                  <Image src={item.img} fill className="object-cover" alt="" />
-                  <div
-                    className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
-                      }`}
-                  />
-                </div>
-              ))}
+                  <div className="flex animate-custom-marquee group-hover:[animation-play-state:paused] pr-2.5 shrink-0" aria-hidden="true">
+                    {marqueeImages.map((item, i) => (
+                      <div
+                        key={`track2-${i}`}
+                        role="button"
+                        tabIndex={-1}
+                        onClick={() => handleThumbnailClick(item.originalIndex)}
+                        className={`relative w-20 h-14 xl:w-36 xl:h-24 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 mr-2.5 ${item.originalIndex === activeImageIndex ? "scale-105" : ""
+                          }`}
+                      >
+                        <Image src={item.img} fill className="object-cover" alt="" />
+                        <div
+                          className={`absolute inset-0 rounded-lg border-2 pointer-events-none z-10 transition-colors duration-300 ${item.originalIndex === activeImageIndex ? "border-red-600" : "border-white"
+                            }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
-          </div>
+          )}
         </div>
 
         {/* RIGHT COLUMN: SERVICE DETAILS (Framer Motion transitions on change) */}
@@ -396,8 +419,8 @@ export default function Service() {
                   setActiveImageIndex(0);
                 }}
                 className={`w-full flex items-center justify-between p-5 text-left font-semibold text-[15px] transition-all duration-300 ${isOpen
-                    ? "bg-black text-white"
-                    : "bg-white text-gray-800 hover:bg-gray-50"
+                  ? "bg-black text-white"
+                  : "bg-white text-gray-800 hover:bg-gray-50"
                   }`}
               >
                 <span>{service.title}</span>
@@ -411,8 +434,8 @@ export default function Service() {
               {/* ACCORDION BODY */}
               <div
                 className={`transition-all duration-500 ease-in-out overflow-hidden ${isOpen
-                    ? "max-h-[850px] opacity-100 border-t border-gray-100"
-                    : "max-h-0 opacity-0 pointer-events-none"
+                  ? "max-h-[850px] opacity-100 border-t border-gray-100"
+                  : "max-h-0 opacity-0 pointer-events-none"
                   }`}
               >
                 {isOpen && (
@@ -444,8 +467,8 @@ export default function Service() {
                             key={imgIdx}
                             onClick={() => handleThumbnailClick(imgIdx)}
                             className={`w-2 h-2 rounded-full transition-all duration-300 ${imgIdx === activeImageIndex
-                                ? "bg-white scale-125"
-                                : "bg-white/40"
+                              ? "bg-white scale-125"
+                              : "bg-white/40"
                               }`}
                           />
                         ))}

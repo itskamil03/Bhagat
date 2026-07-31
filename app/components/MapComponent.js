@@ -24,11 +24,11 @@ const locations = [
 
 export default function MapComponent() {
   return (
-    <div className="w-full h-full min-h-[300px] sm:min-h-[400px] rounded-xl overflow-hidden relative z-0 border border-gray-200">
+    <div className="w-full h-full min-h-[300px] sm:min-h-[400px] rounded-xl overflow-hidden relative z-0 border border-gray-200 transition-transform duration-500 hover:scale-[0.98]">
       <MapContainer
         center={[22.5, 79.0]} // Center of India
         zoom={4.5}
-        scrollWheelZoom={false}
+        scrollWheelZoom={true}
         className="w-full h-full min-h-[300px] sm:min-h-[400px] z-0"
         style={{ zIndex: 0 }}
       >

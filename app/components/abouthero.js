@@ -84,20 +84,35 @@ export default function Abouthero() {
   }, [slideshowImages.length]);
 
   return (
-    <section className="w-full lg:min-h-screen bg-white">
-      <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 px-6 sm:px-10 lg:px-6 pt-16 pb-16 lg:pb-24 items-center [@media(width:1680px)]:max-w-[1550px] [@media(width:1680px)]:pt-28">
+    <section className="w-full bg-white">
+      <div className="max-w-[1400px] mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 px-6 sm:px-10 lg:px-6 pt-16 pb-12 lg:pb-12 items-center [@media(width:1680px)]:max-w-[1550px] [@media(width:1680px)]:pt-28">
         {/* LEFT CONTENT */}
         <div className="w-full">
-          <p className="text-red-500 font-bold text-base sm:text-lg lg:text-xl mb-2 lg:mb-1 [@media(width:1680px)]:text-2xl [@media(width:1680px)]:mb-4">ABOUT US</p>
+          <p className="text-[#EB2828] font-bold text-base sm:text-lg lg:text-xl mb-2 lg:mb-1 [@media(width:1680px)]:text-2xl [@media(width:1680px)]:mb-4">ABOUT US</p>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight text-gray-800 [@media(width:1680px)]:text-[4.5rem]">
+          <h1 className="text-4xl sm:text-5xl lg:text-[44px] xl:text-[54px] 2xl:text-[60px] font-extrabold leading-[1.1] text-[#17212B] tracking-tight [@media(width:1680px)]:text-[5rem]">
             {aboutData?.title ? (
-              <span dangerouslySetInnerHTML={{ __html: aboutData.title }} />
+              aboutData.title.includes('<') ? (
+                <span dangerouslySetInnerHTML={{ __html: aboutData.title }} />
+              ) : (
+                <>
+                  <span className="lg:whitespace-nowrap">
+                    {aboutData.title.split('\n')[0]}
+                  </span>
+                  {aboutData.title.split('\n').length > 1 && (
+                    <>
+                      <br />
+                      <span className="text-[#EB2828]">
+                        {aboutData.title.split('\n').slice(1).join('\n')}
+                      </span>
+                    </>
+                  )}
+                </>
+              )
             ) : (
               <>
-                Engineering Excellence.
-                <br />
-                <span className="text-red-500">Built on Trust.</span>
+                <span className="lg:whitespace-nowrap">Engineering Excellence.</span><br />
+                <span className="text-[#EB2828]">Built on Trust</span>.
               </>
             )}
           </h1>
@@ -112,32 +127,32 @@ export default function Abouthero() {
 
           {/* STATS */}
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 mt-8 lg:mt-10 [@media(width:1680px)]:mt-16 [@media(width:1680px)]:gap-8">
-            <div className="bg-white shadow-md rounded-lg p-4 text-center [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
-              <h2 className="text-red-500 text-xl font-bold [@media(width:1680px)]:text-4xl">
-                <Counter target={50} suffix="+" />
+            <div className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-xl py-5 px-3 flex flex-col justify-center items-center text-center border border-gray-50 [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
+              <h2 className="text-[#EB2828] text-2xl lg:text-3xl font-extrabold mb-1 [@media(width:1680px)]:text-5xl">
+                <Counter target={48} suffix="+" />
               </h2>
-              <p className="text-sm text-gray-600 [@media(width:1680px)]:text-lg [@media(width:1680px)]:mt-3">Years of Legacy</p>
+              <p className="text-[11px] lg:text-xs font-bold text-[#17212B] [@media(width:1680px)]:text-xl [@media(width:1680px)]:mt-3">Years of Legacy</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-4 text-center [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
-              <h2 className="text-red-500 text-xl font-bold [@media(width:1680px)]:text-4xl">
+            <div className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-xl py-5 px-3 flex flex-col justify-center items-center text-center border border-gray-50 [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
+              <h2 className="text-[#EB2828] text-2xl lg:text-3xl font-extrabold mb-1 [@media(width:1680px)]:text-5xl">
                 <Counter target={100} suffix="+ Cr" />
               </h2>
-              <p className="text-sm text-gray-600 [@media(width:1680px)]:text-lg [@media(width:1680px)]:mt-3">Annual Turnover</p>
+              <p className="text-[11px] lg:text-xs font-bold text-[#17212B] [@media(width:1680px)]:text-xl [@media(width:1680px)]:mt-3">Annual Turnover</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-4 text-center [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
-              <h2 className="text-red-500 text-xl font-bold [@media(width:1680px)]:text-4xl">
+            <div className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-xl py-5 px-3 flex flex-col justify-center items-center text-center border border-gray-50 [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
+              <h2 className="text-[#EB2828] text-2xl lg:text-3xl font-extrabold mb-1 [@media(width:1680px)]:text-5xl">
                 <Counter target={500} suffix="+" />
               </h2>
-              <p className="text-sm text-gray-600 [@media(width:1680px)]:text-lg [@media(width:1680px)]:mt-3">Skilled Professionals</p>
+              <p className="text-[11px] lg:text-xs font-bold text-[#17212B] [@media(width:1680px)]:text-xl [@media(width:1680px)]:mt-3">Skilled Professionals</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-4 text-center [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
-              <h2 className="text-red-500 text-xl font-bold [@media(width:1680px)]:text-4xl">
+            <div className="bg-white shadow-[0_8px_30px_rgb(0,0,0,0.08)] rounded-xl py-5 px-3 flex flex-col justify-center items-center text-center border border-gray-50 [@media(width:1680px)]:p-8 [@media(width:1680px)]:py-10">
+              <h2 className="text-[#EB2828] text-2xl lg:text-3xl font-extrabold mb-1 [@media(width:1680px)]:text-5xl">
                 <Counter target={250} suffix="+" />
               </h2>
-              <p className="text-sm text-gray-600 [@media(width:1680px)]:text-lg [@media(width:1680px)]:mt-3">Satisfied Clients</p>
+              <p className="text-[11px] lg:text-xs font-bold text-[#17212B] [@media(width:1680px)]:text-xl [@media(width:1680px)]:mt-3">Satisfied Clients</p>
             </div>
           </div>
         </div>

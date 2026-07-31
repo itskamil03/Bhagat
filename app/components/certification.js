@@ -92,25 +92,7 @@ export default function Certification() {
 
   return (
     <section className="w-full bg-gray-100 py-12 px-6 lg:px-20 text-center">
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-        .cert-slider-track {
-          transform: var(--slider-transform);
-        }
-        @media (min-width: 768px) and (max-width: 1023px) {
-          .cert-slider-track {
-            transform: translateX(calc(-1 * min(var(--scroll-index), var(--max-index-tablet)) * (50% + 12px))) !important;
-          }
-        }
-        @media (min-width: 1024px) {
-          .cert-slider-track {
-            transform: translateX(calc(-1 * min(var(--scroll-index), var(--max-index-desktop)) * (33.333% + 8px))) !important;
-          }
-        }
-      `,
-        }}
-      />
+
 
       {/* HEADING */}
       <p className="text-red-600 text-lg sm:text-xl lg:text-2xl font-bold tracking-widest">
@@ -134,26 +116,19 @@ export default function Certification() {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <motion.div
-          className={`cert-slider-track flex gap-6 ${isDragging
-              ? "transition-none"
-              : "transition-transform duration-500 ease-out"
-            }`}
-          style={{
-            "--scroll-index": scrollIndex,
-            "--max-index-tablet": maxIndex,
-            "--max-index-desktop": maxIndex,
-            "--slider-transform": isDragging
-              ? `translateX(calc(-1 * ${scrollIndex} * (100% + 24px) + ${dragOffset}px))`
-              : `translateX(calc(-1 * ${scrollIndex} * (100% + 24px)))`,
-          }}
-        >
+        <div className="cert-slider-track flex gap-6 w-full">
           {certificates.map((item) => (
-            <div key={item._id} className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0">
+            <div 
+              key={item._id} 
+              className={`w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] flex-shrink-0 ${isDragging ? "transition-none" : "transition-transform duration-500 ease-out"}`}
+              style={{
+                transform: `translateX(calc(-${scrollIndex * 100}% - ${scrollIndex * 24}px + ${dragOffset}px))`
+              }}
+            >
               <Card img={certificatePdfUrl(item)} />
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* SLIDER CONTROLS */}

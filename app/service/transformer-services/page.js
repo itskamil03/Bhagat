@@ -133,13 +133,13 @@ export default function TransformerServicesPage() {
         titlePart2="Compact Substation"
         subtext="Complete transformer lifecycle support. Turnkey installation, hot vacuum oil filtration, ratio audits, and gasket repair up to 10MVA."
         description="Transformers represent the heart of your electrical power distribution system. Bhagat Engineering Works offers certified testing engineers to install, test, filter, and commission distribution and power transformers, extending the life cycle of your substation cores."
-        heroImage="/pk.png"
-        formServiceDefault="Transformer Oil Filtration"
+        heroImage="/S2.1.jpg"
+        formServiceDefault="Transformer Installation"
         expertiseTitle="Specialized Transformer Services"
         expertiseCards={expertiseCards}
         whyChooseUsTitle="Why Engineers Choose Us for Transformer Services"
         whyChooseUsChecklist={whyChooseUsChecklist}
-        whyChooseUsImage="/za1.jpg"
+        whyChooseUsImage="/S2.2.jpg"
         portfolioTitle="Showcasing Transformer Excellence"
         portfolioData={portfolioData}
         portfolioLoading={portfolioLoading}

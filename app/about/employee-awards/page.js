@@ -357,10 +357,10 @@ export default function EmployeeAwards() {
         const sliderData = await getGallerySlider();
         let flattenedGallery = [];
         let idCounter = 1;
-        
+
         (sliderData || []).forEach(item => {
           const yearStr = item.year?.toString();
-          
+
           if (item.images && Array.isArray(item.images)) {
             item.images.forEach(img => {
               flattenedGallery.push({
@@ -373,7 +373,7 @@ export default function EmployeeAwards() {
             });
           }
         });
-        
+
         if (flattenedGallery.length > 0) {
           const uniqueYears = Array.from(new Set(flattenedGallery.map(img => img.year))).sort((a, b) => parseInt(b) - parseInt(a));
           setFilterOptions(["All years", ...uniqueYears]);

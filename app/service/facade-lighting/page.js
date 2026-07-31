@@ -133,13 +133,13 @@ export default function FacadeLightingPage() {
         titlePart2=""
         subtext="State-of-the-art exterior lighting designs, LED installations, architectural highlights, and acrylic structures."
         description="Aesthetically engineered exterior lighting transforms commercial and public buildings, while guaranteeing safety, structural highlight, and low power consumption. Bhagat Engineering Works offers end-to-end weatherproof IP67 LED lighting structures."
-        heroImage="/pk2.png"
+        heroImage="/S5.1.jpg"
         formServiceDefault="Facade Lighting Design"
         expertiseTitle="Specialized Facade Services"
         expertiseCards={expertiseCards}
         whyChooseUsTitle="Why Engineers Choose Us for Facade Lighting"
         whyChooseUsChecklist={whyChooseUsChecklist}
-        whyChooseUsImage="/a4.png"
+        whyChooseUsImage="/S5.2.jpg"
         portfolioTitle="Showcasing Facade Lighting Excellence"
         portfolioData={portfolioData}
         portfolioLoading={portfolioLoading}
