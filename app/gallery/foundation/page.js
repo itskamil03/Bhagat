@@ -7,6 +7,14 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa";
 import Contact from "../../components/contact";
 
+// API imports
+import { getPowerSubstationPortfolio } from "../../../lib/api/powerSubstationPortfolio";
+import { getTransformerPortfolio } from "../../../lib/api/transformerPortfolio";
+import { getCableLayingPortfolio } from "../../../lib/api/overheadUndergroundCableLayingPortfolio";
+import { getDomesticWiringPortfolio } from "../../../lib/api/domesticWiringPortfolio";
+import { getFacadeLightingPortfolio } from "../../../lib/api/facadeLightingPortfolio";
+import { getHighMastPortfolio } from "../../../lib/api/highMastPortfolio";
+
 function CountUp({ end, suffix = "", duration = 1.5 }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
@@ -54,9 +62,11 @@ export default function FoundationGalleryPage() {
   const [activeTab, setActiveTab] = useState("All");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const [imagesList, setImagesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const tabs = [
     "All",
-    "Our Team",
     "Erection and Maintenance of Power Substation",
     "Installation and Commissioning of Compact Substation",
     "Over head and underground Cable Laying",
@@ -65,24 +75,95 @@ export default function FoundationGalleryPage() {
     "Erection and commissioning of High Mast Pole/Tower and Poles",
   ];
 
-  const images = [
-    { src: "/a8.jpg", category: "Erection and Maintenance of Power Substation" },
-    { src: "/a7.jpg", category: "Installation and Commissioning of Compact Substation" },
-    { src: "/dw1.jpg", category: "Over head and underground Cable Laying" },
-    { src: "/a9.png", category: "Industrial/Quarter Wiring" },
-    { src: "/a5c.png", category: "Facade Lighting" },
-    { src: "/lr1.png", category: "Erection and commissioning of High Mast Pole/Tower and Poles" },
-    { src: "/lr2.png", category: "Our Team" },
-    { src: "/lr3.png", category: "Erection and Maintenance of Power Substation" },
-    { src: "/lr4.png", category: "Installation and Commissioning of Compact Substation" },
-    { src: "/lr5.png", category: "Over head and underground Cable Laying" },
-    { src: "/rr1.png", category: "Industrial/Quarter Wiring" },
-    { src: "/rr2.png", category: "Facade Lighting" },
-  ];
+  // Helper to extract and upgrade image URLs safely
+  const processImage = (item, category) => {
+    let url = null;
+    
+    // Some endpoints use `groupImage`, some use `image`, some use `images` array
+    if (typeof item.groupImage === 'string' && item.groupImage.trim() !== '') {
+      url = item.groupImage;
+    } else if (typeof item.image === 'string' && item.image.trim() !== '') {
+      url = item.image;
+    } else if (item.images && Array.isArray(item.images) && item.images.length > 0) {
+      const firstImg = item.images[0];
+      url = typeof firstImg === 'string' ? firstImg : (firstImg?.image || firstImg?.url);
+    }
+
+    if (url && url.startsWith('http://res.cloudinary.com')) {
+      url = url.replace('http://', 'https://');
+    }
+
+    return url ? { src: url, category, id: item._id || Math.random().toString() } : null;
+  };
+
+  useEffect(() => {
+    async function fetchAllGalleryData() {
+      setIsLoading(true);
+      
+      try {
+        const results = await Promise.allSettled([
+          getPowerSubstationPortfolio(),
+          getTransformerPortfolio(),
+          getCableLayingPortfolio(),
+          getDomesticWiringPortfolio(),
+          getFacadeLightingPortfolio(),
+          getHighMastPortfolio()
+        ]);
+
+        let combinedImages = [];
+
+        // 0: Erection and Maintenance of Power Substation
+        if (results[0].status === 'fulfilled' && results[0].value) {
+          const pssData = Array.isArray(results[0].value) ? results[0].value : (results[0].value.data || []);
+          combinedImages.push(...pssData.map(item => processImage(item, "Erection and Maintenance of Power Substation")));
+        }
+
+        // 1: Installation and Commissioning of Compact Substation
+        if (results[1].status === 'fulfilled' && results[1].value) {
+          const transData = Array.isArray(results[1].value) ? results[1].value : (results[1].value.data || []);
+          combinedImages.push(...transData.map(item => processImage(item, "Installation and Commissioning of Compact Substation")));
+        }
+
+        // 2: Over head and underground Cable Laying
+        if (results[2].status === 'fulfilled' && results[2].value) {
+          const cableData = Array.isArray(results[2].value) ? results[2].value : (results[2].value.data || []);
+          combinedImages.push(...cableData.map(item => processImage(item, "Over head and underground Cable Laying")));
+        }
+
+        // 3: Industrial/Quarter Wiring
+        if (results[3].status === 'fulfilled' && results[3].value) {
+          const wiringData = Array.isArray(results[3].value) ? results[3].value : (results[3].value.data || []);
+          combinedImages.push(...wiringData.map(item => processImage(item, "Industrial/Quarter Wiring")));
+        }
+
+        // 4: Facade Lighting
+        if (results[4].status === 'fulfilled' && results[4].value) {
+          const facadeData = Array.isArray(results[4].value) ? results[4].value : (results[4].value.data || []);
+          combinedImages.push(...facadeData.map(item => processImage(item, "Facade Lighting")));
+        }
+
+        // 5: Erection and commissioning of High Mast Pole/Tower and Poles
+        if (results[5].status === 'fulfilled' && results[5].value) {
+          const highMastData = Array.isArray(results[5].value) ? results[5].value : (results[5].value.data || []);
+          combinedImages.push(...highMastData.map(item => processImage(item, "Erection and commissioning of High Mast Pole/Tower and Poles")));
+        }
+
+        // Filter out any nulls that failed to process an image
+        setImagesList(combinedImages.filter(img => img !== null));
+
+      } catch (err) {
+        console.error("Error fetching gallery images:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchAllGalleryData();
+  }, []);
 
   const filteredImages = activeTab === "All" 
-    ? images 
-    : images.filter(img => img.category === activeTab);
+    ? imagesList 
+    : imagesList.filter(img => img.category === activeTab);
 
   return (
     <main className="min-h-screen bg-white">
@@ -183,9 +264,13 @@ export default function FoundationGalleryPage() {
         </div>
 
         {/* Image Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 md:gap-6 min-h-[300px]">
           <AnimatePresence>
-            {filteredImages.length > 0 ? (
+            {isLoading ? (
+              <div className="col-span-full flex justify-center items-center py-20">
+                <div className="w-10 h-10 border-4 border-gray-200 border-t-[#E61B23] rounded-full animate-spin"></div>
+              </div>
+            ) : filteredImages.length > 0 ? (
               filteredImages.map((item, idx) => (
                 <motion.div 
                   layout
@@ -193,13 +278,14 @@ export default function FoundationGalleryPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
-                  key={`${item.src}-${idx}`} 
-                  className="relative aspect-[392/243] rounded-[9px] overflow-hidden group shadow-[0_4px_20px_rgba(0,0,0,0.06)] bg-[#D9D9D9] cursor-pointer"
+                  key={`${item.id}-${idx}`} 
+                  className="relative aspect-[392/243] rounded-[9px] overflow-hidden group shadow-[0_4px_20px_rgba(0,0,0,0.06)] bg-gray-100 cursor-pointer"
                 >
                   <Image
                     src={item.src}
                     alt={`Gallery Image ${idx + 1}`}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   {/* Subtle overlay on hover */}

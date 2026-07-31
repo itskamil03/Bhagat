@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { getCertificates, certificatePdfUrl } from "../../lib/api/certificate";
@@ -156,6 +156,75 @@ export default function Certification() {
   );
 }
 
+function PdfThumbnail({ url }) {
+  const canvasRef = useRef(null);
+  
+  useEffect(() => {
+    let isMounted = true;
+    let renderTask = null;
+
+    const loadPdfJs = async () => {
+      if (!window.pdfjsLib) {
+        if (!document.getElementById("pdfjs-script")) {
+          const script = document.createElement("script");
+          script.id = "pdfjs-script";
+          script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js";
+          document.head.appendChild(script);
+          await new Promise((resolve) => { script.onload = resolve; });
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+        } else {
+          // Wait for script to load if already injected
+          while (!window.pdfjsLib) {
+            await new Promise((r) => setTimeout(r, 100));
+          }
+        }
+      }
+    };
+
+    const renderPdf = async () => {
+      try {
+        await loadPdfJs();
+        if (!isMounted) return;
+
+        const loadingTask = window.pdfjsLib.getDocument(url);
+        const pdf = await loadingTask.promise;
+        if (!isMounted) return;
+
+        const page = await pdf.getPage(1);
+        if (!isMounted) return;
+
+        const viewport = page.getViewport({ scale: 1.5 });
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const context = canvas.getContext("2d");
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        renderTask = page.render({ canvasContext: context, viewport });
+        await renderTask.promise;
+      } catch (err) {
+        console.error("Error rendering PDF thumbnail", err);
+      }
+    };
+
+    renderPdf();
+
+    return () => {
+      isMounted = false;
+      if (renderTask) renderTask.cancel();
+    };
+  }, [url]);
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="w-full h-full pointer-events-none transition-transform duration-500 scale-[1.85] group-hover:scale-100 group-focus:scale-100 group-active:scale-100 origin-center object-contain bg-white" 
+    />
+  );
+}
+
 /* CARD COMPONENT */
 function Card({ img }) {
   const isPdf = img?.toLowerCase().endsWith(".pdf");
@@ -171,24 +240,21 @@ function Card({ img }) {
         shadow: "0 25px 50px -12px rgba(230, 27, 35, 0.25)",
         transition: { duration: 0.25 },
       }}
+      whileTap={{ scale: 0.98 }} // Add a tap effect for better mobile interaction
       className="group block bg-gray-50 flex flex-col items-center justify-center border-2 border-red-500 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 cursor-pointer relative w-full aspect-[4/3]"
     >
       {isPdf ? (
         <div className="relative w-full h-full overflow-hidden bg-gray-200 flex items-center justify-center">
-          <iframe
-            src={`${img}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
-            className="w-full h-full pointer-events-none border-none transition-transform duration-500 scale-[1.85] group-hover:scale-100 origin-center"
-            title="Certificate PDF Preview"
-          />
-          {/* Overlay to catch clicks and prevent interaction with the iframe */}
-          <div className="absolute inset-0 bg-transparent z-10" />
+          <PdfThumbnail url={img} />
+          {/* Overlay to catch clicks */}
+          <div className="absolute inset-0 bg-transparent z-10 hover:bg-transparent active:bg-transparent focus:bg-transparent" />
         </div>
       ) : (
         <Image
           src={img}
           alt="certificate"
           fill
-          className="object-cover transition-all duration-300 group-hover:object-contain bg-white"
+          className="object-cover transition-all duration-300 group-hover:object-contain group-focus:object-contain group-active:object-contain bg-white"
           sizes="(max-w-768px) 100vw, 33vw"
         />
       )}

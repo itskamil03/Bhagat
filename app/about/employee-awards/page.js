@@ -335,7 +335,26 @@ export default function EmployeeAwards() {
     async function fetchAwards() {
       try {
         const awards = await getAwardGallery();
-        setAwardsList(awards || initialAwards);
+        
+        // Upgrade HTTP to HTTPS for cloudinary to avoid mixed-content blocking by Next.js Image
+        const processedAwards = (awards || []).map(award => {
+          let url = null;
+          
+          if (typeof award.image === 'string' && award.image.trim() !== '') {
+            url = award.image;
+          } else if (award.images && Array.isArray(award.images) && award.images.length > 0) {
+            const firstImg = award.images[0];
+            url = typeof firstImg === 'string' ? firstImg : (firstImg?.image || firstImg?.url);
+          }
+          
+          if (url && url.startsWith('http://res.cloudinary.com')) {
+            url = url.replace('http://', 'https://');
+          }
+          
+          return { ...award, image: url || '/aw1.png' };
+        });
+        
+        setAwardsList(processedAwards.length > 0 ? processedAwards : initialAwards);
       } catch (err) {
         console.error("Failed to fetch awards:", err);
         const savedAwards = localStorage.getItem("employee_awards");
@@ -361,17 +380,29 @@ export default function EmployeeAwards() {
         (sliderData || []).forEach(item => {
           const yearStr = item.year?.toString();
 
-          if (item.images && Array.isArray(item.images)) {
-            item.images.forEach(img => {
+          // Handle cases where 'images' is an array of objects/strings, or fallback to the single 'image' field
+          const imagesToProcess = (item.images && Array.isArray(item.images) && item.images.length > 0) 
+            ? item.images 
+            : (item.image ? [item.image] : []);
+
+          imagesToProcess.forEach(img => {
+            let url = typeof img === 'string' ? img : (img?.image || img?.url);
+            
+            // Upgrade HTTP to HTTPS for cloudinary to avoid mixed-content blocking by Next.js Image or browsers
+            if (url && url.startsWith('http://res.cloudinary.com')) {
+              url = url.replace('http://', 'https://');
+            }
+
+            if (url) {
               flattenedGallery.push({
                 id: idCounter++,
-                src: img.image,
+                src: url,
                 title: `Annual Meet ${yearStr}`,
                 desc: `Memories from our ${yearStr} annual meet.`,
                 year: yearStr
               });
-            });
-          }
+            }
+          });
         });
 
         if (flattenedGallery.length > 0) {
